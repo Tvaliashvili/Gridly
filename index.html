@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Gridly — თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის</title>
+<meta id="page-desc" name="description" content="Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%236366f1%22/><text x=%2250%22 y=%2268%22 font-size=%2260%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Arial%22>G</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Animated grid background -->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+<div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header glass" id="header">
+  <div class="header-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">G</span>
+      <span class="logo-text">Gridly</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#services" class="nav-link" data-i18n="nav.services">სერვისები</a>
+      <a href="#pricing" class="nav-link" data-i18n="nav.pricing">პაკეტები</a>
+      <a href="#portfolio" class="nav-link" data-i18n="nav.portfolio">პორტფოლიო დემოები</a>
+      <a href="#faq" class="nav-link" data-i18n="nav.faq">კითხვები</a>
+      <a href="#contact" class="nav-link" data-i18n="nav.contact">კონტაქტი</a>
+
+      <!-- Mobile-drawer-only controls (mirrors header-actions, shown centered inside the dropdown) -->
+      <div class="nav-tools">
+        <div class="lang-switch glass" role="group" aria-label="Language switcher">
+          <button type="button" class="lang-btn" data-lang="ge" aria-pressed="true">GE</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          <span class="lang-thumb" aria-hidden="true"></span>
+        </div>
+        <button class="theme-toggle tilt-glow" aria-label="Toggle light and dark theme">
+          <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <a href="#contact" class="btn btn-primary btn-block tilt-glow" data-i18n="nav.cta">უფასო შეთავაზება</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch glass" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn" data-lang="ge" aria-pressed="true">GE</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        <span class="lang-thumb" aria-hidden="true"></span>
+      </div>
+
+      <button class="theme-toggle tilt-glow" aria-label="Toggle light and dark theme">
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a href="#contact" class="btn btn-primary btn-sm tilt-glow" data-i18n="nav.cta">უფასო შეთავაზება</a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy" data-reveal>
+        <div class="eyebrow"><span class="dot"></span> <span data-i18n="hero.eyebrow">ვებგვერდები ადგილობრივი ბიზნესებისთვის საქართველოში</span></div>
+        <h1 class="hero-title" data-i18n-html="hero.title">გაზარდეთ თქვენი ბიზნესი <span class="text-gradient">Gridly</span>-სთან ერთად</h1>
+        <p class="hero-sub" data-i18n="hero.sub">სწრაფი, თანამედროვე და მაღალკონვერტირებადი ვებგვერდები, შექმნილი სპეციალურად ადგილობრივი ბიზნესებისთვის.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary btn-lg tilt-glow">
+            <span data-i18n="hero.cta1">უფასო შეთავაზების მიღება</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#portfolio" class="btn btn-ghost btn-lg tilt-glow" data-i18n="hero.cta2">დემოების ნახვა</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong class="counter" data-target="48" data-suffix="h">0h</strong><span data-i18n="hero.stat1">საშუალო დაწყების ვადა</span></div>
+          <div class="stat"><strong class="counter" data-target="100" data-suffix="%">0%</strong><span data-i18n="hero.stat2">მობილურად ადაპტირებული</span></div>
+          <div class="stat"><strong class="counter" data-target="3" data-suffix="">0</strong><span data-i18n="hero.stat3">ფასის პაკეტი</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual" data-reveal>
+        <div class="mock-window animated-border">
+          <div class="mock-topbar">
+            <span class="mock-dot red"></span><span class="mock-dot yellow"></span><span class="mock-dot green"></span>
+            <div class="mock-url">gridly.ge/your-business</div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-nav">
+              <div class="mock-logo"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-cta"></div>
+            </div>
+            <div class="mock-hero">
+              <div class="mock-line w60"></div>
+              <div class="mock-line w40"></div>
+              <div class="mock-bar-row">
+                <div class="mock-btn"></div>
+                <div class="mock-btn outline"></div>
+              </div>
+            </div>
+            <div class="mock-cards">
+              <div class="mock-card">
+                <div class="mock-card-icon"></div>
+                <div class="mock-line w70"></div>
+                <div class="mock-line w50"></div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-icon"></div>
+                <div class="mock-line w70"></div>
+                <div class="mock-line w50"></div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-icon"></div>
+                <div class="mock-line w70"></div>
+                <div class="mock-line w50"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="floating-chip chip-1">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span data-i18n="hero.chip1">გაშვება დღეებში, არა თვეებში</span>
+        </div>
+        <div class="floating-chip chip-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l7-7"/></svg>
+          <span data-i18n="hero.chip2">+150% საშუალო მოთხოვნები</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM VS SOLUTION ===== -->
+  <section class="problem-solution container" id="why">
+    <div class="section-head" data-reveal>
+      <span class="section-tag" data-i18n="ps.tag">რატომ არის მნიშვნელოვანი</span>
+      <h2 data-i18n="ps.title">ვებგვერდის გარეშე ახალი კლიენტები არ გექნებათ</h2>
+      <p data-i18n="ps.desc">ყოველ დღეს ვებგვერდის გარეშე, თქვენი კონკურენტები იზიდავენ იმ კლიენტებს, ვინც სწორედ თქვენ გეძებდათ.</p>
+    </div>
+
+    <div class="ps-grid">
+      <div class="ps-card ps-problem glass" data-reveal>
+        <div class="ps-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        </div>
+        <h3 data-i18n="ps.problem.title">Gridly-ს გარეშე</h3>
+        <ul class="ps-list">
+          <li data-i18n="ps.problem.li1">კლიენტებმა ვერ გიპოვონ Google-სა და Maps-ზე</li>
+          <li data-i18n="ps.problem.li2">მოძველებული ან არარსებული საიტი არაპროფესიონალურად გამოიყურება</li>
+          <li data-i18n="ps.problem.li3">არ გაქვთ საშუალება მიიღოთ კონტაქტი 24/7</li>
+          <li data-i18n="ps.problem.li4">კარგავთ ბიზნესს კონკურენტების სასარგებლოდ, რომლებიც ონლაინ ჩანან</li>
+        </ul>
+      </div>
+
+      <div class="ps-arrow" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+
+      <div class="ps-card ps-solution glass" data-reveal>
+        <div class="ps-icon solution-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3 data-i18n="ps.solution.title">Gridly-სთან ერთად</h3>
+        <ul class="ps-list">
+          <li data-i18n="ps.solution.li1">დაიკავეთ ადგილი Google Maps-ზე და გახდით ადვილად საპოვნელი</li>
+          <li data-i18n="ps.solution.li2">სწრაფი, თანამედროვე საიტი, რომელიც მყისიერად იმსახურებს ნდობას</li>
+          <li data-i18n="ps.solution.li3">საკონტაქტო ფორმები, რომლებიც მუშაობს დღე-ღამის განმავლობაში</li>
+          <li data-i18n="ps.solution.li4">გამოირჩევით საიტით, რომელიც ვიზიტორებს კლიენტებად აქცევს</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-tag" data-i18n="services.tag">რას ვაშენებთ</span>
+        <h2 data-i18n="services.title">სერვისები და შესაძლებლობები</h2>
+        <p data-i18n="services.desc">ყველაფერი, რაც თქვენს ბიზნესს სჭირდება პროფესიონალურად გამოსაჩენად და ონლაინ საპოვნელად.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card glass" data-reveal>
+          <div class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 data-i18n="services.c1.title">მორგებული საიტები</h3>
+          <p data-i18n="services.c1.desc">ხელნაშენი HTML, CSS და JavaScript-ით — არავითარი გადატვირთული შაბლონები, მხოლოდ სუფთა და სწრაფი კოდი.</p>
+        </div>
+
+        <div class="service-card glass" data-reveal>
+          <div class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>
+          </div>
+          <h3 data-i18n="services.c2.title">მორგებული ადმინ პანელი</h3>
+          <p data-i18n="services.c2.desc">მართეთ საკუთარი კონტენტი, ფოტოები და ფასები კოდის ცოდნის გარეშე.</p>
+        </div>
+
+        <div class="service-card glass" data-reveal>
+          <div class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          </div>
+          <h3 data-i18n="services.c3.title">მობილურად ადაპტირება</h3>
+          <p data-i18n="services.c3.desc">იდეალურად გამოიყურება ნებისმიერ ეკრანზე — ადგილობრივი კლიენტების უმეტესობა თქვენ მობილურით პოულობს.</p>
+        </div>
+
+        <div class="service-card glass" data-reveal>
+          <div class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <h3 data-i18n="services.c4.title">SEO ოპტიმიზაცია</h3>
+          <p data-i18n="services.c4.desc">სუფთა სტრუქტურა და მეტამონაცემები, რათა საიტი რეალურად გამოჩნდეს Google-ის ძიებაში.</p>
+        </div>
+
+        <div class="service-card glass" data-reveal>
+          <div class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3 data-i18n="services.c5.title">Google Maps-ის დაყენება</h3>
+          <p data-i18n="services.c5.desc">გამოჩნდით სწორ ადგილას რუკაზე, რომ ახლომახლო კლიენტებმა ადვილად გიპოვონ.</p>
+        </div>
+
+        <div class="service-card glass" data-reveal>
+          <div class="service-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+          </div>
+          <h3 data-i18n="services.c6.title">სწრაფი წარმადობა</h3>
+          <p data-i18n="services.c6.desc">მსუბუქი, ხელით ოპტიმიზირებული კოდი უზრუნველყოფს თითქმის მყისიერ ჩატვირთვას ნებისმიერ კავშირზე.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-tag" data-i18n="pricing.tag">მარტივი ფასები</span>
+        <h2 data-i18n="pricing.title">ფასები და პაკეტები</h2>
+        <p data-i18n="pricing.desc">გამჭვირვალე, ერთჯერადი ფასები ლარში. აირჩიეთ თქვენთვის შესაფერისი პაკეტი.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="price-card glass" data-reveal>
+          <div class="price-head">
+            <h3 data-i18n="pricing.starter.title">სტარტერი</h3>
+            <p data-i18n="pricing.starter.desc">იდეალურია მარტივი ონლაინ იმიჯისთვის</p>
+          </div>
+          <div class="price-value"><span class="amount">300–400</span><span class="currency" data-i18n="pricing.currency">GEL</span></div>
+          <ul class="price-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.starter.f1">1–2 გვერდი</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.starter.f2">მობილურად ადაპტირებული დიზაინი</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.starter.f3">საკონტაქტო ფორმა</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.starter.f4">Google Maps ინტეგრაცია</span></li>
+          </ul>
+          <a href="#contact" class="btn btn-outline btn-block tilt-glow" data-i18n="pricing.starter.btn">სტარტერის არჩევა</a>
+        </div>
+
+        <div class="price-card featured glass animated-border" data-reveal>
+          <div class="price-badge" data-i18n="pricing.badge">ყველაზე პოპულარული</div>
+          <div class="price-head">
+            <h3 data-i18n="pricing.business.title">ბიზნესი</h3>
+            <p data-i18n="pricing.business.desc">მათთვის, ვინც მზადაა გამოირჩეს</p>
+          </div>
+          <div class="price-value"><span class="amount">500–700</span><span class="currency" data-i18n="pricing.currency">GEL</span></div>
+          <ul class="price-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.business.f1">3–5 გვერდი</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.business.f2">JavaScript ინტერაქტივი</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.business.f3">ფოტო გალერეა</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.business.f4">მორგებული ფუნქციები</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.business.f5">ყველაფერი სტარტერიდან</span></li>
+          </ul>
+          <a href="#contact" class="btn btn-primary btn-block tilt-glow" data-i18n="pricing.business.btn">ბიზნესის არჩევა</a>
+        </div>
+
+        <div class="price-card glass" data-reveal>
+          <div class="price-head">
+            <h3 data-i18n="pricing.pro.title">პრო / ადმინ პანელი</h3>
+            <p data-i18n="pricing.pro.desc">სრული კონტროლი თქვენს კონტენტზე</p>
+          </div>
+          <div class="price-value"><span class="amount">800–1200</span><span class="currency" data-i18n="pricing.currency">GEL</span></div>
+          <ul class="price-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.pro.f1">სრული მორგებული საიტი</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.pro.f2">მორგებული ადმინ პანელი</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.pro.f3">მართეთ კონტენტი დამოუკიდებლად</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="pricing.pro.f4">ყველაფერი ბიზნეს პაკეტიდან</span></li>
+          </ul>
+          <a href="#contact" class="btn btn-outline btn-block tilt-glow" data-i18n="pricing.pro.btn">პრო-ს არჩევა</a>
+        </div>
+      </div>
+
+      <div class="maintenance-banner glass" data-reveal>
+        <div class="maintenance-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="maintenance-copy">
+          <h4 data-i18n="pricing.maint.title">ყოველთვიური მოვლა და ჰოსტინგი</h4>
+          <p data-i18n="pricing.maint.desc">შეინარჩუნეთ საიტი ონლაინ, დაცული და განახლებული — ჰოსტინგი, ბექაფები და მცირე განახლებები შედის.</p>
+        </div>
+        <div class="maintenance-price">
+          <span class="amount">30–50</span>
+          <span class="unit" data-i18n="pricing.maint.unit">ლარი / თვეში</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PORTFOLIO ===== -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-tag" data-i18n="portfolio.tag">ნახეთ საქმეში</span>
+        <h2 data-i18n="portfolio.title">დემო პორტფოლიოს ვიტრინა</h2>
+        <p data-i18n="portfolio.desc">რამდენიმე მაგალითი იმისა, თუ როგორი საიტები გვაქვს აშენებული ისეთი ბიზნესებისთვის, როგორიც თქვენია.</p>
+      </div>
+
+      <div class="portfolio-grid">
+        <article class="portfolio-card glass tilt-glow" data-reveal>
+          <div class="portfolio-preview preview-salon">
+            <span class="portfolio-tag" data-i18n="portfolio.c1.tag">სილამაზე და სალონი</span>
+          </div>
+          <div class="portfolio-info">
+            <h3 data-i18n="portfolio.c1.title">სალონი Luxe Hair</h3>
+            <p data-i18n="portfolio.c1.desc">ჯავშანზე ორიენტირებული საიტი გალერეით და მომსახურების ფასებით.</p>
+            <button class="btn btn-outline btn-sm demo-btn tilt-glow" data-demo="salon" data-i18n="portfolio.demoBtn">დემოს ნახვა</button>
+          </div>
+        </article>
+
+        <article class="portfolio-card glass tilt-glow" data-reveal>
+          <div class="portfolio-preview preview-restaurant">
+            <span class="portfolio-tag" data-i18n="portfolio.c2.tag">რესტორანი</span>
+          </div>
+          <div class="portfolio-info">
+            <h3 data-i18n="portfolio.c2.title">რესტორანი Tavola</h3>
+            <p data-i18n="portfolio.c2.desc">მენიუს ვიტრინა, ჯავშნის ფორმა და მდებარეობის რუკა.</p>
+            <button class="btn btn-outline btn-sm demo-btn tilt-glow" data-demo="restaurant" data-i18n="portfolio.demoBtn">დემოს ნახვა</button>
+          </div>
+        </article>
+
+        <article class="portfolio-card glass tilt-glow" data-reveal>
+          <div class="portfolio-preview preview-auto">
+            <span class="portfolio-tag" data-i18n="portfolio.c3.tag">ავტოსერვისი</span>
+          </div>
+          <div class="portfolio-info">
+            <h3 data-i18n="portfolio.c3.title">ავტოსერვისი ProFix</h3>
+            <p data-i18n="portfolio.c3.desc">სერვისების სია, შეთავაზების მოთხოვნის ფორმა და მომხმარებელთა შეფასებები.</p>
+            <button class="btn btn-outline btn-sm demo-btn tilt-glow" data-demo="auto" data-i18n="portfolio.demoBtn">დემოს ნახვა</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-tag" data-i18n="faq.tag">კითხვები</span>
+        <h2 data-i18n="faq.title">ხშირად დასმული კითხვები</h2>
+        <p data-i18n="faq.desc">გაქვთ კითხვები? აქ არის პასუხები ყველაზე ხშირად დასმულ კითხვებზე.</p>
+      </div>
+
+      <div class="faq-list" data-reveal>
+        <div class="faq-item glass">
+          <button class="faq-question" aria-expanded="false">
+            <span data-i18n="faq.q1">რამდენ ხანში მზადდება საიტი?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq.a1">სტარტერი პაკეტი მზადდება 3-5 დღეში, ბიზნესი — 1-2 კვირაში, ხოლო პრო/ადმინ პანელით — 2-3 კვირაში, პროექტის სირთულის მიხედვით.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass">
+          <button class="faq-question" aria-expanded="false">
+            <span data-i18n="faq.q2">შემიძლია მოგვიანებით ცვლილებების შეტანა?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq.a2">რა თქმა უნდა. თუ გაქვთ ადმინ პანელი, თავად შეგიძლიათ განაახლოთ კონტენტი. ასევე გვაქვს ყოველთვიური მოვლის პაკეტი მცირე ცვლილებებისთვის.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass">
+          <button class="faq-question" aria-expanded="false">
+            <span data-i18n="faq.q3">რა ღირს ჰოსტინგი და დომენი?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq.a3">ჰოსტინგი და მოვლა შედის ჩვენს ყოველთვიურ 30–50 ლარიან პაკეტში. დომენის ფასი დამოკიდებულია რეგისტრატორზე და ჩვეულებრივ შეადგენს 15–40 ლარს წელიწადში.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass">
+          <button class="faq-question" aria-expanded="false">
+            <span data-i18n="faq.q4">გჭირდებათ თუ არა წინასწარგადახდა?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq.a4">დიახ, ჩვეულებრივ ვითხოვთ 50%-იან წინასწარგადახდას პროექტის დაწყებამდე და დარჩენილს — მზა საიტის ჩაბარებისას.</p>
+          </div>
+        </div>
+
+        <div class="faq-item glass">
+          <button class="faq-question" aria-expanded="false">
+            <span data-i18n="faq.q5">შემიძლია საიტის ტესტირება მზადების პროცესში?</span>
+            <svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p data-i18n="faq.a5">აბსოლუტურად — მუშაობის განმავლობაში მუდმივად გაგიზიარებთ პროგრესს და მოგცემთ საშუალებას ნახოთ და შეაფასოთ საიტი მის საბოლოო გაშვებამდე.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="contact" id="contact">
+    <div class="container contact-inner">
+      <div class="contact-copy" data-reveal>
+        <span class="section-tag" data-i18n="contact.tag">მოდი ვისაუბროთ</span>
+        <h2 data-i18n="contact.title">მიიღეთ უფასო შეთავაზება</h2>
+        <p data-i18n="contact.desc">გვიამბეთ ცოტა თქვენი ბიზნესის შესახებ და 24 საათში დაგიკავშირდებით ინდივიდუალური შეთავაზებით.</p>
+        <ul class="contact-points">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="contact.point1">უფასო, არაფრით შემზღუდავი კონსულტაცია</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="contact.point2">პასუხი 24 საათში</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> <span data-i18n="contact.point3">ფასი მორგებული თქვენს საჭიროებებზე</span></li>
+        </ul>
+      </div>
+
+      <form class="contact-form glass" id="contact-form" data-reveal novalidate>
+        <div class="form-row">
+          <label for="name" data-i18n="form.name.label">სრული სახელი</label>
+          <input type="text" id="name" name="name" data-i18n-placeholder="form.name.placeholder" placeholder="მაგ. ნინო ბერიძე" required>
+          <span class="field-error" data-error-for="name"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="contactMethod" data-i18n="form.contact.label">ტელეფონი ან ელფოსტა</label>
+          <input type="text" id="contactMethod" name="contactMethod" data-i18n-placeholder="form.contact.placeholder" placeholder="+995 5xx xx xx xx ან you@email.com" required>
+          <span class="field-error" data-error-for="contactMethod"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="businessType" data-i18n="form.business.label">ბიზნესის ტიპი</label>
+          <select id="businessType" name="businessType" required>
+            <option value="" disabled selected data-i18n="form.business.placeholder">აირჩიეთ ბიზნესის ტიპი</option>
+            <option value="salon" data-i18n="form.business.opt.salon">სალონი / სილამაზე</option>
+            <option value="restaurant" data-i18n="form.business.opt.restaurant">რესტორანი / კაფე</option>
+            <option value="auto" data-i18n="form.business.opt.auto">ავტოსერვისი</option>
+            <option value="retail" data-i18n="form.business.opt.retail">მაღაზია / საცალო ვაჭრობა</option>
+            <option value="professional" data-i18n="form.business.opt.professional">პროფესიული სერვისები</option>
+            <option value="other" data-i18n="form.business.opt.other">სხვა</option>
+          </select>
+          <span class="field-error" data-error-for="businessType"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="message"><span data-i18n="form.message.label">შეტყობინება</span> <span class="optional" data-i18n="form.message.optional">(არასავალდებულო)</span></label>
+          <textarea id="message" name="message" rows="3" data-i18n-placeholder="form.message.placeholder" placeholder="მოგვიყევით ცოტა თქვენი პროექტის შესახებ..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block tilt-glow">
+          <span class="btn-label" data-i18n="form.submit">შეტყობინების გაგზავნა</span>
+        </button>
+
+        <p class="form-success" id="form-success" role="status" aria-live="polite">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span data-i18n="form.success">მადლობა! თქვენი მოთხოვნა მიღებულია — მალე დაგიკავშირდებით.</span>
+        </p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="#top" class="logo">
+        <span class="logo-mark">G</span>
+        <span class="logo-text">Gridly</span>
+      </a>
+      <p data-i18n="footer.tagline">თანამედროვე ვებგვერდები ადგილობრივი ბიზნესებისთვის.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4 data-i18n="footer.navTitle">ნავიგაცია</h4>
+      <a href="#services" data-i18n="nav.services">სერვისები</a>
+      <a href="#pricing" data-i18n="nav.pricing">პაკეტები</a>
+      <a href="#portfolio" data-i18n="nav.portfolio">პორტფოლიო დემოები</a>
+      <a href="#contact" data-i18n="nav.contact">კონტაქტი</a>
+    </div>
+
+    <div class="footer-contact">
+      <h4 data-i18n="footer.contactTitle">დაგვიკავშირდით</h4>
+      <a href="mailto:hello@gridly.ge">hello@gridly.ge</a>
+      <a href="tel:+995500000000">+995 500 00 00 00</a>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <p>&copy; <span id="year"></span> Gridly. <span data-i18n="footer.copyright">ყველა უფლება დაცულია.</span></p>
+    <p class="made-with" data-i18n="footer.builtWith">შექმნილია HTML, CSS და JavaScript-ით.</p>
+  </div>
+</footer>
+
+<button class="back-to-top tilt-glow" id="back-to-top" aria-label="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="toast" id="demo-toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

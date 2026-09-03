@@ -1,0 +1,620 @@
+/* ==========================================================================
+   Gridly — Landing Page Script
+   ========================================================================== */
+(() => {
+  'use strict';
+
+  /* ==========================================================================
+     Translations (Georgian default, English toggle)
+     ========================================================================== */
+  const translations = {
+    ge: {
+      'page.title': 'Gridly — თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
+      'page.desc': 'Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.',
+      'nav.services': 'სერვისები',
+      'nav.pricing': 'პაკეტები',
+      'nav.portfolio': 'პორტფოლიო დემოები',
+      'nav.faq': 'კითხვები',
+      'nav.contact': 'კონტაქტი',
+      'nav.cta': 'უფასო შეთავაზება',
+      'hero.eyebrow': 'ვებგვერდები ადგილობრივი ბიზნესებისთვის საქართველოში',
+      'hero.title': 'გაზარდეთ თქვენი ბიზნესი <span class="text-gradient">Gridly</span>-სთან ერთად',
+      'hero.sub': 'სწრაფი, თანამედროვე და მაღალკონვერტირებადი ვებგვერდები, შექმნილი სპეციალურად ადგილობრივი ბიზნესებისთვის.',
+      'hero.cta1': 'უფასო შეთავაზების მიღება',
+      'hero.cta2': 'დემოების ნახვა',
+      'hero.stat1': 'საშუალო დაწყების ვადა',
+      'hero.stat2': 'მობილურად ადაპტირებული',
+      'hero.stat3': 'ფასის პაკეტი',
+      'hero.chip1': 'გაშვება დღეებში, არა თვეებში',
+      'hero.chip2': '+150% საშუალო მოთხოვნები',
+      'ps.tag': 'რატომ არის მნიშვნელოვანი',
+      'ps.title': 'ვებგვერდის გარეშე ახალი კლიენტები არ გექნებათ',
+      'ps.desc': 'ყოველ დღეს ვებგვერდის გარეშე, თქვენი კონკურენტები იზიდავენ იმ კლიენტებს, ვინც სწორედ თქვენ გეძებდათ.',
+      'ps.problem.title': 'Gridly-ს გარეშე',
+      'ps.problem.li1': 'კლიენტებმა ვერ გიპოვონ Google-სა და Maps-ზე',
+      'ps.problem.li2': 'მოძველებული ან არარსებული საიტი არაპროფესიონალურად გამოიყურება',
+      'ps.problem.li3': 'არ გაქვთ საშუალება მიიღოთ კონტაქტი 24/7',
+      'ps.problem.li4': 'კარგავთ ბიზნესს კონკურენტების სასარგებლოდ, რომლებიც ონლაინ ჩანან',
+      'ps.solution.title': 'Gridly-სთან ერთად',
+      'ps.solution.li1': 'დაიკავეთ ადგილი Google Maps-ზე და გახდით ადვილად საპოვნელი',
+      'ps.solution.li2': 'სწრაფი, თანამედროვე საიტი, რომელიც მყისიერად იმსახურებს ნდობას',
+      'ps.solution.li3': 'საკონტაქტო ფორმები, რომლებიც მუშაობს დღე-ღამის განმავლობაში',
+      'ps.solution.li4': 'გამოირჩევით საიტით, რომელიც ვიზიტორებს კლიენტებად აქცევს',
+      'services.tag': 'რას ვაშენებთ',
+      'services.title': 'სერვისები და შესაძლებლობები',
+      'services.desc': 'ყველაფერი, რაც თქვენს ბიზნესს სჭირდება პროფესიონალურად გამოსაჩენად და ონლაინ საპოვნელად.',
+      'services.c1.title': 'მორგებული საიტები',
+      'services.c1.desc': 'ხელნაშენი HTML, CSS და JavaScript-ით — არავითარი გადატვირთული შაბლონები, მხოლოდ სუფთა და სწრაფი კოდი.',
+      'services.c2.title': 'მორგებული ადმინ პანელი',
+      'services.c2.desc': 'მართეთ საკუთარი კონტენტი, ფოტოები და ფასები კოდის ცოდნის გარეშე.',
+      'services.c3.title': 'მობილურად ადაპტირება',
+      'services.c3.desc': 'იდეალურად გამოიყურება ნებისმიერ ეკრანზე — ადგილობრივი კლიენტების უმეტესობა თქვენ მობილურით პოულობს.',
+      'services.c4.title': 'SEO ოპტიმიზაცია',
+      'services.c4.desc': 'სუფთა სტრუქტურა და მეტამონაცემები, რათა საიტი რეალურად გამოჩნდეს Google-ის ძიებაში.',
+      'services.c5.title': 'Google Maps-ის დაყენება',
+      'services.c5.desc': 'გამოჩნდით სწორ ადგილას რუკაზე, რომ ახლომახლო კლიენტებმა ადვილად გიპოვონ.',
+      'services.c6.title': 'სწრაფი წარმადობა',
+      'services.c6.desc': 'მსუბუქი, ხელით ოპტიმიზირებული კოდი უზრუნველყოფს თითქმის მყისიერ ჩატვირთვას ნებისმიერ კავშირზე.',
+      'pricing.tag': 'მარტივი ფასები',
+      'pricing.title': 'ფასები და პაკეტები',
+      'pricing.desc': 'გამჭვირვალე, ერთჯერადი ფასები ლარში. აირჩიეთ თქვენთვის შესაფერისი პაკეტი.',
+      'pricing.currency': 'GEL',
+      'pricing.badge': 'ყველაზე პოპულარული',
+      'pricing.starter.title': 'სტარტერი',
+      'pricing.starter.desc': 'იდეალურია მარტივი ონლაინ იმიჯისთვის',
+      'pricing.starter.f1': '1–2 გვერდი',
+      'pricing.starter.f2': 'მობილურად ადაპტირებული დიზაინი',
+      'pricing.starter.f3': 'საკონტაქტო ფორმა',
+      'pricing.starter.f4': 'Google Maps ინტეგრაცია',
+      'pricing.starter.btn': 'სტარტერის არჩევა',
+      'pricing.business.title': 'ბიზნესი',
+      'pricing.business.desc': 'მათთვის, ვინც მზადაა გამოირჩეს',
+      'pricing.business.f1': '3–5 გვერდი',
+      'pricing.business.f2': 'JavaScript ინტერაქტივი',
+      'pricing.business.f3': 'ფოტო გალერეა',
+      'pricing.business.f4': 'მორგებული ფუნქციები',
+      'pricing.business.f5': 'ყველაფერი სტარტერიდან',
+      'pricing.business.btn': 'ბიზნესის არჩევა',
+      'pricing.pro.title': 'პრო / ადმინ პანელი',
+      'pricing.pro.desc': 'სრული კონტროლი თქვენს კონტენტზე',
+      'pricing.pro.f1': 'სრული მორგებული საიტი',
+      'pricing.pro.f2': 'მორგებული ადმინ პანელი',
+      'pricing.pro.f3': 'მართეთ კონტენტი დამოუკიდებლად',
+      'pricing.pro.f4': 'ყველაფერი ბიზნეს პაკეტიდან',
+      'pricing.pro.btn': 'პრო-ს არჩევა',
+      'pricing.maint.title': 'ყოველთვიური მოვლა და ჰოსტინგი',
+      'pricing.maint.desc': 'შეინარჩუნეთ საიტი ონლაინ, დაცული და განახლებული — ჰოსტინგი, ბექაფები და მცირე განახლებები შედის.',
+      'pricing.maint.unit': 'ლარი / თვეში',
+      'portfolio.tag': 'ნახეთ საქმეში',
+      'portfolio.title': 'დემო პორტფოლიოს ვიტრინა',
+      'portfolio.desc': 'რამდენიმე მაგალითი იმისა, თუ როგორი საიტები გვაქვს აშენებული ისეთი ბიზნესებისთვის, როგორიც თქვენია.',
+      'portfolio.c1.tag': 'სილამაზე და სალონი',
+      'portfolio.c1.title': 'სალონი Luxe Hair',
+      'portfolio.c1.desc': 'ჯავშანზე ორიენტირებული საიტი გალერეით და მომსახურების ფასებით.',
+      'portfolio.c2.tag': 'რესტორანი',
+      'portfolio.c2.title': 'რესტორანი Tavola',
+      'portfolio.c2.desc': 'მენიუს ვიტრინა, ჯავშნის ფორმა და მდებარეობის რუკა.',
+      'portfolio.c3.tag': 'ავტოსერვისი',
+      'portfolio.c3.title': 'ავტოსერვისი ProFix',
+      'portfolio.c3.desc': 'სერვისების სია, შეთავაზების მოთხოვნის ფორმა და მომხმარებელთა შეფასებები.',
+      'portfolio.demoBtn': 'დემოს ნახვა',
+      'faq.tag': 'კითხვები',
+      'faq.title': 'ხშირად დასმული კითხვები',
+      'faq.desc': 'გაქვთ კითხვები? აქ არის პასუხები ყველაზე ხშირად დასმულ კითხვებზე.',
+      'faq.q1': 'რამდენ ხანში მზადდება საიტი?',
+      'faq.a1': 'სტარტერი პაკეტი მზადდება 3-5 დღეში, ბიზნესი — 1-2 კვირაში, ხოლო პრო/ადმინ პანელით — 2-3 კვირაში, პროექტის სირთულის მიხედვით.',
+      'faq.q2': 'შემიძლია მოგვიანებით ცვლილებების შეტანა?',
+      'faq.a2': 'რა თქმა უნდა. თუ გაქვთ ადმინ პანელი, თავად შეგიძლიათ განაახლოთ კონტენტი. ასევე გვაქვს ყოველთვიური მოვლის პაკეტი მცირე ცვლილებებისთვის.',
+      'faq.q3': 'რა ღირს ჰოსტინგი და დომენი?',
+      'faq.a3': 'ჰოსტინგი და მოვლა შედის ჩვენს ყოველთვიურ 30–50 ლარიან პაკეტში. დომენის ფასი დამოკიდებულია რეგისტრატორზე და ჩვეულებრივ შეადგენს 15–40 ლარს წელიწადში.',
+      'faq.q4': 'გჭირდებათ თუ არა წინასწარგადახდა?',
+      'faq.a4': 'დიახ, ჩვეულებრივ ვითხოვთ 50%-იან წინასწარგადახდას პროექტის დაწყებამდე და დარჩენილს — მზა საიტის ჩაბარებისას.',
+      'faq.q5': 'შემიძლია საიტის ტესტირება მზადების პროცესში?',
+      'faq.a5': 'აბსოლუტურად — მუშაობის განმავლობაში მუდმივად გაგიზიარებთ პროგრესს და მოგცემთ საშუალებას ნახოთ და შეაფასოთ საიტი მის საბოლოო გაშვებამდე.',
+      'contact.tag': 'მოდი ვისაუბროთ',
+      'contact.title': 'მიიღეთ უფასო შეთავაზება',
+      'contact.desc': 'გვიამბეთ ცოტა თქვენი ბიზნესის შესახებ და 24 საათში დაგიკავშირდებით ინდივიდუალური შეთავაზებით.',
+      'contact.point1': 'უფასო, არაფრით შემზღუდავი კონსულტაცია',
+      'contact.point2': 'პასუხი 24 საათში',
+      'contact.point3': 'ფასი მორგებული თქვენს საჭიროებებზე',
+      'form.name.label': 'სრული სახელი',
+      'form.name.placeholder': 'მაგ. ნინო ბერიძე',
+      'form.contact.label': 'ტელეფონი ან ელფოსტა',
+      'form.contact.placeholder': '+995 5xx xx xx xx ან you@email.com',
+      'form.business.label': 'ბიზნესის ტიპი',
+      'form.business.placeholder': 'აირჩიეთ ბიზნესის ტიპი',
+      'form.business.opt.salon': 'სალონი / სილამაზე',
+      'form.business.opt.restaurant': 'რესტორანი / კაფე',
+      'form.business.opt.auto': 'ავტოსერვისი',
+      'form.business.opt.retail': 'მაღაზია / საცალო ვაჭრობა',
+      'form.business.opt.professional': 'პროფესიული სერვისები',
+      'form.business.opt.other': 'სხვა',
+      'form.message.label': 'შეტყობინება',
+      'form.message.optional': '(არასავალდებულო)',
+      'form.message.placeholder': 'მოგვიყევით ცოტა თქვენი პროექტის შესახებ...',
+      'form.submit': 'შეტყობინების გაგზავნა',
+      'form.sending': 'იგზავნება...',
+      'form.success': 'მადლობა! თქვენი მოთხოვნა მიღებულია — მალე დაგიკავშირდებით.',
+      'form.error.name': 'გთხოვთ მიუთითოთ თქვენი სრული სახელი.',
+      'form.error.contact': 'შეიყვანეთ სწორი ტელეფონის ნომერი ან ელფოსტა.',
+      'form.error.business': 'გთხოვთ აირჩიოთ ბიზნესის ტიპი.',
+      'footer.tagline': 'თანამედროვე ვებგვერდები ადგილობრივი ბიზნესებისთვის.',
+      'footer.navTitle': 'ნავიგაცია',
+      'footer.contactTitle': 'დაგვიკავშირდით',
+      'footer.copyright': 'ყველა უფლება დაცულია.',
+      'footer.builtWith': 'შექმნილია HTML, CSS და JavaScript-ით.',
+      'toast.demo': 'დემო მალე იქნება ხელმისაწვდომი — დაგვიკავშირდით საცნობებელი ვერსიის სანახავად.',
+    },
+    en: {
+      'page.title': 'Gridly — Modern Websites for Local Businesses',
+      'page.desc': 'Gridly builds fast, modern, high-converting websites for local businesses. Custom design, admin panels, SEO & Google Maps setup.',
+      'nav.services': 'Services',
+      'nav.pricing': 'Packages',
+      'nav.portfolio': 'Portfolio Demos',
+      'nav.faq': 'FAQ',
+      'nav.contact': 'Contact',
+      'nav.cta': 'Get a Free Quote',
+      'hero.eyebrow': 'Websites for local businesses in Georgia',
+      'hero.title': 'Boost Your Local Business with <span class="text-gradient">Gridly</span>',
+      'hero.sub': 'Fast, modern, and high-converting websites crafted for local businesses — designed to turn visitors into customers.',
+      'hero.cta1': 'Get a Free Quote',
+      'hero.cta2': 'View Demos',
+      'hero.stat1': 'Avg. delivery start',
+      'hero.stat2': 'Mobile-ready',
+      'hero.stat3': 'Pricing tiers',
+      'hero.chip1': 'Live in days, not months',
+      'hero.chip2': '+150% avg. inquiries',
+      'ps.tag': 'Why it matters',
+      'ps.title': 'No website means no new customers',
+      'ps.desc': 'Every day without a strong online presence, your competitors capture the customers who were searching for you.',
+      'ps.problem.title': 'Without Gridly',
+      'ps.problem.li1': "Customers can't find you on Google or Maps",
+      'ps.problem.li2': 'Outdated or no website looks unprofessional',
+      'ps.problem.li3': 'No way for people to contact you 24/7',
+      'ps.problem.li4': 'Losing business to competitors who show up online',
+      'ps.solution.title': 'With Gridly',
+      'ps.solution.li1': 'Rank on Google Maps & get discovered locally',
+      'ps.solution.li2': 'A fast, modern site that builds instant trust',
+      'ps.solution.li3': 'Contact forms & booking that work around the clock',
+      'ps.solution.li4': 'Stand out with a site that converts visitors into clients',
+      'services.tag': 'What we build',
+      'services.title': 'Services & Features',
+      'services.desc': 'Everything your business needs to look professional and get found online.',
+      'services.c1.title': 'Custom Coded Websites',
+      'services.c1.desc': 'Hand-built with HTML, CSS & JavaScript — no bloated templates, just clean, fast-loading code.',
+      'services.c2.title': 'Custom Admin Panels',
+      'services.c2.desc': 'Manage your own content, photos and prices without touching a line of code.',
+      'services.c3.title': 'Mobile Responsiveness',
+      'services.c3.desc': 'Pixel-perfect on every screen — most local customers find you on their phone first.',
+      'services.c4.title': 'SEO Optimization',
+      'services.c4.desc': 'Clean structure and metadata so your site actually shows up in Google search results.',
+      'services.c5.title': 'Google Maps Setup',
+      'services.c5.desc': 'Get listed and pinned correctly so nearby customers can find and visit you easily.',
+      'services.c6.title': 'Fast Performance',
+      'services.c6.desc': 'Lightweight, hand-optimized code means near-instant load times on any connection.',
+      'pricing.tag': 'Simple pricing',
+      'pricing.title': 'Pricing & Packages',
+      'pricing.desc': 'Transparent, one-time pricing in Georgian Lari. Pick the tier that fits your business.',
+      'pricing.currency': 'GEL',
+      'pricing.badge': 'Most Popular',
+      'pricing.starter.title': 'Starter',
+      'pricing.starter.desc': 'Perfect for a simple online presence',
+      'pricing.starter.f1': '1–2 Pages',
+      'pricing.starter.f2': 'Mobile-ready design',
+      'pricing.starter.f3': 'Contact form',
+      'pricing.starter.f4': 'Google Maps integration',
+      'pricing.starter.btn': 'Choose Starter',
+      'pricing.business.title': 'Business',
+      'pricing.business.desc': 'For businesses ready to stand out',
+      'pricing.business.f1': '3–5 Pages',
+      'pricing.business.f2': 'JavaScript interactivity',
+      'pricing.business.f3': 'Photo gallery',
+      'pricing.business.f4': 'Custom features',
+      'pricing.business.f5': 'Everything in Starter',
+      'pricing.business.btn': 'Choose Business',
+      'pricing.pro.title': 'Pro / Admin Panel',
+      'pricing.pro.desc': 'Full control over your own content',
+      'pricing.pro.f1': 'Full custom website',
+      'pricing.pro.f2': 'Custom Admin Panel',
+      'pricing.pro.f3': 'Manage content yourself',
+      'pricing.pro.f4': 'Everything in Business',
+      'pricing.pro.btn': 'Choose Pro',
+      'pricing.maint.title': 'Monthly Maintenance & Hosting',
+      'pricing.maint.desc': 'Keep your site online, secure, and up to date — hosting, backups & small updates included.',
+      'pricing.maint.unit': 'GEL / month',
+      'portfolio.tag': 'See it in action',
+      'portfolio.title': 'Demo Portfolio Showcase',
+      'portfolio.desc': 'A few examples of the kind of sites we build for local businesses like yours.',
+      'portfolio.c1.tag': 'Beauty & Salon',
+      'portfolio.c1.title': 'Luxe Hair Salon',
+      'portfolio.c1.desc': 'Booking-focused site with gallery & service pricing.',
+      'portfolio.c2.tag': 'Restaurant',
+      'portfolio.c2.title': 'Tavola Restaurant',
+      'portfolio.c2.desc': 'Menu showcase, reservations form & map location.',
+      'portfolio.c3.tag': 'Auto Service',
+      'portfolio.c3.title': 'ProFix Auto Service',
+      'portfolio.c3.desc': 'Service list, quote request form & customer reviews.',
+      'portfolio.demoBtn': 'View Demo',
+      'faq.tag': 'Questions',
+      'faq.title': 'Frequently Asked Questions',
+      'faq.desc': "Got questions? Here are answers to the ones we hear most.",
+      'faq.q1': 'How long does it take to build a website?',
+      'faq.a1': 'The Starter package is ready in 3–5 days, Business takes 1–2 weeks, and Pro/Admin Panel projects take 2–3 weeks depending on complexity.',
+      'faq.q2': 'Can I make changes later?',
+      'faq.a2': 'Absolutely. If you have an Admin Panel you can update content yourself. We also offer a monthly maintenance package for smaller changes.',
+      'faq.q3': 'What does hosting and a domain cost?',
+      'faq.a3': 'Hosting and maintenance are included in our monthly 30–50 GEL package. Domain cost depends on the registrar and is usually 15–40 GEL per year.',
+      'faq.q4': 'Do you require an upfront payment?',
+      'faq.a4': 'Yes, we typically ask for a 50% deposit before starting the project, with the remainder due on delivery of the finished site.',
+      'faq.q5': 'Can I test the site while it is being built?',
+      'faq.a5': 'Absolutely — we share progress throughout the build so you can review and give feedback before final launch.',
+      'contact.tag': "Let's talk",
+      'contact.title': 'Get Your Free Quote',
+      'contact.desc': "Tell us a bit about your business and we'll get back to you within 24 hours with a custom quote.",
+      'contact.point1': 'Free, no-obligation consultation',
+      'contact.point2': 'Response within 24 hours',
+      'contact.point3': 'Pricing tailored to your needs',
+      'form.name.label': 'Full Name',
+      'form.name.placeholder': 'e.g. Nino Beridze',
+      'form.contact.label': 'Phone or Email',
+      'form.contact.placeholder': '+995 5xx xx xx xx or you@email.com',
+      'form.business.label': 'Business Type',
+      'form.business.placeholder': 'Select your business type',
+      'form.business.opt.salon': 'Salon / Beauty',
+      'form.business.opt.restaurant': 'Restaurant / Cafe',
+      'form.business.opt.auto': 'Auto Service',
+      'form.business.opt.retail': 'Retail / Shop',
+      'form.business.opt.professional': 'Professional Services',
+      'form.business.opt.other': 'Other',
+      'form.message.label': 'Message',
+      'form.message.optional': '(optional)',
+      'form.message.placeholder': 'Tell us a little about your project...',
+      'form.submit': 'Send Message',
+      'form.sending': 'Sending...',
+      'form.success': "Thanks! Your request has been received — we'll be in touch soon.",
+      'form.error.name': 'Please enter your full name.',
+      'form.error.contact': 'Enter a valid phone number or email.',
+      'form.error.business': 'Please select your business type.',
+      'footer.tagline': 'Modern websites for local businesses.',
+      'footer.navTitle': 'Navigate',
+      'footer.contactTitle': 'Get in touch',
+      'footer.copyright': 'All rights reserved.',
+      'footer.builtWith': 'Built with HTML, CSS & JavaScript.',
+      'toast.demo': 'demo coming soon — contact us to see a live preview.',
+    },
+  };
+
+  const LANG_KEY = 'gridly-lang';
+  let currentLang = localStorage.getItem(LANG_KEY) || 'ge';
+
+  function t(key) {
+    return (translations[currentLang] && translations[currentLang][key]) || key;
+  }
+
+  function applyTranslations() {
+    document.documentElement.lang = currentLang === 'ge' ? 'ka' : 'en';
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      el.textContent = t(key);
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-html');
+      el.innerHTML = t(key);
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      el.setAttribute('placeholder', t(key));
+    });
+
+    const titleEl = document.getElementById('page-title');
+    const descEl = document.getElementById('page-desc');
+    if (titleEl) titleEl.textContent = t('page.title');
+    if (descEl) descEl.setAttribute('content', t('page.desc'));
+
+    document.querySelectorAll('.lang-switch').forEach((langSwitch) => {
+      langSwitch.setAttribute('data-active', currentLang);
+      langSwitch.querySelectorAll('.lang-btn').forEach((btn) => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.lang === currentLang));
+      });
+    });
+  }
+
+  function setLang(lang) {
+    if (lang !== 'ge' && lang !== 'en') return;
+    currentLang = lang;
+    localStorage.setItem(LANG_KEY, lang);
+    applyTranslations();
+  }
+
+  // Multiple lang-switch instances exist (desktop header + mobile drawer) — keep them in sync.
+  document.querySelectorAll('.lang-switch').forEach((langSwitch) => {
+    langSwitch.addEventListener('click', (e) => {
+      const btn = e.target.closest('.lang-btn');
+      if (!btn) return;
+      setLang(btn.dataset.lang);
+    });
+  });
+
+  applyTranslations();
+
+  /* ---------------- Theme Toggle ---------------- */
+  const root = document.documentElement;
+  const themeToggles = document.querySelectorAll('.theme-toggle');
+  const THEME_KEY = 'gridly-theme';
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+  }
+
+  function initTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved) {
+      applyTheme(saved);
+      return;
+    }
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(prefersLight ? 'light' : 'dark');
+  }
+
+  themeToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const isLight = root.getAttribute('data-theme') === 'light';
+      const next = isLight ? 'dark' : 'light';
+      applyTheme(next);
+      localStorage.setItem(THEME_KEY, next);
+    });
+  });
+
+  initTheme();
+
+  /* ---------------- Header scroll state ---------------- */
+  const header = document.getElementById('header');
+  const backToTop = document.getElementById('back-to-top');
+
+  function onScroll() {
+    const scrolled = window.scrollY > 12;
+    header.classList.toggle('scrolled', scrolled);
+    backToTop.classList.toggle('show', window.scrollY > 500);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---------------- Mobile nav toggle ---------------- */
+  const menuToggle = document.getElementById('menu-toggle');
+  const mainNav = document.getElementById('main-nav');
+
+  function closeMenu() {
+    header.classList.remove('nav-open');
+    menuToggle.classList.remove('active');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = header.classList.toggle('nav-open');
+    menuToggle.classList.toggle('active', isOpen);
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  mainNav.addEventListener('click', (e) => {
+    if (e.target.closest('.nav-link') || e.target.closest('.nav-tools a')) closeMenu();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (header.classList.contains('nav-open') &&
+        !header.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  /* ---------------- Scroll reveal animations ---------------- */
+  const revealEls = document.querySelectorAll('[data-reveal]');
+
+  let revealObserver = null;
+  if ('IntersectionObserver' in window) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+    revealEls.forEach((el) => revealObserver.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add('in-view'));
+  }
+
+  /* ---------------- Animated counters ---------------- */
+  const counters = document.querySelectorAll('.counter');
+
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target || '0');
+    const suffix = el.dataset.suffix || '';
+    const duration = 1400;
+    const start = performance.now();
+
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
+      const value = Math.round(target * eased);
+      el.textContent = value + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if ('IntersectionObserver' in window && counters.length) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+
+    counters.forEach((el) => counterObserver.observe(el));
+  } else {
+    counters.forEach((el) => {
+      el.textContent = (el.dataset.target || '0') + (el.dataset.suffix || '');
+    });
+  }
+
+  /* ---------------- Tilt + glow interactions ---------------- */
+  const tiltEls = document.querySelectorAll('.tilt-glow');
+  const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (supportsHover) {
+    tiltEls.forEach((el) => {
+      const isCard = el.classList.contains('portfolio-card');
+      const maxTilt = isCard ? 8 : 4;
+
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const px = (x / rect.width) * 100;
+        const py = (y / rect.height) * 100;
+
+        el.style.setProperty('--mx', `${px}%`);
+        el.style.setProperty('--my', `${py}%`);
+
+        const rotateY = ((x / rect.width) - 0.5) * (maxTilt * 2);
+        const rotateX = ((y / rect.height) - 0.5) * -(maxTilt * 2);
+        el.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = '';
+        el.style.removeProperty('--mx');
+        el.style.removeProperty('--my');
+      });
+    });
+  }
+
+  /* ---------------- FAQ accordion ---------------- */
+  document.querySelectorAll('.faq-question').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      document.querySelectorAll('.faq-question').forEach((other) => {
+        if (other !== btn) other.setAttribute('aria-expanded', 'false');
+      });
+
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  /* ---------------- Demo portfolio buttons ---------------- */
+  const toast = document.getElementById('demo-toast');
+  let toastTimer = null;
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+
+  const demoNames = {
+    salon: { ge: 'Luxe Hair Salon', en: 'Luxe Hair Salon' },
+    restaurant: { ge: 'Tavola Restaurant', en: 'Tavola Restaurant' },
+    auto: { ge: 'ProFix Auto Service', en: 'ProFix Auto Service' },
+  };
+
+  document.querySelectorAll('.demo-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.demo;
+      const name = (demoNames[key] && demoNames[key][currentLang]) || 'this project';
+      showToast(`"${name}" ${t('toast.demo')}`);
+    });
+  });
+
+  /* ---------------- Contact form validation ---------------- */
+  const form = document.getElementById('contact-form');
+  const formSuccess = document.getElementById('form-success');
+
+  const validators = {
+    name: (value) => value.trim().length >= 2 || t('form.error.name'),
+    contactMethod: (value) => {
+      const v = value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRe = /^[+\d][\d\s()-]{6,}$/;
+      return emailRe.test(v) || phoneRe.test(v) || t('form.error.contact');
+    },
+    businessType: (value) => value !== '' || t('form.error.business'),
+  };
+
+  function validateField(field) {
+    const validator = validators[field.name];
+    if (!validator) return true;
+    const row = field.closest('.form-row');
+    const errorEl = row.querySelector('.field-error');
+    const result = validator(field.value);
+
+    if (result === true) {
+      row.classList.remove('invalid');
+      if (errorEl) errorEl.textContent = '';
+      return true;
+    }
+    row.classList.add('invalid');
+    if (errorEl) errorEl.textContent = result;
+    return false;
+  }
+
+  form.querySelectorAll('input[required], select[required]').forEach((field) => {
+    field.addEventListener('blur', () => validateField(field));
+    field.addEventListener('input', () => {
+      if (field.closest('.form-row').classList.contains('invalid')) validateField(field);
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const requiredFields = form.querySelectorAll('input[required], select[required]');
+    let allValid = true;
+    requiredFields.forEach((field) => {
+      if (!validateField(field)) allValid = false;
+    });
+
+    if (!allValid) {
+      const firstInvalid = form.querySelector('.form-row.invalid input, .form-row.invalid select');
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const label = submitBtn.querySelector('.btn-label');
+    const originalText = label.textContent;
+
+    submitBtn.disabled = true;
+    label.textContent = t('form.sending');
+
+    // Simulate submission (no backend wired up)
+    setTimeout(() => {
+      formSuccess.classList.add('show');
+      form.reset();
+      submitBtn.disabled = false;
+      label.textContent = originalText;
+
+      setTimeout(() => formSuccess.classList.remove('show'), 5000);
+    }, 700);
+  });
+
+  /* ---------------- Footer year ---------------- */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+})();
