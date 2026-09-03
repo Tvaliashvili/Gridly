@@ -743,6 +743,7 @@ section { padding: 100px 0; }
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .price-head h3 { font-size: 1.3rem; margin-bottom: 6px; }
@@ -1183,6 +1184,16 @@ section { padding: 100px 0; }
   .price-value { justify-content: center; }
   .price-features li { justify-content: center; text-align: left; }
   .price-card .btn { min-height: 48px; }
+
+  /* Keep the "Most Popular" badge centered on the card's top border (as on
+     desktop) but force it to stay on one line and give the heading below
+     extra clearance, so it never overlaps the "ბიზნესი" title. */
+  .price-card.featured { padding-top: 44px; }
+  .price-badge {
+    font-size: 0.68rem;
+    padding: 6px 14px;
+    white-space: nowrap;
+  }
 
   .maintenance-banner { flex-direction: column; text-align: center; padding: 24px 20px; gap: 16px; }
   .maintenance-price { text-align: center; }
