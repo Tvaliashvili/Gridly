@@ -144,7 +144,6 @@
       'footer.navTitle': 'ნავიგაცია',
       'footer.contactTitle': 'დაგვიკავშირდით',
       'footer.copyright': 'ყველა უფლება დაცულია.',
-      'footer.builtWith': 'შექმნილია HTML, CSS და JavaScript-ით.',
       'toast.demo': 'დემო მალე იქნება ხელმისაწვდომი — დაგვიკავშირდით საცნობებელი ვერსიის სანახავად.',
     },
     en: {
@@ -283,7 +282,6 @@
       'footer.navTitle': 'Navigate',
       'footer.contactTitle': 'Get in touch',
       'footer.copyright': 'All rights reserved.',
-      'footer.builtWith': 'Built with HTML, CSS & JavaScript.',
       'toast.demo': 'demo coming soon — contact us to see a live preview.',
     },
   };
