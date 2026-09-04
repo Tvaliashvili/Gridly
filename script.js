@@ -565,7 +565,10 @@
   const estimatorForm = document.getElementById('estimator-form');
 
   if (estimatorForm) {
-    const BASE_PRICE_GEL = 350;
+    // Overwritten by /api/pricing on load (values set in /admin.html) — these
+    // are just the offline/fallback defaults so the calculator still works
+    // if the backend is unreachable.
+    let BASE_PRICE_GEL = 350;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
 
@@ -716,6 +719,31 @@
     estimatorForm.addEventListener('change', updateEstimate);
     refreshEstimate = updateEstimate;
     updateEstimate();
+
+    // Pull live prices set from /admin.html. Maps each priced input to its
+    // pricing_config column, then re-renders with whatever loaded.
+    const PRICE_FIELD_SELECTORS = {
+      multi_page: 'input[name="pages"][value="multi"]',
+      dual_language: 'input[name="lang"][value="dual"]',
+      feature_animations: 'input[name="feature"][value="animations"]',
+      feature_calculator: 'input[name="feature"][value="calculator"]',
+      feature_cms: 'input[name="feature"][value="cms"]',
+      express_delivery: 'input[name="urgency"][value="express"]',
+    };
+
+    fetch('/api/pricing')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((pricing) => {
+        if (!pricing) return;
+        if (Number.isFinite(Number(pricing.base_price))) BASE_PRICE_GEL = Number(pricing.base_price);
+        Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
+          if (!Number.isFinite(Number(pricing[field]))) return;
+          const input = estimatorForm.querySelector(selector);
+          if (input) input.dataset.price = String(Math.round(Number(pricing[field])));
+        });
+        updateEstimate();
+      })
+      .catch(() => { /* offline fallback: keep the defaults already on the page */ });
 
     sendBtn.addEventListener('click', () => {
       if (!lastEstimate) return;

@@ -14,12 +14,20 @@ const { createClient } = require('@supabase/supabase-js');
 const PORT = process.env.PORT || 3000;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const ADMIN_USER = process.env.ADMIN_USER || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   console.warn(
     '[gridly] SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set — ' +
     'copy .env.example to .env and fill them in, or /api/leads will fail. ' +
-    'See sql/schema.sql for the table this expects.'
+    'See sql/schema.sql for the tables this expects.'
+  );
+}
+if (!ADMIN_PASSWORD) {
+  console.warn(
+    '[gridly] ADMIN_PASSWORD is not set — the /admin.html panel and every ' +
+    '/api/admin/* route will refuse access until it is set in .env.'
   );
 }
 
@@ -29,9 +37,47 @@ const supabase = SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
     })
   : null;
 
+// Prices shown on the public estimator when Supabase/pricing_config isn't
+// configured yet, or has no row — keeps GET /api/pricing always answering.
+const DEFAULT_PRICING = {
+  base_price: 350,
+  multi_page: 250,
+  dual_language: 150,
+  feature_animations: 150,
+  feature_calculator: 200,
+  feature_cms: 350,
+  express_delivery: 200,
+};
+const PRICING_FIELDS = Object.keys(DEFAULT_PRICING);
+
+function requireAdmin(req, res, next) {
+  if (!ADMIN_PASSWORD) {
+    return res.status(503).json({ error: 'Admin access is not configured on the server (set ADMIN_PASSWORD).' });
+  }
+  const [scheme, encoded] = (req.headers.authorization || '').split(' ');
+  if (scheme === 'Basic' && encoded) {
+    const decoded = Buffer.from(encoded, 'base64').toString('utf8');
+    const sep = decoded.indexOf(':');
+    const user = decoded.slice(0, sep);
+    const pass = decoded.slice(sep + 1);
+    if (user === ADMIN_USER && pass === ADMIN_PASSWORD) {
+      return next();
+    }
+  }
+  res.set('WWW-Authenticate', 'Basic realm="Gridly Admin"');
+  return res.status(401).json({ error: 'Authentication required.' });
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Registered before express.static so the admin page is never served
+// without passing through the Basic Auth check above.
+app.get('/admin.html', requireAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
 app.use(express.static(__dirname));
 
 /* --------------------------------------------------------------------------
@@ -73,6 +119,107 @@ app.post('/api/leads', async (req, res) => {
   }
 
   return res.status(201).json({ lead: data });
+});
+
+/* --------------------------------------------------------------------------
+   GET /api/pricing
+   Public — current calculator prices, read by the estimator on page load.
+   -------------------------------------------------------------------------- */
+app.get('/api/pricing', async (req, res) => {
+  if (!supabase) {
+    return res.json(DEFAULT_PRICING);
+  }
+
+  const { data, error } = await supabase
+    .from('pricing_config')
+    .select(PRICING_FIELDS.join(','))
+    .eq('id', 'default')
+    .single();
+
+  if (error || !data) {
+    return res.json(DEFAULT_PRICING);
+  }
+
+  const pricing = {};
+  PRICING_FIELDS.forEach((field) => {
+    pricing[field] = Number.isFinite(Number(data[field])) ? Number(data[field]) : DEFAULT_PRICING[field];
+  });
+  res.json(pricing);
+});
+
+/* --------------------------------------------------------------------------
+   Admin API — protected by requireAdmin (HTTP Basic Auth).
+   -------------------------------------------------------------------------- */
+app.get('/api/admin/leads', requireAdmin, async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'Supabase is not configured on the server.' });
+  }
+
+  const { data, error } = await supabase
+    .from('leads')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[gridly] Supabase leads fetch failed:', error.message);
+    return res.status(500).json({ error: 'Could not load leads.' });
+  }
+
+  res.json({ leads: data });
+});
+
+app.patch('/api/admin/leads/:id', requireAdmin, async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'Supabase is not configured on the server.' });
+  }
+
+  const ALLOWED_STATUSES = ['New', 'Contacted', 'Won', 'Lost'];
+  const { status } = req.body || {};
+  if (!ALLOWED_STATUSES.includes(status)) {
+    return res.status(400).json({ error: `status must be one of: ${ALLOWED_STATUSES.join(', ')}` });
+  }
+
+  const { data, error } = await supabase
+    .from('leads')
+    .update({ status })
+    .eq('id', req.params.id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[gridly] Supabase lead update failed:', error.message);
+    return res.status(500).json({ error: 'Could not update lead.' });
+  }
+
+  res.json({ lead: data });
+});
+
+app.put('/api/admin/pricing', requireAdmin, async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'Supabase is not configured on the server.' });
+  }
+
+  const updates = { id: 'default', updated_at: new Date().toISOString() };
+  for (const field of PRICING_FIELDS) {
+    const value = Number(req.body ? req.body[field] : undefined);
+    if (!Number.isFinite(value) || value < 0) {
+      return res.status(400).json({ error: `${field} must be a non-negative number.` });
+    }
+    updates[field] = Math.round(value);
+  }
+
+  const { data, error } = await supabase
+    .from('pricing_config')
+    .upsert(updates)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[gridly] Supabase pricing update failed:', error.message);
+    return res.status(500).json({ error: 'Could not update pricing.' });
+  }
+
+  res.json({ pricing: data });
 });
 
 /* --------------------------------------------------------------------------

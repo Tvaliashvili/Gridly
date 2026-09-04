@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gridly — Admin</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+    background: #08090d;
+    color: #f2f3f7;
+    line-height: 1.5;
+  }
+  a { color: inherit; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    border-bottom: 1px solid #23262f;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; }
+  .brand-mark {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #6366f1, #22d3ee);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Georgia', serif;
+    color: #08090d;
+  }
+  .tabs { display: flex; gap: 8px; }
+  .tab-btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid #23262f;
+    background: #12141c;
+    color: #a7abbd;
+    font-weight: 600;
+    font-size: 0.86rem;
+    cursor: pointer;
+  }
+  .tab-btn.active { border-color: #6366f1; background: rgba(99,102,241,0.14); color: #fff; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 28px; }
+  section[hidden] { display: none; }
+
+  .panel {
+    background: #12141c;
+    border: 1px solid #23262f;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .panel + .panel { margin-top: 20px; }
+  .panel h2 { margin: 0 0 4px; font-size: 1.1rem; }
+  .panel .hint { color: #6b6f83; font-size: 0.84rem; margin: 0 0 18px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #1b1d26; vertical-align: top; }
+  th { color: #6b6f83; font-weight: 600; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.04em; }
+  td.msg { max-width: 260px; color: #a7abbd; white-space: pre-wrap; }
+  tr:last-child td { border-bottom: none; }
+
+  select.status {
+    background: #08090d;
+    color: #f2f3f7;
+    border: 1px solid #23262f;
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 0.82rem;
+  }
+
+  .price-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .price-field label { display: block; font-size: 0.82rem; color: #a7abbd; margin-bottom: 6px; }
+  .price-field input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #23262f;
+    background: #08090d;
+    color: #f2f3f7;
+    font-size: 0.95rem;
+  }
+  .price-field input:focus { outline: none; border-color: #6366f1; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #6366f1, #22d3ee);
+    color: #08090d;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+  }
+  .btn:disabled { opacity: 0.6; cursor: default; }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid #23262f;
+    color: #f2f3f7;
+  }
+
+  .status-msg { margin-top: 12px; font-size: 0.84rem; }
+  .status-msg.ok { color: #34d399; }
+  .status-msg.err { color: #f87171; }
+
+  .empty { color: #6b6f83; padding: 20px 0; text-align: center; }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="brand-mark">G</span> Gridly Admin</div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="leads">Leads</button>
+    <button class="tab-btn" data-tab="pricing">Pricing</button>
+  </div>
+</header>
+
+<main>
+  <section id="tab-leads">
+    <div class="panel">
+      <div class="toolbar">
+        <div>
+          <h2 style="margin-bottom:2px">Submitted leads</h2>
+          <p class="hint" style="margin-bottom:0">Everything sent through the contact form / estimator.</p>
+        </div>
+        <button class="btn btn-ghost" id="refresh-leads">Refresh</button>
+      </div>
+      <div id="leads-container"><p class="empty">Loading…</p></div>
+    </div>
+  </section>
+
+  <section id="tab-pricing" hidden>
+    <div class="panel">
+      <h2>Calculator pricing</h2>
+      <p class="hint">These are the exact numbers the public price estimator uses. Saving updates the live site instantly.</p>
+      <form id="pricing-form">
+        <div class="price-grid">
+          <div class="price-field">
+            <label for="base_price">Base price — Landing Page (GEL)</label>
+            <input type="number" min="0" step="1" id="base_price" name="base_price" required>
+          </div>
+          <div class="price-field">
+            <label for="multi_page">Multi-page site (+GEL)</label>
+            <input type="number" min="0" step="1" id="multi_page" name="multi_page" required>
+          </div>
+          <div class="price-field">
+            <label for="dual_language">Dual language GE/EN (+GEL)</label>
+            <input type="number" min="0" step="1" id="dual_language" name="dual_language" required>
+          </div>
+          <div class="price-field">
+            <label for="feature_animations">Custom animations (+GEL)</label>
+            <input type="number" min="0" step="1" id="feature_animations" name="feature_animations" required>
+          </div>
+          <div class="price-field">
+            <label for="feature_calculator">Interactive calculator (+GEL)</label>
+            <input type="number" min="0" step="1" id="feature_calculator" name="feature_calculator" required>
+          </div>
+          <div class="price-field">
+            <label for="feature_cms">CMS / Blog (+GEL)</label>
+            <input type="number" min="0" step="1" id="feature_cms" name="feature_cms" required>
+          </div>
+          <div class="price-field">
+            <label for="express_delivery">Express delivery, 24h (+GEL)</label>
+            <input type="number" min="0" step="1" id="express_delivery" name="express_delivery" required>
+          </div>
+        </div>
+        <button type="submit" class="btn" id="save-pricing-btn">Save pricing</button>
+        <p class="status-msg" id="pricing-status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const sections = { leads: document.getElementById('tab-leads'), pricing: document.getElementById('tab-pricing') };
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach((b) => b.classList.toggle('active', b === btn));
+      Object.entries(sections).forEach(([key, el]) => { el.hidden = key !== btn.dataset.tab; });
+    });
+  });
+
+  function escapeHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = value == null ? '' : String(value);
+    return div.innerHTML;
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleString();
+  }
+
+  /* ---------------- Leads ---------------- */
+  const leadsContainer = document.getElementById('leads-container');
+  const STATUSES = ['New', 'Contacted', 'Won', 'Lost'];
+
+  async function loadLeads() {
+    leadsContainer.innerHTML = '<p class="empty">Loading…</p>';
+    try {
+      const res = await fetch('/api/admin/leads');
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to load leads');
+      const { leads } = await res.json();
+
+      if (!leads.length) {
+        leadsContainer.innerHTML = '<p class="empty">No leads yet.</p>';
+        return;
+      }
+
+      const rows = leads.map((lead) => `
+        <tr data-id="${escapeHtml(lead.id)}">
+          <td>${escapeHtml(lead.name)}</td>
+          <td>${escapeHtml(lead.email || lead.phone || '-')}</td>
+          <td>${escapeHtml(lead.business_type || '-')}</td>
+          <td>${escapeHtml(lead.selected_package || '-')}</td>
+          <td>${escapeHtml(lead.calculated_price || '-')}</td>
+          <td class="msg">${escapeHtml(lead.message || '-')}</td>
+          <td>
+            <select class="status" data-id="${escapeHtml(lead.id)}">
+              ${STATUSES.map((s) => `<option value="${s}"${s === lead.status ? ' selected' : ''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td>${escapeHtml(formatDate(lead.created_at))}</td>
+        </tr>
+      `).join('');
+
+      leadsContainer.innerHTML = `
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th><th>Contact</th><th>Business</th><th>Package</th>
+                <th>Price</th><th>Message</th><th>Status</th><th>Received</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+
+      leadsContainer.querySelectorAll('select.status').forEach((select) => {
+        select.addEventListener('change', async () => {
+          const id = select.dataset.id;
+          const status = select.value;
+          select.disabled = true;
+          try {
+            const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status }),
+            });
+            if (!res.ok) throw new Error('Update failed');
+          } catch (err) {
+            alert('Could not update status. Please try again.');
+          } finally {
+            select.disabled = false;
+          }
+        });
+      });
+    } catch (err) {
+      leadsContainer.innerHTML = `<p class="empty">${escapeHtml(err.message || 'Failed to load leads.')}</p>`;
+    }
+  }
+
+  document.getElementById('refresh-leads').addEventListener('click', loadLeads);
+  loadLeads();
+
+  /* ---------------- Pricing ---------------- */
+  const pricingForm = document.getElementById('pricing-form');
+  const pricingStatus = document.getElementById('pricing-status');
+  const saveBtn = document.getElementById('save-pricing-btn');
+  const PRICING_FIELDS = ['base_price', 'multi_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'express_delivery'];
+
+  async function loadPricing() {
+    try {
+      const res = await fetch('/api/pricing');
+      const pricing = await res.json();
+      PRICING_FIELDS.forEach((field) => {
+        const input = document.getElementById(field);
+        if (input && pricing[field] != null) input.value = pricing[field];
+      });
+    } catch (err) {
+      pricingStatus.textContent = 'Could not load current pricing.';
+      pricingStatus.className = 'status-msg err';
+    }
+  }
+  loadPricing();
+
+  pricingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    saveBtn.disabled = true;
+    pricingStatus.textContent = '';
+    pricingStatus.className = 'status-msg';
+
+    const payload = {};
+    PRICING_FIELDS.forEach((field) => { payload[field] = Number(document.getElementById(field).value); });
+
+    try {
+      const res = await fetch('/api/admin/pricing', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Save failed');
+      pricingStatus.textContent = 'Saved — the live site now uses these prices.';
+      pricingStatus.className = 'status-msg ok';
+    } catch (err) {
+      pricingStatus.textContent = err.message || 'Could not save pricing.';
+      pricingStatus.className = 'status-msg err';
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
