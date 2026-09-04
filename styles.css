@@ -1215,6 +1215,16 @@ section { padding: 100px 0; }
   .header-actions .btn-sm.btn-primary { display: none; }
   .header-actions { gap: 8px; }
 
+  /* transform: translateZ(0) forces this panel onto its own GPU
+     compositing layer. Without it, iOS Safari drops the backdrop-filter
+     mid-scroll (the layer isn't repainted in step with the scroll, so it
+     briefly — sometimes permanently until re-opened — renders as plain
+     transparent). Keep position: absolute here: making it position:
+     fixed instead just trades that bug for a worse one, since the
+     header's own backdrop-filter (added by .scrolled once you scroll)
+     turns it into a *new* containing block for fixed descendants, which
+     would silently re-anchor this panel to the header box instead of
+     the viewport. */
   .site-header.nav-open .main-nav {
     display: flex;
     flex-direction: column;
@@ -1235,6 +1245,9 @@ section { padding: 100px 0; }
     gap: 4px;
     text-align: center;
     z-index: 9999;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
   }
   .site-header.nav-open .nav-link {
     width: 100%;
