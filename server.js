@@ -235,7 +235,7 @@ function buildProposal(doc, data) {
   doc.moveTo(marginX, footerY).lineTo(pageW - marginX, footerY).strokeColor(COLORS.border).lineWidth(1).stroke();
   doc.font('bold').fontSize(10).fillColor(COLORS.text).text('Gridly', marginX, footerY + 14);
   doc.font('body').fontSize(9.5).fillColor(COLORS.dim)
-    .text('hello@gridly.ge   |   +995 500 00 00 00   |   gridly.ge', marginX, footerY + 30);
+    .text('info@gridly.com   |   gridly.ge', marginX, footerY + 30);
 }
 
 app.listen(PORT, () => {
