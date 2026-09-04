@@ -255,112 +255,90 @@
       </div>
 
       <div class="estimator-grid">
-        <form class="estimator-options glass" id="estimator-form" data-reveal>
-          <div class="est-group">
-            <h3 data-i18n="estimator.pages.title">გვერდები</h3>
+        <form class="estimator-options" id="estimator-form" data-reveal>
+          <div class="est-row">
+            <div class="est-group">
+              <h3 data-i18n="estimator.pages.title">გვერდები</h3>
+              <div class="est-pills">
+                <label class="est-pill">
+                  <input type="radio" name="pages" value="landing" data-price="0" data-en="Landing Page" checked>
+                  <span class="est-pill-text" data-i18n="estimator.pages.landing">ლენდინგ გვერდი</span>
+                </label>
 
-            <label class="est-option">
-              <input type="radio" name="pages" value="landing" data-price="0" data-en="Landing Page" checked>
-              <span class="est-option-mark"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.pages.landing">ლენდინგ გვერდი</strong>
-              </span>
-            </label>
+                <label class="est-pill">
+                  <input type="radio" name="pages" value="multi" data-price="250" data-en="Multi-page site">
+                  <span class="est-pill-text" data-i18n="estimator.pages.multi">მრავალგვერდიანი საიტი</span>
+                  <span class="est-pill-price est-price-tag" data-price="250"></span>
+                </label>
+              </div>
+            </div>
 
-            <label class="est-option">
-              <input type="radio" name="pages" value="multi" data-price="250" data-en="Multi-page site">
-              <span class="est-option-mark"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.pages.multi">მრავალგვერდიანი საიტი</strong>
-                <em class="est-tag est-price-tag" data-price="250"></em>
-              </span>
-            </label>
+            <div class="est-group">
+              <h3 data-i18n="estimator.lang.title">ენა</h3>
+              <div class="est-pills">
+                <label class="est-pill">
+                  <input type="radio" name="lang" value="ge" data-price="0" data-en="Georgian only" checked>
+                  <span class="est-pill-text" data-i18n="estimator.lang.ge">მხოლოდ ქართული</span>
+                </label>
+
+                <label class="est-pill">
+                  <input type="radio" name="lang" value="dual" data-price="150" data-en="Dual language (GE/EN)">
+                  <span class="est-pill-text" data-i18n="estimator.lang.dual">ორენოვანი (ქართ./ინგლ.)</span>
+                  <span class="est-pill-price est-price-tag" data-price="150"></span>
+                </label>
+              </div>
+            </div>
           </div>
 
-          <div class="est-group">
-            <h3 data-i18n="estimator.lang.title">ენა</h3>
+          <div class="est-row">
+            <div class="est-group">
+              <h3 data-i18n="estimator.features.title">ფუნქციები</h3>
+              <div class="est-pills">
+                <label class="est-pill est-pill--locked">
+                  <input type="checkbox" name="feature" value="contact" data-price="0" data-en="Contact Form" checked disabled>
+                  <span class="est-pill-text" data-i18n="estimator.features.contact">საკონტაქტო ფორმა</span>
+                  <span class="est-pill-price est-pill-price--free" data-i18n="estimator.free">უფასო</span>
+                </label>
 
-            <label class="est-option">
-              <input type="radio" name="lang" value="ge" data-price="0" data-en="Georgian only" checked>
-              <span class="est-option-mark"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.lang.ge">მხოლოდ ქართული</strong>
-              </span>
-            </label>
+                <label class="est-pill">
+                  <input type="checkbox" name="feature" value="animations" data-price="150" data-en="Custom Animations">
+                  <span class="est-pill-text" data-i18n="estimator.features.animations">მორგებული ანიმაციები</span>
+                  <span class="est-pill-price est-price-tag" data-price="150"></span>
+                </label>
 
-            <label class="est-option">
-              <input type="radio" name="lang" value="dual" data-price="150" data-en="Dual language (GE/EN)">
-              <span class="est-option-mark"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.lang.dual">ორენოვანი (ქართ./ინგლ.)</strong>
-                <em class="est-tag est-price-tag" data-price="150"></em>
-              </span>
-            </label>
-          </div>
+                <label class="est-pill">
+                  <input type="checkbox" name="feature" value="calculator" data-price="200" data-en="Interactive Calculator">
+                  <span class="est-pill-text" data-i18n="estimator.features.calculator">ინტერაქტიული კალკულატორი</span>
+                  <span class="est-pill-price est-price-tag" data-price="200"></span>
+                </label>
 
-          <div class="est-group">
-            <h3 data-i18n="estimator.features.title">ფუნქციები</h3>
+                <label class="est-pill">
+                  <input type="checkbox" name="feature" value="cms" data-price="350" data-en="CMS / Blog">
+                  <span class="est-pill-text" data-i18n="estimator.features.cms">CMS / ბლოგი</span>
+                  <span class="est-pill-price est-price-tag" data-price="350"></span>
+                </label>
+              </div>
+            </div>
 
-            <label class="est-option">
-              <input type="checkbox" name="feature" value="contact" data-price="0" data-en="Contact Form" checked disabled>
-              <span class="est-option-mark est-option-mark--check"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.features.contact">საკონტაქტო ფორმა</strong>
-                <em class="est-tag est-tag-free" data-i18n="estimator.free">უფასო</em>
-              </span>
-            </label>
+            <div class="est-group">
+              <h3 data-i18n="estimator.urgency.title">მიწოდების სისწრაფე</h3>
+              <div class="est-pills">
+                <label class="est-pill">
+                  <input type="radio" name="urgency" value="standard" data-price="0" data-en="Standard delivery (48-72h)" checked>
+                  <span class="est-pill-text" data-i18n="estimator.urgency.standard">სტანდარტული (48–72სთ)</span>
+                </label>
 
-            <label class="est-option">
-              <input type="checkbox" name="feature" value="animations" data-price="150" data-en="Custom Animations">
-              <span class="est-option-mark est-option-mark--check"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.features.animations">მორგებული ანიმაციები</strong>
-                <em class="est-tag est-price-tag" data-price="150"></em>
-              </span>
-            </label>
-
-            <label class="est-option">
-              <input type="checkbox" name="feature" value="calculator" data-price="200" data-en="Interactive Calculator">
-              <span class="est-option-mark est-option-mark--check"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.features.calculator">ინტერაქტიული კალკულატორი</strong>
-                <em class="est-tag est-price-tag" data-price="200"></em>
-              </span>
-            </label>
-
-            <label class="est-option">
-              <input type="checkbox" name="feature" value="cms" data-price="350" data-en="CMS / Blog">
-              <span class="est-option-mark est-option-mark--check"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.features.cms">CMS / ბლოგი</strong>
-                <em class="est-tag est-price-tag" data-price="350"></em>
-              </span>
-            </label>
-          </div>
-
-          <div class="est-group">
-            <h3 data-i18n="estimator.urgency.title">მიწოდების სისწრაფე</h3>
-
-            <label class="est-option">
-              <input type="radio" name="urgency" value="standard" data-price="0" data-en="Standard delivery (48-72h)" checked>
-              <span class="est-option-mark"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.urgency.standard">სტანდარტული (48–72სთ)</strong>
-              </span>
-            </label>
-
-            <label class="est-option">
-              <input type="radio" name="urgency" value="express" data-price="200" data-en="Express delivery (24h)">
-              <span class="est-option-mark"></span>
-              <span class="est-option-body">
-                <strong data-i18n="estimator.urgency.express">ექსპრესი (24სთ)</strong>
-                <em class="est-tag est-price-tag" data-price="200"></em>
-              </span>
-            </label>
+                <label class="est-pill">
+                  <input type="radio" name="urgency" value="express" data-price="200" data-en="Express delivery (24h)">
+                  <span class="est-pill-text" data-i18n="estimator.urgency.express">ექსპრესი (24სთ)</span>
+                  <span class="est-pill-price est-price-tag" data-price="200"></span>
+                </label>
+              </div>
+            </div>
           </div>
         </form>
 
-        <aside class="estimator-summary glass animated-border" data-reveal>
+        <aside class="estimator-summary animated-border" data-reveal>
           <div class="est-summary-head">
             <span data-i18n="estimator.summary.title">სავარაუდო ღირებულება</span>
             <div class="est-currency-switch" id="est-currency-switch" role="group" aria-label="Currency switch">
@@ -382,7 +360,7 @@
             <span id="est-timeframe-unit" data-i18n="estimator.hours">საათი</span>
           </div>
 
-          <ul class="est-selected-list" id="est-selected-list"></ul>
+          <ul class="est-receipt" id="est-selected-list"></ul>
 
           <button type="button" class="btn btn-primary btn-block tilt-glow" id="est-send-btn">
             <span data-i18n="estimator.send">ამ შეფასების გაგზავნა</span>

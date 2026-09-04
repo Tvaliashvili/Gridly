@@ -62,6 +62,7 @@
       'estimator.hours': 'საათი',
       'estimator.days': 'დღე',
       'estimator.pages.title': 'გვერდები',
+      'estimator.base': 'საბაზისო პაკეტი',
       'estimator.pages.landing': 'ლენდინგ გვერდი',
       'estimator.pages.multi': 'მრავალგვერდიანი საიტი',
       'estimator.lang.title': 'ენა',
@@ -200,6 +201,7 @@
       'estimator.hours': 'hours',
       'estimator.days': 'days',
       'estimator.pages.title': 'Pages',
+      'estimator.base': 'Base package',
       'estimator.pages.landing': 'Landing Page',
       'estimator.pages.multi': 'Multi-page site',
       'estimator.lang.title': 'Language',
@@ -621,8 +623,8 @@
     }
 
     function selectedLabelText(input) {
-      const strong = input.closest('.est-option').querySelector('.est-option-body strong');
-      return strong ? strong.textContent : input.value;
+      const text = input.closest('.est-pill').querySelector('.est-pill-text');
+      return text ? text.textContent : input.value;
     }
 
     // The PDF is generated server-side with a Latin-only base font, so it always
@@ -647,10 +649,28 @@
       timeframeUnitEl.textContent = tf.unit;
 
       const items = checkedInputs().map(selectedLabelText);
+
+      // Receipt only lists priced line items (base + paid add-ons) — free/default
+      // selections don't need a price row, keeping the summary uncluttered.
+      const receiptItems = [
+        { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
+        ...checkedInputs()
+          .filter((input) => Number(input.dataset.price || 0) > 0)
+          .map((input) => ({
+            label: selectedLabelText(input),
+            priceDisplay: toDisplay(Number(input.dataset.price)),
+          })),
+      ];
       selectedListEl.innerHTML = '';
-      items.forEach((label) => {
+      receiptItems.forEach((item) => {
         const li = document.createElement('li');
-        li.textContent = label;
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'est-receipt-label';
+        labelSpan.textContent = item.label;
+        const priceSpan = document.createElement('span');
+        priceSpan.className = 'est-receipt-price';
+        priceSpan.textContent = `${item.priceDisplay} ${currentCurrency}`;
+        li.append(labelSpan, priceSpan);
         selectedListEl.appendChild(li);
       });
 
