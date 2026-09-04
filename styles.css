@@ -1390,6 +1390,16 @@ section { padding: 100px 0; }
   .est-total { font-size: 2.1rem; }
   #est-send-btn, #est-pdf-btn { min-height: 48px; }
 
+  /* Pills no longer force a single line here — a long label + price tag can
+     be wider than the phone screen itself, which pushed the whole page into
+     horizontal scroll. Let the label wrap onto a second line instead. */
+  .est-pill {
+    max-width: 100%;
+    white-space: normal;
+    padding: 9px 14px 9px 28px;
+  }
+  .est-pill-text { white-space: normal; overflow-wrap: break-word; min-width: 0; }
+
   /* ---- Footer: centered ---- */
   .footer-inner { grid-template-columns: 1fr; gap: 32px; text-align: center; }
   .footer-brand { display: flex; flex-direction: column; align-items: center; }
