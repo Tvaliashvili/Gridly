@@ -322,6 +322,16 @@ h1, h2, h3, h4, p, span, a, li,
   border-bottom-color: var(--glass-border);
   box-shadow: inset 0 -1px 0 var(--glass-highlight), var(--shadow-sm);
 }
+/* Safari/iOS breaks a child's backdrop-filter when an ancestor also has
+   one active at the same time — the nested blur silently renders as
+   plain transparent. While the mobile dropdown (which has its own
+   backdrop-filter) is open, drop the header's blur so the two never
+   nest; the solid --glass-bg-strong keeps the header bar itself opaque. */
+.site-header.scrolled.nav-open {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--glass-bg-strong);
+}
 
 /* Full-width, edge-to-edge header — logo pinned far left, actions pinned far
    right via horizontal padding instead of the centered .container max-width. */
