@@ -53,7 +53,7 @@ button { cursor: pointer; }
   --shadow-md: 0 8px 30px rgba(0,0,0,0.35);
   --shadow-glow: 0 0 0 1px rgba(99,102,241,0.15), 0 20px 60px rgba(99,102,241,0.18);
 
-  --container-w: 1320px;
+  --container-w: 1180px;
   --header-h: 76px;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -721,8 +721,8 @@ section { padding: 100px 0; }
   padding: 32px;
   border-radius: var(--radius-lg);
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 26px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 32px;
 }
 
 .est-group h3 {
