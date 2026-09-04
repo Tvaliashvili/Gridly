@@ -1400,8 +1400,8 @@ section { padding: 100px 0; }
 
   /* ---- Contact: centered copy, full-width form ---- */
   .contact-copy { text-align: center; }
-  .contact-points { align-items: center; }
-  .contact-points li { justify-content: center; }
+  .contact-points { align-items: flex-start; width: fit-content; margin-inline: auto; }
+  .contact-points li { justify-content: flex-start; }
   .contact-form { padding: 24px 20px; }
   .form-row input,
   .form-row select,

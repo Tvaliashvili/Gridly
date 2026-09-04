@@ -150,7 +150,7 @@
       'form.error.name': 'გთხოვთ მიუთითოთ თქვენი სრული სახელი.',
       'form.error.contact': 'შეიყვანეთ სწორი ტელეფონის ნომერი ან ელფოსტა.',
       'form.error.business': 'გთხოვთ აირჩიოთ ბიზნესის ტიპი.',
-      'footer.tagline': 'თანამედროვე ვებგვერდები ადგილობრივი ბიზნესებისთვის.',
+      'footer.tagline': 'ვებ-გვერდები პატარა და საშუალო ბიზნესებისთვის.',
       'footer.navTitle': 'ნავიგაცია',
       'footer.contactTitle': 'დაგვიკავშირდით',
       'footer.copyright': 'ყველა უფლება დაცულია.',
@@ -288,7 +288,7 @@
       'form.error.name': 'Please enter your full name.',
       'form.error.contact': 'Enter a valid phone number or email.',
       'form.error.business': 'Please select your business type.',
-      'footer.tagline': 'Modern websites for local businesses.',
+      'footer.tagline': 'Websites for small and medium businesses.',
       'footer.navTitle': 'Navigate',
       'footer.contactTitle': 'Get in touch',
       'footer.copyright': 'All rights reserved.',
@@ -848,7 +848,7 @@
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
     doc.setTextColor(230, 230, 250);
-    doc.text('Modern websites for local businesses', marginX + 52, 76);
+    doc.text('Websites for small and medium businesses', marginX + 52, 76);
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
