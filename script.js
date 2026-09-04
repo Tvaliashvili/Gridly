@@ -17,29 +17,29 @@
       'nav.faq': 'კითხვები',
       'nav.contact': 'კონტაქტი',
       'nav.cta': 'უფასო შეთავაზება',
-      'hero.eyebrow': 'ვებგვერდები ადგილობრივი ბიზნესებისთვის საქართველოში',
+      'hero.eyebrow': 'ვებ-გვერდები პატარა და საშუალო ბიზნესებისთვის',
       'hero.title': 'გაზარდეთ თქვენი ბიზნესი <span class="text-gradient">Gridly</span>-სთან ერთად',
-      'hero.sub': 'სწრაფი, თანამედროვე და მაღალკონვერტირებადი ვებგვერდები, შექმნილი სპეციალურად ადგილობრივი ბიზნესებისთვის.',
+      'hero.sub': 'სწრაფი, თანამედროვე და მაღალკონვერტირებადი ვებ-გვერდები',
       'hero.cta1': 'უფასო შეთავაზების მიღება',
       'hero.cta2': 'დემოების ნახვა',
-      'hero.stat1': 'საშუალო დაწყების ვადა',
-      'hero.stat2': 'მობილურად ადაპტირებული',
-      'hero.stat3': 'ფასის პაკეტი',
+      'hero.stat1': 'მზადყოფნა',
+      'hero.stat2': 'მობილური ადაპტაცია',
+      'hero.stat3': 'მოქნილი ტარიფი',
       'hero.chip1': 'გაშვება დღეებში, არა თვეებში',
-      'hero.chip2': '+150% საშუალო მოთხოვნები',
+      'hero.chip2': '+150% მეტი მოთხოვნა',
       'ps.tag': 'რატომ არის მნიშვნელოვანი',
       'ps.title': 'ვებგვერდის გარეშე ახალი კლიენტები არ გექნებათ',
       'ps.desc': 'ყოველ დღეს ვებგვერდის გარეშე, თქვენი კონკურენტები იზიდავენ იმ კლიენტებს, ვინც სწორედ თქვენ გეძებდათ.',
       'ps.problem.title': 'Gridly-ს გარეშე',
-      'ps.problem.li1': 'კლიენტებმა ვერ გიპოვონ Google-სა და Maps-ზე',
+      'ps.problem.li1': 'კლიენტები ვერ გპოულობენ Google-სა და Maps-ზე',
       'ps.problem.li2': 'მოძველებული ან არარსებული საიტი არაპროფესიონალურად გამოიყურება',
-      'ps.problem.li3': 'არ გაქვთ საშუალება მიიღოთ კონტაქტი 24/7',
-      'ps.problem.li4': 'კარგავთ ბიზნესს კონკურენტების სასარგებლოდ, რომლებიც ონლაინ ჩანან',
+      'ps.problem.li3': 'არ იღებთ განაცხადებს 24/7-ზე',
+      'ps.problem.li4': 'კარგავთ მომხმარებლებს კონკურენტებთან, რომლებიც უკვე ონლაინ არიან',
       'ps.solution.title': 'Gridly-სთან ერთად',
       'ps.solution.li1': 'დაიკავეთ ადგილი Google Maps-ზე და გახდით ადვილად საპოვნელი',
       'ps.solution.li2': 'სწრაფი, თანამედროვე საიტი, რომელიც მყისიერად იმსახურებს ნდობას',
       'ps.solution.li3': 'საკონტაქტო ფორმები, რომლებიც მუშაობს დღე-ღამის განმავლობაში',
-      'ps.solution.li4': 'გამოირჩევით საიტით, რომელიც ვიზიტორებს კლიენტებად აქცევს',
+      'ps.solution.li4': 'მიიღეთ საიტი, რომელიც ვიზიტორებს რეალურ კლიენტებად აქცევს',
       'services.tag': 'რას ვაშენებთ',
       'services.title': 'სერვისები და შესაძლებლობები',
       'services.desc': 'ყველაფერი, რაც თქვენს ბიზნესს სჭირდება პროფესიონალურად გამოსაჩენად და ონლაინ საპოვნელად.',
@@ -154,29 +154,29 @@
       'nav.faq': 'FAQ',
       'nav.contact': 'Contact',
       'nav.cta': 'Get a Free Quote',
-      'hero.eyebrow': 'Websites for local businesses in Georgia',
-      'hero.title': 'Boost Your Local Business with <span class="text-gradient">Gridly</span>',
-      'hero.sub': 'Fast, modern, and high-converting websites crafted for local businesses — designed to turn visitors into customers.',
+      'hero.eyebrow': 'Websites for small and medium businesses',
+      'hero.title': 'Boost Your Business with <span class="text-gradient">Gridly</span>',
+      'hero.sub': 'Fast, modern, and high-converting websites.',
       'hero.cta1': 'Get a Free Quote',
       'hero.cta2': 'View Demos',
-      'hero.stat1': 'Avg. delivery start',
-      'hero.stat2': 'Mobile-ready',
-      'hero.stat3': 'Pricing tiers',
+      'hero.stat1': 'Ready',
+      'hero.stat2': 'Mobile-ready design',
+      'hero.stat3': 'Flexible pricing tiers',
       'hero.chip1': 'Live in days, not months',
-      'hero.chip2': '+150% avg. inquiries',
+      'hero.chip2': '+150% more inquiries',
       'ps.tag': 'Why it matters',
       'ps.title': 'No website means no new customers',
       'ps.desc': 'Every day without a strong online presence, your competitors capture the customers who were searching for you.',
       'ps.problem.title': 'Without Gridly',
       'ps.problem.li1': "Customers can't find you on Google or Maps",
       'ps.problem.li2': 'Outdated or no website looks unprofessional',
-      'ps.problem.li3': 'No way for people to contact you 24/7',
-      'ps.problem.li4': 'Losing business to competitors who show up online',
+      'ps.problem.li3': "You're not capturing inquiries 24/7",
+      'ps.problem.li4': "You're losing customers to competitors who are already online",
       'ps.solution.title': 'With Gridly',
       'ps.solution.li1': 'Rank on Google Maps & get discovered locally',
       'ps.solution.li2': 'A fast, modern site that builds instant trust',
       'ps.solution.li3': 'Contact forms & booking that work around the clock',
-      'ps.solution.li4': 'Stand out with a site that converts visitors into clients',
+      'ps.solution.li4': 'Get a site that turns visitors into real clients',
       'services.tag': 'What we build',
       'services.title': 'Services & Features',
       'services.desc': 'Everything your business needs to look professional and get found online.',
@@ -320,6 +320,11 @@
         btn.setAttribute('aria-pressed', String(btn.dataset.lang === currentLang));
       });
     });
+
+    document.querySelectorAll('.counter').forEach((el) => {
+      const num = (el.textContent.match(/-?\d+/) || [el.dataset.target || '0'])[0];
+      el.textContent = num + counterSuffix(el);
+    });
   }
 
   function setLang(lang) {
@@ -439,9 +444,13 @@
   /* ---------------- Animated counters ---------------- */
   const counters = document.querySelectorAll('.counter');
 
+  function counterSuffix(el) {
+    return (currentLang === 'ge' && el.dataset.suffixGe) || el.dataset.suffix || '';
+  }
+
   function animateCounter(el) {
     const target = parseFloat(el.dataset.target || '0');
-    const suffix = el.dataset.suffix || '';
+    const suffix = counterSuffix(el);
     const duration = 1400;
     const start = performance.now();
 
@@ -468,7 +477,7 @@
     counters.forEach((el) => counterObserver.observe(el));
   } else {
     counters.forEach((el) => {
-      el.textContent = (el.dataset.target || '0') + (el.dataset.suffix || '');
+      el.textContent = (el.dataset.target || '0') + counterSuffix(el);
     });
   }
 
