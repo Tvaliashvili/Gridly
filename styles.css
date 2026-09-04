@@ -265,7 +265,7 @@ h1, h2, h3, h4, p, span, a, li,
 
 .btn-sm { padding: 9px 18px; font-size: 0.85rem; }
 .btn-lg { padding: 15px 30px; font-size: 1rem; }
-.btn-block { width: 100%; }
+.btn-block { width: 100%; white-space: normal; text-align: center; }
 
 /* Header CTA reserves enough room for both the Georgian and English label
    so the header never resizes when the language is toggled. */
@@ -278,11 +278,12 @@ h1, h2, h3, h4, p, span, a, li,
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 110;
-  height: var(--banner-h);
+  min-height: var(--banner-h);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding-block: 8px;
   padding-inline: 16px;
   background: linear-gradient(90deg, #f59e0b, #f97316);
   color: #1a1206;
@@ -292,9 +293,7 @@ h1, h2, h3, h4, p, span, a, li,
 }
 .test-banner svg { flex-shrink: 0; }
 .test-banner span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 /* ---- Header ---- */
@@ -1289,6 +1288,10 @@ section { padding: 100px 0; }
 @media (max-width: 767px) {
   .container { padding-inline: 18px; max-width: 100%; }
 
+  /* Banner text now wraps to two lines on narrow screens instead of being
+     ellipsis-truncated, so --banner-h has to grow to match — everything
+     else (header position, hero padding) reads from this same variable. */
+  :root { --banner-h: 52px; }
   .test-banner { font-size: 0.72rem; padding-inline: 12px; gap: 6px; }
   .test-banner svg { width: 14px; height: 14px; }
 
@@ -1308,6 +1311,18 @@ section { padding: 100px 0; }
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  /* Grid items default to min-width: auto, which lets their content's
+     min-content width push them wider than their 1fr track — the extra
+     width then gets clipped by the page's overflow-x: hidden instead of
+     shrinking, which is what pushed the price list off-screen. */
+  .estimator-grid,
+  .estimator-options,
+  .estimator-summary,
+  .est-row,
+  .est-group {
+    min-width: 0;
   }
 
   /* ---- Section rhythm: tighter, consistent vertical spacing ---- */
