@@ -53,7 +53,7 @@ button { cursor: pointer; }
   --shadow-md: 0 8px 30px rgba(0,0,0,0.35);
   --shadow-glow: 0 0 0 1px rgba(99,102,241,0.15), 0 20px 60px rgba(99,102,241,0.18);
 
-  --container-w: 1180px;
+  --container-w: 1320px;
   --header-h: 76px;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -721,8 +721,8 @@ section { padding: 100px 0; }
   padding: 32px;
   border-radius: var(--radius-lg);
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px 32px;
+  grid-template-columns: 1fr;
+  gap: 26px;
 }
 
 .est-group h3 {
@@ -792,7 +792,7 @@ section { padding: 100px 0; }
   flex: 1;
   min-width: 0;
 }
-.est-option-body strong { font-size: 0.9rem; font-weight: 600; }
+.est-option-body strong { font-size: 0.9rem; font-weight: 600; min-width: 0; }
 
 .est-tag {
   flex-shrink: 0;
@@ -803,7 +803,6 @@ section { padding: 100px 0; }
   border-radius: var(--radius-full);
   white-space: nowrap;
 }
-.est-tag-default { color: var(--text-faint); background: var(--surface); border: 1px solid var(--border); }
 .est-tag-free { color: var(--success); background: rgba(52,211,153,0.12); }
 .est-price-tag { color: var(--accent-2); background: var(--accent-2-soft); }
 
