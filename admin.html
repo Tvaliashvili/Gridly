@@ -260,13 +260,13 @@
   const loginBtn = document.getElementById('login-btn');
   const signedInAs = document.getElementById('signed-in-as');
 
-  let sb = null;
+  // Same project the public site uses (script.js). The anon key is safe to
+  // embed client-side — Row Level Security (sql/policies.sql) is what
+  // actually restricts these tables to signed-in admins.
+  const SUPABASE_URL = 'https://qjeurqfdbyfcmxtdgkjy.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZXVycWZkYnlmY214dGRna2p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzc3OTYsImV4cCI6MjEwNDExMzc5Nn0.hAPOmH3jdx3AgFv8w09lemoMe8QDSQ2aqFyAEqNEYMY';
 
-  async function authHeader() {
-    const { data } = await sb.auth.getSession();
-    const token = data.session && data.session.access_token;
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  }
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   function showApp(user) {
     loginScreen.hidden = true;
@@ -282,20 +282,6 @@
   }
 
   async function init() {
-    let config;
-    try {
-      config = await (await fetch('/api/config')).json();
-    } catch (err) {
-      loginStatus.textContent = 'Could not reach the server.';
-      return;
-    }
-    if (!config.supabaseUrl || !config.supabaseAnonKey) {
-      loginStatus.textContent = 'Admin login is not configured on the server yet (missing Supabase settings).';
-      return;
-    }
-
-    sb = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
-
     const { data } = await sb.auth.getSession();
     if (data.session) {
       showApp(data.session.user);
@@ -329,7 +315,7 @@
   });
 
   document.getElementById('logout-btn').addEventListener('click', async () => {
-    if (sb) await sb.auth.signOut();
+    await sb.auth.signOut();
   });
 
   /* ---------------- Tabs ---------------- */
@@ -350,9 +336,11 @@
   async function loadLeads() {
     leadsContainer.innerHTML = '<p class="empty">Loading…</p>';
     try {
-      const res = await fetch('/api/admin/leads', { headers: await authHeader() });
-      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to load leads');
-      const { leads } = await res.json();
+      const { data: leads, error } = await sb
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
 
       if (!leads.length) {
         leadsContainer.innerHTML = '<p class="empty">No leads yet.</p>';
@@ -397,11 +385,8 @@
           if (!confirm('Delete this lead? This cannot be undone.')) return;
           btn.disabled = true;
           try {
-            const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, {
-              method: 'DELETE',
-              headers: await authHeader(),
-            });
-            if (!res.ok) throw new Error('Delete failed');
+            const { error } = await sb.from('leads').delete().eq('id', id);
+            if (error) throw error;
             btn.closest('tr').remove();
           } catch (err) {
             alert('Could not delete lead. Please try again.');
@@ -416,12 +401,8 @@
           const status = select.value;
           select.disabled = true;
           try {
-            const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
-              body: JSON.stringify({ status }),
-            });
-            if (!res.ok) throw new Error('Update failed');
+            const { error } = await sb.from('leads').update({ status }).eq('id', id);
+            if (error) throw error;
           } catch (err) {
             alert('Could not update status. Please try again.');
           } finally {
@@ -444,8 +425,12 @@
 
   async function loadPricing() {
     try {
-      const res = await fetch('/api/pricing');
-      const pricing = await res.json();
+      const { data: pricing, error } = await sb
+        .from('pricing_config')
+        .select(PRICING_FIELDS.join(','))
+        .eq('id', 'default')
+        .single();
+      if (error) throw error;
       PRICING_FIELDS.forEach((field) => {
         const input = document.getElementById(field);
         if (input && pricing[field] != null) input.value = pricing[field];
@@ -466,13 +451,11 @@
     PRICING_FIELDS.forEach((field) => { payload[field] = Number(document.getElementById(field).value); });
 
     try {
-      const res = await fetch('/api/admin/pricing', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Save failed');
+      const { error } = await sb
+        .from('pricing_config')
+        .update({ ...payload, updated_at: new Date().toISOString() })
+        .eq('id', 'default');
+      if (error) throw error;
       pricingStatus.textContent = 'Saved — the live site now uses these prices.';
       pricingStatus.className = 'status-msg ok';
     } catch (err) {

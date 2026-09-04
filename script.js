@@ -4,6 +4,16 @@
 (() => {
   'use strict';
 
+  /* ---------------- Supabase (static site, no backend server) ----------------
+     The anon key is designed to be public/embedded in client code — actual
+     access control lives in Supabase's Row Level Security policies
+     (see sql/policies.sql), not in this key being secret. */
+  const SUPABASE_URL = 'https://qjeurqfdbyfcmxtdgkjy.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZXVycWZkYnlmY214dGRna2p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1Mzc3OTYsImV4cCI6MjEwNDExMzc5Nn0.hAPOmH3jdx3AgFv8w09lemoMe8QDSQ2aqFyAEqNEYMY';
+  const supabase = window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+
   /* ==========================================================================
      Translations (Georgian default, English toggle)
      ========================================================================== */
@@ -565,9 +575,9 @@
   const estimatorForm = document.getElementById('estimator-form');
 
   if (estimatorForm) {
-    // Overwritten by /api/pricing on load (values set in /admin.html) — these
-    // are just the offline/fallback defaults so the calculator still works
-    // if the backend is unreachable.
+    // Overwritten by pricing_config on load (values set in /admin.html) —
+    // these are just the offline/fallback defaults so the calculator still
+    // works if Supabase is unreachable.
     let BASE_PRICE_GEL = 350;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
@@ -731,19 +741,24 @@
       express_delivery: 'input[name="urgency"][value="express"]',
     };
 
-    fetch('/api/pricing')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((pricing) => {
-        if (!pricing) return;
-        if (Number.isFinite(Number(pricing.base_price))) BASE_PRICE_GEL = Number(pricing.base_price);
-        Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
-          if (!Number.isFinite(Number(pricing[field]))) return;
-          const input = estimatorForm.querySelector(selector);
-          if (input) input.dataset.price = String(Math.round(Number(pricing[field])));
-        });
-        updateEstimate();
-      })
-      .catch(() => { /* offline fallback: keep the defaults already on the page */ });
+    if (supabase) {
+      supabase
+        .from('pricing_config')
+        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, express_delivery')
+        .eq('id', 'default')
+        .single()
+        .then(({ data: pricing, error }) => {
+          if (error || !pricing) return;
+          if (Number.isFinite(Number(pricing.base_price))) BASE_PRICE_GEL = Number(pricing.base_price);
+          Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
+            if (!Number.isFinite(Number(pricing[field]))) return;
+            const input = estimatorForm.querySelector(selector);
+            if (input) input.dataset.price = String(Math.round(Number(pricing[field])));
+          });
+          updateEstimate();
+        })
+        .catch(() => { /* offline fallback: keep the defaults already on the page */ });
+    }
 
     sendBtn.addEventListener('click', () => {
       if (!lastEstimate) return;
@@ -761,7 +776,7 @@
       if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    pdfBtn.addEventListener('click', async () => {
+    pdfBtn.addEventListener('click', () => {
       if (!lastEstimate) return;
       const nameField = document.getElementById('name');
       const contactField = document.getElementById('contactMethod');
@@ -770,30 +785,16 @@
       pdfBtnLabel.textContent = t('estimator.pdf.generating');
 
       try {
-        const res = await fetch('/api/download-proposal', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: (nameField && nameField.value.trim()) || 'Valued Client',
-            contact: (contactField && contactField.value.trim()) || '',
-            breakdown: lastEstimate.breakdown,
-            total: lastEstimate.totalDisplay,
-            currency: lastEstimate.currency,
-            timeframeMin: lastEstimate.timeframeRaw.min,
-            timeframeMax: lastEstimate.timeframeRaw.max,
-          }),
+        if (!window.jspdf) throw new Error('PDF library not loaded');
+        generateProposalPdf({
+          name: (nameField && nameField.value.trim()) || 'Valued Client',
+          contact: (contactField && contactField.value.trim()) || '-',
+          breakdown: lastEstimate.breakdown,
+          total: lastEstimate.totalDisplay,
+          currency: lastEstimate.currency,
+          timeframeMin: lastEstimate.timeframeRaw.min,
+          timeframeMax: lastEstimate.timeframeRaw.max,
         });
-        if (!res.ok) throw new Error('PDF request failed');
-
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'gridly-proposal.pdf';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
       } catch (err) {
         showToast(t('estimator.pdf.error'));
       } finally {
@@ -801,6 +802,146 @@
         pdfBtnLabel.textContent = pdfBtnLabelText;
       }
     });
+  }
+
+  /* ---------------- Client-side PDF proposal (jsPDF) ----------------
+     Runs entirely in the browser — no server involved. jsPDF's built-in
+     fonts are Latin-only, so this always uses the English breakdown
+     labels (see data-en on each estimator input) regardless of UI language. */
+  function formatTimeframePdf(min, max) {
+    const lo = Number(min) || 0;
+    const hi = Number(max) || lo;
+    if (hi <= 96) return `${lo}-${hi} hours`;
+    return `${Math.round(lo / 24)}-${Math.round(hi / 24)} days`;
+  }
+
+  function generateProposalPdf(data) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const marginX = 50;
+
+    const C = {
+      bg: [15, 17, 23],
+      panel: [18, 20, 28],
+      border: [35, 38, 47],
+      text: [242, 243, 247],
+      dim: [167, 171, 189],
+      accent: [99, 102, 241],
+      accent2: [34, 211, 238],
+    };
+
+    doc.setFillColor(...C.bg);
+    doc.rect(0, 0, pageW, pageH, 'F');
+
+    doc.setFillColor(...C.accent);
+    doc.rect(0, 0, pageW, 130, 'F');
+    doc.setFillColor(255, 255, 255);
+    doc.circle(marginX + 20, 55, 20, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(...C.accent);
+    doc.text('G', marginX + 14, 62);
+
+    doc.setFontSize(24);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Gridly', marginX + 52, 58);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(230, 230, 250);
+    doc.text('Modern websites for local businesses', marginX + 52, 76);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(255, 255, 255);
+    doc.text('OFFICIAL PROJECT PROPOSAL', pageW - marginX, 50, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(220, 220, 240);
+    doc.text(new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }), pageW - marginX, 70, { align: 'right' });
+
+    let y = 165;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(...C.text);
+    doc.text('Prepared for', marginX, y);
+    y += 20;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(...C.dim);
+    doc.text(`Name: ${data.name}`, marginX, y);
+    y += 16;
+    doc.text(`Contact: ${data.contact}`, marginX, y);
+    y += 34;
+
+    doc.setDrawColor(...C.border);
+    doc.setLineWidth(1);
+    doc.line(marginX, y, pageW - marginX, y);
+    y += 26;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(...C.text);
+    doc.text('Selected Features & Pricing', marginX, y);
+    y += 26;
+
+    data.breakdown.forEach((row, i) => {
+      if (i % 2 === 0) {
+        doc.setFillColor(...C.panel);
+        doc.rect(marginX, y - 14, pageW - marginX * 2, 26, 'F');
+      }
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10.5);
+      doc.setTextColor(...C.text);
+      doc.text(row.label, marginX + 12, y);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...C.accent2);
+      doc.text(`+${row.priceDisplay} ${data.currency}`, pageW - marginX - 12, y, { align: 'right' });
+      y += 26;
+    });
+
+    y += 10;
+    doc.setDrawColor(...C.border);
+    doc.line(marginX, y, pageW - marginX, y);
+    y += 24;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...C.text);
+    doc.text('Total Estimated Cost', marginX, y);
+    doc.setFontSize(20);
+    doc.setTextColor(...C.accent2);
+    doc.text(`${data.total} ${data.currency}`, pageW - marginX, y, { align: 'right' });
+    y += 36;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(...C.dim);
+    doc.text(`Estimated delivery: ${formatTimeframePdf(data.timeframeMin, data.timeframeMax)}`, marginX, y);
+    y += 34;
+
+    doc.setFontSize(9.5);
+    const disclaimer = doc.splitTextToSize(
+      'This is an automatically generated estimate based on the options selected on gridly.ge. ' +
+      'Final pricing is confirmed after a short consultation and may vary based on project specifics.',
+      pageW - marginX * 2
+    );
+    doc.text(disclaimer, marginX, y);
+
+    const footerY = pageH - 70;
+    doc.setDrawColor(...C.border);
+    doc.line(marginX, footerY, pageW - marginX, footerY);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...C.text);
+    doc.text('Gridly', marginX, footerY + 14);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...C.dim);
+    doc.text('info@gridly.com   |   gridly.ge', marginX, footerY + 30);
+
+    doc.save('gridly-proposal.pdf');
   }
 
   /* ---------------- Contact form validation ---------------- */
@@ -870,24 +1011,27 @@
 
     const payload = {
       name: form.name.value.trim(),
-      email: isEmail ? contactValue : '',
-      phone: isEmail ? '' : contactValue,
-      business_type: form.businessType.value,
-      message: form.message.value.trim(),
-      selected_package: lastEstimate ? lastEstimate.packageSummary : '',
-      calculated_price: lastEstimate ? `${lastEstimate.totalDisplay} ${lastEstimate.currency}` : '',
+      email: isEmail ? contactValue : null,
+      phone: isEmail ? null : contactValue,
+      business_type: form.businessType.value || null,
+      message: form.message.value.trim() || null,
+      selected_package: lastEstimate ? lastEstimate.packageSummary : null,
+      calculated_price: lastEstimate ? `${lastEstimate.totalDisplay} ${lastEstimate.currency}` : null,
+      status: 'New',
     };
 
-    fetch('/api/leads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Lead request failed');
-        return res.json();
-      })
-      .then(() => {
+    if (!supabase) {
+      showToast(t('lead.error'));
+      submitBtn.disabled = false;
+      label.textContent = originalText;
+      return;
+    }
+
+    supabase
+      .from('leads')
+      .insert(payload)
+      .then(({ error }) => {
+        if (error) throw error;
         formSuccess.classList.add('show');
         form.reset();
         setTimeout(() => formSuccess.classList.remove('show'), 5000);
