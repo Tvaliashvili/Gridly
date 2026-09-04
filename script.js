@@ -85,6 +85,39 @@
       'pricing.maint.title': 'ყოველთვიური მოვლა და ჰოსტინგი',
       'pricing.maint.desc': 'შეინარჩუნეთ საიტი ონლაინ, დაცული და განახლებული — ჰოსტინგი, ბექაფები და მცირე განახლებები შედის.',
       'pricing.maint.unit': 'ლარი / თვეში',
+      'nav.estimator': 'კალკულატორი',
+      'estimator.tag': 'გამოთვალეთ ღირებულება',
+      'estimator.title': 'ფასის კალკულატორი',
+      'estimator.desc': 'აირჩიეთ საჭირო ფუნქციები და მიიღეთ სავარაუდო ფასი და ვადა მყისიერად.',
+      'estimator.default': 'ნაგულისხმევი',
+      'estimator.free': 'უფასო',
+      'estimator.hours': 'საათი',
+      'estimator.days': 'დღე',
+      'estimator.pages.title': 'გვერდები',
+      'estimator.pages.landing': 'ლენდინგ გვერდი',
+      'estimator.pages.multi': 'მრავალგვერდიანი საიტი',
+      'estimator.lang.title': 'ენა',
+      'estimator.lang.ge': 'მხოლოდ ქართული',
+      'estimator.lang.dual': 'ორენოვანი (ქართ./ინგლ.)',
+      'estimator.features.title': 'ფუნქციები',
+      'estimator.features.contact': 'საკონტაქტო ფორმა',
+      'estimator.features.animations': 'მორგებული ანიმაციები',
+      'estimator.features.calculator': 'ინტერაქტიული კალკულატორი',
+      'estimator.features.cms': 'CMS / ბლოგი',
+      'estimator.urgency.title': 'მიწოდების სისწრაფე',
+      'estimator.urgency.standard': 'სტანდარტული (48–72სთ)',
+      'estimator.urgency.express': 'ექსპრესი (24სთ)',
+      'estimator.summary.title': 'სავარაუდო ღირებულება',
+      'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
+      'estimator.send': 'ამ შეფასების გაგზავნა',
+      'estimator.pdf': 'ოფიციალური შეთავაზების ჩამოტვირთვა (PDF)',
+      'estimator.disclaimer': 'საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.',
+      'estimator.msg.header': 'სავარაუდო შეფასება:',
+      'estimator.msg.total': 'სავარაუდო ჯამი',
+      'estimator.msg.timeframe': 'სავარაუდო ვადა',
+      'estimator.pdf.error': 'PDF-ის გენერაცია ვერ მოხერხდა. სცადეთ თავიდან.',
+      'estimator.pdf.generating': 'გენერირდება...',
+      'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
       'portfolio.tag': 'ნახეთ საქმეში',
       'portfolio.title': 'დემო პორტფოლიოს ვიტრინა',
       'portfolio.desc': 'რამდენიმე მაგალითი იმისა, თუ როგორი საიტები გვაქვს აშენებული ისეთი ბიზნესებისთვის, როგორიც თქვენია.',
@@ -222,6 +255,39 @@
       'pricing.maint.title': 'Monthly Maintenance & Hosting',
       'pricing.maint.desc': 'Keep your site online, secure, and up to date — hosting, backups & small updates included.',
       'pricing.maint.unit': 'GEL / month',
+      'nav.estimator': 'Estimator',
+      'estimator.tag': 'Calculate your cost',
+      'estimator.title': 'Price Estimator',
+      'estimator.desc': 'Pick the features you need and get an instant estimated price and delivery timeframe.',
+      'estimator.default': 'Default',
+      'estimator.free': 'Free',
+      'estimator.hours': 'hours',
+      'estimator.days': 'days',
+      'estimator.pages.title': 'Pages',
+      'estimator.pages.landing': 'Landing Page',
+      'estimator.pages.multi': 'Multi-page site',
+      'estimator.lang.title': 'Language',
+      'estimator.lang.ge': 'Georgian only',
+      'estimator.lang.dual': 'Dual language (GE/EN)',
+      'estimator.features.title': 'Features',
+      'estimator.features.contact': 'Contact Form',
+      'estimator.features.animations': 'Custom Animations',
+      'estimator.features.calculator': 'Interactive Calculator',
+      'estimator.features.cms': 'CMS / Blog',
+      'estimator.urgency.title': 'Delivery Urgency',
+      'estimator.urgency.standard': 'Standard (48–72h)',
+      'estimator.urgency.express': 'Express (24h)',
+      'estimator.summary.title': 'Estimated total',
+      'estimator.timeframe': 'Estimated delivery:',
+      'estimator.send': 'Send this estimate',
+      'estimator.pdf': 'Download Official Proposal (PDF)',
+      'estimator.disclaimer': 'Final pricing may vary slightly based on project details.',
+      'estimator.msg.header': 'Estimated quote:',
+      'estimator.msg.total': 'Estimated total',
+      'estimator.msg.timeframe': 'Estimated timeframe',
+      'estimator.pdf.error': 'Could not generate the PDF. Please try again.',
+      'estimator.pdf.generating': 'Generating...',
+      'lead.error': 'Something went wrong sending your request. Please try again.',
       'portfolio.tag': 'See it in action',
       'portfolio.title': 'Demo Portfolio Showcase',
       'portfolio.desc': 'A few examples of the kind of sites we build for local businesses like yours.',
@@ -287,6 +353,11 @@
   const LANG_KEY = 'gridly-lang';
   let currentLang = localStorage.getItem(LANG_KEY) || 'ge';
 
+  // Populated by the price estimator; read by the contact form submit handler.
+  let lastEstimate = null;
+  // Set once the estimator initializes; re-run on language change to refresh translated units.
+  let refreshEstimate = null;
+
   function t(key) {
     return (translations[currentLang] && translations[currentLang][key]) || key;
   }
@@ -332,6 +403,7 @@
     currentLang = lang;
     localStorage.setItem(LANG_KEY, lang);
     applyTranslations();
+    if (refreshEstimate) refreshEstimate();
   }
 
   // Multiple lang-switch instances exist (desktop header + mobile drawer) — keep them in sync.
@@ -551,6 +623,202 @@
     });
   });
 
+  /* ---------------- Price Estimator ---------------- */
+  const estimatorForm = document.getElementById('estimator-form');
+
+  if (estimatorForm) {
+    const BASE_PRICE_GEL = 350;
+    const USD_RATE = 2.7;
+    const CUR_KEY = 'gridly-estimator-currency';
+
+    const currencySwitch = document.getElementById('est-currency-switch');
+    const totalAmountEl = document.getElementById('est-total-amount');
+    const totalCurrencyEl = document.getElementById('est-total-currency');
+    const timeframeValueEl = document.getElementById('est-timeframe-value');
+    const timeframeUnitEl = document.getElementById('est-timeframe-unit');
+    const selectedListEl = document.getElementById('est-selected-list');
+    const sendBtn = document.getElementById('est-send-btn');
+    const pdfBtn = document.getElementById('est-pdf-btn');
+    const pdfBtnLabel = pdfBtn.querySelector('span');
+    const pdfBtnLabelText = pdfBtnLabel.textContent;
+
+    let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
+
+    function toDisplay(gelAmount) {
+      return currentCurrency === 'USD' ? Math.round(gelAmount / USD_RATE) : gelAmount;
+    }
+
+    function checkedInputs() {
+      return Array.from(estimatorForm.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked'));
+    }
+
+    function computeTotalGel() {
+      let total = BASE_PRICE_GEL;
+      checkedInputs().forEach((input) => { total += Number(input.dataset.price || 0); });
+      return total;
+    }
+
+    function computeTimeframe() {
+      const pages = estimatorForm.querySelector('input[name="pages"]:checked').value;
+      const lang = estimatorForm.querySelector('input[name="lang"]:checked').value;
+      const urgency = estimatorForm.querySelector('input[name="urgency"]:checked').value;
+      const features = Array.from(estimatorForm.querySelectorAll('input[name="feature"]:checked')).map((i) => i.value);
+
+      let extraDays = 0;
+      if (pages === 'multi') extraDays += 3;
+      if (lang === 'dual') extraDays += 1;
+      if (features.includes('animations')) extraDays += 2;
+      if (features.includes('calculator')) extraDays += 2;
+      if (features.includes('cms')) extraDays += 4;
+
+      if (urgency === 'express') {
+        return { min: 24, max: extraDays > 3 ? 48 : 24 };
+      }
+      return { min: 48 + extraDays * 24, max: 72 + extraDays * 24 };
+    }
+
+    function formatTimeframe(tf) {
+      if (tf.max <= 96) {
+        return { value: `${tf.min}–${tf.max}`, unit: t('estimator.hours') };
+      }
+      return { value: `${Math.round(tf.min / 24)}–${Math.round(tf.max / 24)}`, unit: t('estimator.days') };
+    }
+
+    function selectedLabelText(input) {
+      const strong = input.closest('.est-option').querySelector('.est-option-body strong');
+      return strong ? strong.textContent : input.value;
+    }
+
+    // The PDF is generated server-side with a Latin-only base font, so it always
+    // uses these fixed English labels rather than the (possibly Georgian) UI text.
+    function selectedEnLabel(input) {
+      return input.dataset.en || input.value;
+    }
+
+    function updateEstimate() {
+      document.querySelectorAll('.est-price-tag[data-price]').forEach((el) => {
+        const gel = Number(el.dataset.price);
+        el.textContent = `+${toDisplay(gel)} ${currentCurrency}`;
+      });
+
+      const totalGel = computeTotalGel();
+      totalAmountEl.textContent = toDisplay(totalGel);
+      totalCurrencyEl.textContent = currentCurrency;
+
+      const tfRaw = computeTimeframe();
+      const tf = formatTimeframe(tfRaw);
+      timeframeValueEl.textContent = tf.value;
+      timeframeUnitEl.textContent = tf.unit;
+
+      const items = checkedInputs().map(selectedLabelText);
+      selectedListEl.innerHTML = '';
+      items.forEach((label) => {
+        const li = document.createElement('li');
+        li.textContent = label;
+        selectedListEl.appendChild(li);
+      });
+
+      const breakdown = [
+        { label: 'Landing Page (base)', priceDisplay: toDisplay(BASE_PRICE_GEL) },
+        ...checkedInputs()
+          .filter((input) => Number(input.dataset.price || 0) > 0)
+          .map((input) => ({
+            label: selectedEnLabel(input),
+            priceDisplay: toDisplay(Number(input.dataset.price)),
+          })),
+      ];
+
+      lastEstimate = {
+        items,
+        breakdown,
+        totalGel,
+        totalDisplay: toDisplay(totalGel),
+        currency: currentCurrency,
+        timeframeText: `${tf.value} ${tf.unit}`,
+        timeframeRaw: tfRaw,
+        packageSummary: items.join(', '),
+      };
+    }
+
+    function setCurrencyUI() {
+      currencySwitch.setAttribute('data-active', currentCurrency);
+      currencySwitch.querySelectorAll('.est-currency-btn').forEach((btn) => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.currency === currentCurrency));
+      });
+    }
+
+    currencySwitch.addEventListener('click', (e) => {
+      const btn = e.target.closest('.est-currency-btn');
+      if (!btn) return;
+      currentCurrency = btn.dataset.currency;
+      localStorage.setItem(CUR_KEY, currentCurrency);
+      setCurrencyUI();
+      updateEstimate();
+    });
+
+    setCurrencyUI();
+    estimatorForm.addEventListener('change', updateEstimate);
+    refreshEstimate = updateEstimate;
+    updateEstimate();
+
+    sendBtn.addEventListener('click', () => {
+      if (!lastEstimate) return;
+      const messageField = document.getElementById('message');
+      const lines = [
+        t('estimator.msg.header'),
+        ...lastEstimate.items.map((label) => `- ${label}`),
+        '',
+        `${t('estimator.msg.total')}: ${lastEstimate.totalDisplay} ${lastEstimate.currency}`,
+        `${t('estimator.msg.timeframe')}: ${lastEstimate.timeframeText}`,
+      ];
+      if (messageField) messageField.value = lines.join('\n');
+
+      const contactSection = document.getElementById('contact');
+      if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    pdfBtn.addEventListener('click', async () => {
+      if (!lastEstimate) return;
+      const nameField = document.getElementById('name');
+      const contactField = document.getElementById('contactMethod');
+
+      pdfBtn.disabled = true;
+      pdfBtnLabel.textContent = t('estimator.pdf.generating');
+
+      try {
+        const res = await fetch('/api/download-proposal', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: (nameField && nameField.value.trim()) || 'Valued Client',
+            contact: (contactField && contactField.value.trim()) || '',
+            breakdown: lastEstimate.breakdown,
+            total: lastEstimate.totalDisplay,
+            currency: lastEstimate.currency,
+            timeframeMin: lastEstimate.timeframeRaw.min,
+            timeframeMax: lastEstimate.timeframeRaw.max,
+          }),
+        });
+        if (!res.ok) throw new Error('PDF request failed');
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'gridly-proposal.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        showToast(t('estimator.pdf.error'));
+      } finally {
+        pdfBtn.disabled = false;
+        pdfBtnLabel.textContent = pdfBtnLabelText;
+      }
+    });
+  }
+
   /* ---------------- Contact form validation ---------------- */
   const form = document.getElementById('contact-form');
   const formSuccess = document.getElementById('form-success');
@@ -612,15 +880,41 @@
     submitBtn.disabled = true;
     label.textContent = t('form.sending');
 
-    // Simulate submission (no backend wired up)
-    setTimeout(() => {
-      formSuccess.classList.add('show');
-      form.reset();
-      submitBtn.disabled = false;
-      label.textContent = originalText;
+    const contactValue = form.contactMethod.value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRe.test(contactValue);
 
-      setTimeout(() => formSuccess.classList.remove('show'), 5000);
-    }, 700);
+    const payload = {
+      name: form.name.value.trim(),
+      email: isEmail ? contactValue : '',
+      phone: isEmail ? '' : contactValue,
+      business_type: form.businessType.value,
+      message: form.message.value.trim(),
+      selected_package: lastEstimate ? lastEstimate.packageSummary : '',
+      calculated_price: lastEstimate ? `${lastEstimate.totalDisplay} ${lastEstimate.currency}` : '',
+    };
+
+    fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Lead request failed');
+        return res.json();
+      })
+      .then(() => {
+        formSuccess.classList.add('show');
+        form.reset();
+        setTimeout(() => formSuccess.classList.remove('show'), 5000);
+      })
+      .catch(() => {
+        showToast(t('lead.error'));
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        label.textContent = originalText;
+      });
   });
 
   /* ---------------- Footer year ---------------- */

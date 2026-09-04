@@ -29,6 +29,7 @@
     <nav class="main-nav" id="main-nav">
       <a href="#services" class="nav-link" data-i18n="nav.services">სერვისები</a>
       <a href="#pricing" class="nav-link" data-i18n="nav.pricing">პაკეტები</a>
+      <a href="#estimator" class="nav-link" data-i18n="nav.estimator">კალკულატორი</a>
       <a href="#portfolio" class="nav-link" data-i18n="nav.portfolio">პორტფოლიო დემოები</a>
       <a href="#faq" class="nav-link" data-i18n="nav.faq">კითხვები</a>
       <a href="#contact" class="nav-link" data-i18n="nav.contact">კონტაქტი</a>
@@ -319,6 +320,163 @@
     </div>
   </section>
 
+  <!-- ===== PRICE ESTIMATOR ===== -->
+  <section class="estimator" id="estimator">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="section-tag" data-i18n="estimator.tag">გამოთვალეთ ღირებულება</span>
+        <h2 data-i18n="estimator.title">ფასის კალკულატორი</h2>
+        <p data-i18n="estimator.desc">აირჩიეთ საჭირო ფუნქციები და მიიღეთ სავარაუდო ფასი და ვადა მყისიერად.</p>
+      </div>
+
+      <div class="estimator-grid">
+        <form class="estimator-options glass" id="estimator-form" data-reveal>
+          <div class="est-group">
+            <h3 data-i18n="estimator.pages.title">გვერდები</h3>
+
+            <label class="est-option">
+              <input type="radio" name="pages" value="landing" data-price="0" data-en="Landing Page" checked>
+              <span class="est-option-mark"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.pages.landing">ლენდინგ გვერდი</strong>
+                <em class="est-tag est-tag-default" data-i18n="estimator.default">ნაგულისხმევი</em>
+              </span>
+            </label>
+
+            <label class="est-option">
+              <input type="radio" name="pages" value="multi" data-price="250" data-en="Multi-page site">
+              <span class="est-option-mark"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.pages.multi">მრავალგვერდიანი საიტი</strong>
+                <em class="est-tag est-price-tag" data-price="250"></em>
+              </span>
+            </label>
+          </div>
+
+          <div class="est-group">
+            <h3 data-i18n="estimator.lang.title">ენა</h3>
+
+            <label class="est-option">
+              <input type="radio" name="lang" value="ge" data-price="0" data-en="Georgian only" checked>
+              <span class="est-option-mark"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.lang.ge">მხოლოდ ქართული</strong>
+                <em class="est-tag est-tag-default" data-i18n="estimator.default">ნაგულისხმევი</em>
+              </span>
+            </label>
+
+            <label class="est-option">
+              <input type="radio" name="lang" value="dual" data-price="150" data-en="Dual language (GE/EN)">
+              <span class="est-option-mark"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.lang.dual">ორენოვანი (ქართ./ინგლ.)</strong>
+                <em class="est-tag est-price-tag" data-price="150"></em>
+              </span>
+            </label>
+          </div>
+
+          <div class="est-group">
+            <h3 data-i18n="estimator.features.title">ფუნქციები</h3>
+
+            <label class="est-option">
+              <input type="checkbox" name="feature" value="contact" data-price="0" data-en="Contact Form" checked disabled>
+              <span class="est-option-mark est-option-mark--check"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.features.contact">საკონტაქტო ფორმა</strong>
+                <em class="est-tag est-tag-free" data-i18n="estimator.free">უფასო</em>
+              </span>
+            </label>
+
+            <label class="est-option">
+              <input type="checkbox" name="feature" value="animations" data-price="150" data-en="Custom Animations">
+              <span class="est-option-mark est-option-mark--check"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.features.animations">მორგებული ანიმაციები</strong>
+                <em class="est-tag est-price-tag" data-price="150"></em>
+              </span>
+            </label>
+
+            <label class="est-option">
+              <input type="checkbox" name="feature" value="calculator" data-price="200" data-en="Interactive Calculator">
+              <span class="est-option-mark est-option-mark--check"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.features.calculator">ინტერაქტიული კალკულატორი</strong>
+                <em class="est-tag est-price-tag" data-price="200"></em>
+              </span>
+            </label>
+
+            <label class="est-option">
+              <input type="checkbox" name="feature" value="cms" data-price="350" data-en="CMS / Blog">
+              <span class="est-option-mark est-option-mark--check"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.features.cms">CMS / ბლოგი</strong>
+                <em class="est-tag est-price-tag" data-price="350"></em>
+              </span>
+            </label>
+          </div>
+
+          <div class="est-group">
+            <h3 data-i18n="estimator.urgency.title">მიწოდების სისწრაფე</h3>
+
+            <label class="est-option">
+              <input type="radio" name="urgency" value="standard" data-price="0" data-en="Standard delivery (48-72h)" checked>
+              <span class="est-option-mark"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.urgency.standard">სტანდარტული (48–72სთ)</strong>
+                <em class="est-tag est-tag-default" data-i18n="estimator.default">ნაგულისხმევი</em>
+              </span>
+            </label>
+
+            <label class="est-option">
+              <input type="radio" name="urgency" value="express" data-price="200" data-en="Express delivery (24h)">
+              <span class="est-option-mark"></span>
+              <span class="est-option-body">
+                <strong data-i18n="estimator.urgency.express">ექსპრესი (24სთ)</strong>
+                <em class="est-tag est-price-tag" data-price="200"></em>
+              </span>
+            </label>
+          </div>
+        </form>
+
+        <aside class="estimator-summary glass animated-border" data-reveal>
+          <div class="est-summary-head">
+            <span data-i18n="estimator.summary.title">სავარაუდო ღირებულება</span>
+            <div class="est-currency-switch" id="est-currency-switch" role="group" aria-label="Currency switch">
+              <button type="button" class="est-currency-btn" data-currency="GEL" aria-pressed="true">GEL</button>
+              <button type="button" class="est-currency-btn" data-currency="USD" aria-pressed="false">USD</button>
+              <span class="est-currency-thumb" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="est-total">
+            <span id="est-total-amount">350</span>
+            <span class="est-total-currency" id="est-total-currency">GEL</span>
+          </div>
+
+          <div class="est-timeframe">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <span data-i18n="estimator.timeframe">სავარაუდო მზადყოფნა:</span>
+            <strong id="est-timeframe-value">48–72</strong>
+            <span id="est-timeframe-unit" data-i18n="estimator.hours">საათი</span>
+          </div>
+
+          <ul class="est-selected-list" id="est-selected-list"></ul>
+
+          <button type="button" class="btn btn-primary btn-block tilt-glow" id="est-send-btn">
+            <span data-i18n="estimator.send">ამ შეფასების გაგზავნა</span>
+          </button>
+
+          <button type="button" class="btn btn-outline btn-block tilt-glow" id="est-pdf-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <span data-i18n="estimator.pdf">ოფიციალური შეთავაზების ჩამოტვირთვა (PDF)</span>
+          </button>
+
+          <p class="est-disclaimer" data-i18n="estimator.disclaimer">საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== PORTFOLIO ===== -->
   <section class="portfolio" id="portfolio">
     <div class="container">
@@ -503,6 +661,7 @@
       <h4 data-i18n="footer.navTitle">ნავიგაცია</h4>
       <a href="#services" data-i18n="nav.services">სერვისები</a>
       <a href="#pricing" data-i18n="nav.pricing">პაკეტები</a>
+      <a href="#estimator" data-i18n="nav.estimator">კალკულატორი</a>
       <a href="#portfolio" data-i18n="nav.portfolio">პორტფოლიო დემოები</a>
       <a href="#contact" data-i18n="nav.contact">კონტაქტი</a>
     </div>
