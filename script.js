@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Gridly — Landing Page Script
+   Gridly - Landing Page Script
    ========================================================================== */
 (() => {
   'use strict';
@@ -9,7 +9,7 @@
      ========================================================================== */
   const translations = {
     ge: {
-      'page.title': 'Gridly — თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
+      'page.title': 'Gridly - თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
       'page.desc': 'Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.',
       'nav.services': 'სერვისები',
       'nav.portfolio': 'პორტფოლიო დემოები',
@@ -43,11 +43,11 @@
       'services.title': 'სერვისები და შესაძლებლობები',
       'services.desc': 'ყველაფერი, რაც თქვენს ბიზნესს სჭირდება პროფესიონალურად გამოსაჩენად და ონლაინ საპოვნელად.',
       'services.c1.title': 'მორგებული საიტები',
-      'services.c1.desc': 'ხელნაშენი HTML, CSS და JavaScript-ით — არავითარი გადატვირთული შაბლონები, მხოლოდ სუფთა და სწრაფი კოდი.',
+      'services.c1.desc': 'ხელნაშენი HTML, CSS და JavaScript-ით - არავითარი გადატვირთული შაბლონები, მხოლოდ სუფთა და სწრაფი კოდი.',
       'services.c2.title': 'მორგებული ადმინ პანელი',
       'services.c2.desc': 'მართეთ საკუთარი კონტენტი, ფოტოები და ფასები კოდის ცოდნის გარეშე.',
       'services.c3.title': 'მობილურად ადაპტირება',
-      'services.c3.desc': 'იდეალურად გამოიყურება ნებისმიერ ეკრანზე — ადგილობრივი კლიენტების უმეტესობა თქვენ მობილურით პოულობს.',
+      'services.c3.desc': 'იდეალურად გამოიყურება ნებისმიერ ეკრანზე - ადგილობრივი კლიენტების უმეტესობა თქვენ მობილურით პოულობს.',
       'services.c4.title': 'SEO ოპტიმიზაცია',
       'services.c4.desc': 'სუფთა სტრუქტურა და მეტამონაცემები, რათა საიტი რეალურად გამოჩნდეს Google-ის ძიებაში.',
       'services.c5.title': 'Google Maps-ის დაყენება',
@@ -74,7 +74,7 @@
       'estimator.features.calculator': 'ინტერაქტიული კალკულატორი',
       'estimator.features.cms': 'CMS / ბლოგი',
       'estimator.urgency.title': 'მიწოდების სისწრაფე',
-      'estimator.urgency.standard': 'სტანდარტული (48–72სთ)',
+      'estimator.urgency.standard': 'სტანდარტული (48-72სთ)',
       'estimator.urgency.express': 'ექსპრესი (24სთ)',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
@@ -104,15 +104,15 @@
       'faq.title': 'ხშირად დასმული კითხვები',
       'faq.desc': 'გაქვთ კითხვები? აქ არის პასუხები ყველაზე ხშირად დასმულ კითხვებზე.',
       'faq.q1': 'რამდენ ხანში მზადდება საიტი?',
-      'faq.a1': 'სტარტერი პაკეტი მზადდება 3-5 დღეში, ბიზნესი — 1-2 კვირაში, ხოლო პრო/ადმინ პანელით — 2-3 კვირაში, პროექტის სირთულის მიხედვით.',
+      'faq.a1': 'სტარტერი პაკეტი მზადდება 3-5 დღეში, ბიზნესი - 1-2 კვირაში, ხოლო პრო/ადმინ პანელით - 2-3 კვირაში, პროექტის სირთულის მიხედვით.',
       'faq.q2': 'შემიძლია მოგვიანებით ცვლილებების შეტანა?',
       'faq.a2': 'რა თქმა უნდა. თუ გაქვთ ადმინ პანელი, თავად შეგიძლიათ განაახლოთ კონტენტი. ასევე გვაქვს ყოველთვიური მოვლის პაკეტი მცირე ცვლილებებისთვის.',
       'faq.q3': 'რა ღირს ჰოსტინგი და დომენი?',
-      'faq.a3': 'ჰოსტინგი და მოვლა შედის ჩვენს ყოველთვიურ 30–50 ლარიან პაკეტში. დომენის ფასი დამოკიდებულია რეგისტრატორზე და ჩვეულებრივ შეადგენს 15–40 ლარს წელიწადში.',
+      'faq.a3': 'ჰოსტინგი და მოვლა შედის ჩვენს ყოველთვიურ 30-50 ლარიან პაკეტში. დომენის ფასი დამოკიდებულია რეგისტრატორზე და ჩვეულებრივ შეადგენს 15-40 ლარს წელიწადში.',
       'faq.q4': 'გჭირდებათ თუ არა წინასწარგადახდა?',
-      'faq.a4': 'დიახ, ჩვეულებრივ ვითხოვთ 50%-იან წინასწარგადახდას პროექტის დაწყებამდე და დარჩენილს — მზა საიტის ჩაბარებისას.',
+      'faq.a4': 'დიახ, ჩვეულებრივ ვითხოვთ 50%-იან წინასწარგადახდას პროექტის დაწყებამდე და დარჩენილს - მზა საიტის ჩაბარებისას.',
       'faq.q5': 'შემიძლია საიტის ტესტირება მზადების პროცესში?',
-      'faq.a5': 'აბსოლუტურად — მუშაობის განმავლობაში მუდმივად გაგიზიარებთ პროგრესს და მოგცემთ საშუალებას ნახოთ და შეაფასოთ საიტი მის საბოლოო გაშვებამდე.',
+      'faq.a5': 'აბსოლუტურად - მუშაობის განმავლობაში მუდმივად გაგიზიარებთ პროგრესს და მოგცემთ საშუალებას ნახოთ და შეაფასოთ საიტი მის საბოლოო გაშვებამდე.',
       'contact.tag': 'მოდი ვისაუბროთ',
       'contact.title': 'მიიღეთ უფასო შეთავაზება',
       'contact.desc': 'გვიამბეთ ცოტა თქვენი ბიზნესის შესახებ და 24 საათში დაგიკავშირდებით ინდივიდუალური შეთავაზებით.',
@@ -136,7 +136,7 @@
       'form.message.placeholder': 'მოგვიყევით ცოტა თქვენი პროექტის შესახებ...',
       'form.submit': 'შეტყობინების გაგზავნა',
       'form.sending': 'იგზავნება...',
-      'form.success': 'მადლობა! თქვენი მოთხოვნა მიღებულია — მალე დაგიკავშირდებით.',
+      'form.success': 'მადლობა! თქვენი მოთხოვნა მიღებულია - მალე დაგიკავშირდებით.',
       'form.error.name': 'გთხოვთ მიუთითოთ თქვენი სრული სახელი.',
       'form.error.contact': 'შეიყვანეთ სწორი ტელეფონის ნომერი ან ელფოსტა.',
       'form.error.business': 'გთხოვთ აირჩიოთ ბიზნესის ტიპი.',
@@ -144,10 +144,10 @@
       'footer.navTitle': 'ნავიგაცია',
       'footer.contactTitle': 'დაგვიკავშირდით',
       'footer.copyright': 'ყველა უფლება დაცულია.',
-      'toast.demo': 'დემო მალე იქნება ხელმისაწვდომი — დაგვიკავშირდით საცნობებელი ვერსიის სანახავად.',
+      'toast.demo': 'დემო მალე იქნება ხელმისაწვდომი - დაგვიკავშირდით საცნობებელი ვერსიის სანახავად.',
     },
     en: {
-      'page.title': 'Gridly — Modern Websites for Local Businesses',
+      'page.title': 'Gridly - Modern Websites for Local Businesses',
       'page.desc': 'Gridly builds fast, modern, high-converting websites for local businesses. Custom design, admin panels, SEO & Google Maps setup.',
       'nav.services': 'Services',
       'nav.portfolio': 'Portfolio Demos',
@@ -181,11 +181,11 @@
       'services.title': 'Services & Features',
       'services.desc': 'Everything your business needs to look professional and get found online.',
       'services.c1.title': 'Custom Coded Websites',
-      'services.c1.desc': 'Hand-built with HTML, CSS & JavaScript — no bloated templates, just clean, fast-loading code.',
+      'services.c1.desc': 'Hand-built with HTML, CSS & JavaScript - no bloated templates, just clean, fast-loading code.',
       'services.c2.title': 'Custom Admin Panels',
       'services.c2.desc': 'Manage your own content, photos and prices without touching a line of code.',
       'services.c3.title': 'Mobile Responsiveness',
-      'services.c3.desc': 'Pixel-perfect on every screen — most local customers find you on their phone first.',
+      'services.c3.desc': 'Pixel-perfect on every screen - most local customers find you on their phone first.',
       'services.c4.title': 'SEO Optimization',
       'services.c4.desc': 'Clean structure and metadata so your site actually shows up in Google search results.',
       'services.c5.title': 'Google Maps Setup',
@@ -212,7 +212,7 @@
       'estimator.features.calculator': 'Interactive Calculator',
       'estimator.features.cms': 'CMS / Blog',
       'estimator.urgency.title': 'Delivery Urgency',
-      'estimator.urgency.standard': 'Standard (48–72h)',
+      'estimator.urgency.standard': 'Standard (48-72h)',
       'estimator.urgency.express': 'Express (24h)',
       'estimator.summary.title': 'Estimated total',
       'estimator.timeframe': 'Estimated delivery:',
@@ -242,15 +242,15 @@
       'faq.title': 'Frequently Asked Questions',
       'faq.desc': "Got questions? Here are answers to the ones we hear most.",
       'faq.q1': 'How long does it take to build a website?',
-      'faq.a1': 'The Starter package is ready in 3–5 days, Business takes 1–2 weeks, and Pro/Admin Panel projects take 2–3 weeks depending on complexity.',
+      'faq.a1': 'The Starter package is ready in 3-5 days, Business takes 1-2 weeks, and Pro/Admin Panel projects take 2-3 weeks depending on complexity.',
       'faq.q2': 'Can I make changes later?',
       'faq.a2': 'Absolutely. If you have an Admin Panel you can update content yourself. We also offer a monthly maintenance package for smaller changes.',
       'faq.q3': 'What does hosting and a domain cost?',
-      'faq.a3': 'Hosting and maintenance are included in our monthly 30–50 GEL package. Domain cost depends on the registrar and is usually 15–40 GEL per year.',
+      'faq.a3': 'Hosting and maintenance are included in our monthly 30-50 GEL package. Domain cost depends on the registrar and is usually 15-40 GEL per year.',
       'faq.q4': 'Do you require an upfront payment?',
       'faq.a4': 'Yes, we typically ask for a 50% deposit before starting the project, with the remainder due on delivery of the finished site.',
       'faq.q5': 'Can I test the site while it is being built?',
-      'faq.a5': 'Absolutely — we share progress throughout the build so you can review and give feedback before final launch.',
+      'faq.a5': 'Absolutely - we share progress throughout the build so you can review and give feedback before final launch.',
       'contact.tag': "Let's talk",
       'contact.title': 'Get Your Free Quote',
       'contact.desc': "Tell us a bit about your business and we'll get back to you within 24 hours with a custom quote.",
@@ -274,7 +274,7 @@
       'form.message.placeholder': 'Tell us a little about your project...',
       'form.submit': 'Send Message',
       'form.sending': 'Sending...',
-      'form.success': "Thanks! Your request has been received — we'll be in touch soon.",
+      'form.success': "Thanks! Your request has been received - we'll be in touch soon.",
       'form.error.name': 'Please enter your full name.',
       'form.error.contact': 'Enter a valid phone number or email.',
       'form.error.business': 'Please select your business type.',
@@ -282,7 +282,7 @@
       'footer.navTitle': 'Navigate',
       'footer.contactTitle': 'Get in touch',
       'footer.copyright': 'All rights reserved.',
-      'toast.demo': 'demo coming soon — contact us to see a live preview.',
+      'toast.demo': 'demo coming soon - contact us to see a live preview.',
     },
   };
 
@@ -342,7 +342,7 @@
     if (refreshEstimate) refreshEstimate();
   }
 
-  // Multiple lang-switch instances exist (desktop header + mobile drawer) — keep them in sync.
+  // Multiple lang-switch instances exist (desktop header + mobile drawer) - keep them in sync.
   document.querySelectorAll('.lang-switch').forEach((langSwitch) => {
     langSwitch.addEventListener('click', (e) => {
       const btn = e.target.closest('.lang-btn');
@@ -615,9 +615,9 @@
 
     function formatTimeframe(tf) {
       if (tf.max <= 96) {
-        return { value: `${tf.min}–${tf.max}`, unit: t('estimator.hours') };
+        return { value: `${tf.min}-${tf.max}`, unit: t('estimator.hours') };
       }
-      return { value: `${Math.round(tf.min / 24)}–${Math.round(tf.max / 24)}`, unit: t('estimator.days') };
+      return { value: `${Math.round(tf.min / 24)}-${Math.round(tf.max / 24)}`, unit: t('estimator.days') };
     }
 
     function selectedLabelText(input) {
@@ -648,7 +648,7 @@
 
       const items = checkedInputs().map(selectedLabelText);
 
-      // Receipt only lists priced line items (base + paid add-ons) — free/default
+      // Receipt only lists priced line items (base + paid add-ons) - free/default
       // selections don't need a price row, keeping the summary uncluttered.
       const receiptItems = [
         { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
