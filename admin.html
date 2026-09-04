@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gridly — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -14,6 +15,7 @@
     line-height: 1.5;
   }
   a { color: inherit; }
+  [hidden] { display: none !important; }
 
   header {
     display: flex;
@@ -31,7 +33,7 @@
     font-family: 'Georgia', serif;
     color: #08090d;
   }
-  .tabs { display: flex; gap: 8px; }
+  .tabs { display: flex; gap: 8px; align-items: center; }
   .tab-btn {
     padding: 8px 16px;
     border-radius: 999px;
@@ -43,6 +45,8 @@
     cursor: pointer;
   }
   .tab-btn.active { border-color: #6366f1; background: rgba(99,102,241,0.14); color: #fff; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .signed-in-as { font-size: 0.8rem; color: #6b6f83; }
 
   main { max-width: 1100px; margin: 0 auto; padding: 28px; }
   section[hidden] { display: none; }
@@ -113,78 +117,222 @@
 
   .empty { color: #6b6f83; padding: 20px 0; text-align: center; }
   .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+
+  /* ---- Login screen ---- */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 360px;
+    background: #12141c;
+    border: 1px solid #23262f;
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .login-card .brand { justify-content: center; margin-bottom: 24px; font-size: 1.2rem; }
+  .login-field { margin-bottom: 14px; }
+  .login-field label { display: block; font-size: 0.82rem; color: #a7abbd; margin-bottom: 6px; }
+  .login-field input {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 8px;
+    border: 1px solid #23262f;
+    background: #08090d;
+    color: #f2f3f7;
+    font-size: 0.95rem;
+  }
+  .login-field input:focus { outline: none; border-color: #6366f1; }
+  .login-card .btn { width: 100%; justify-content: center; margin-top: 6px; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="brand"><span class="brand-mark">G</span> Gridly Admin</div>
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="leads">Leads</button>
-    <button class="tab-btn" data-tab="pricing">Pricing</button>
-  </div>
-</header>
+<div id="login-screen">
+  <form class="login-card" id="login-form">
+    <div class="brand"><span class="brand-mark">G</span> Gridly Admin</div>
+    <div class="login-field">
+      <label for="login-email">Email</label>
+      <input type="email" id="login-email" autocomplete="username" required>
+    </div>
+    <div class="login-field">
+      <label for="login-password">Password</label>
+      <input type="password" id="login-password" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="btn" id="login-btn">Sign in</button>
+    <p class="status-msg err" id="login-status"></p>
+  </form>
+</div>
 
-<main>
-  <section id="tab-leads">
-    <div class="panel">
-      <div class="toolbar">
-        <div>
-          <h2 style="margin-bottom:2px">Submitted leads</h2>
-          <p class="hint" style="margin-bottom:0">Everything sent through the contact form / estimator.</p>
-        </div>
-        <button class="btn btn-ghost" id="refresh-leads">Refresh</button>
+<div id="app" hidden>
+  <header>
+    <div class="brand"><span class="brand-mark">G</span> Gridly Admin</div>
+    <div class="header-right">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="leads">Leads</button>
+        <button class="tab-btn" data-tab="pricing">Pricing</button>
       </div>
-      <div id="leads-container"><p class="empty">Loading…</p></div>
+      <span class="signed-in-as" id="signed-in-as"></span>
+      <button class="btn btn-ghost" id="logout-btn">Sign out</button>
     </div>
-  </section>
+  </header>
 
-  <section id="tab-pricing" hidden>
-    <div class="panel">
-      <h2>Calculator pricing</h2>
-      <p class="hint">These are the exact numbers the public price estimator uses. Saving updates the live site instantly.</p>
-      <form id="pricing-form">
-        <div class="price-grid">
-          <div class="price-field">
-            <label for="base_price">Base price — Landing Page (GEL)</label>
-            <input type="number" min="0" step="1" id="base_price" name="base_price" required>
+  <main>
+    <section id="tab-leads">
+      <div class="panel">
+        <div class="toolbar">
+          <div>
+            <h2 style="margin-bottom:2px">Submitted leads</h2>
+            <p class="hint" style="margin-bottom:0">Everything sent through the contact form / estimator.</p>
           </div>
-          <div class="price-field">
-            <label for="multi_page">Multi-page site (+GEL)</label>
-            <input type="number" min="0" step="1" id="multi_page" name="multi_page" required>
-          </div>
-          <div class="price-field">
-            <label for="dual_language">Dual language GE/EN (+GEL)</label>
-            <input type="number" min="0" step="1" id="dual_language" name="dual_language" required>
-          </div>
-          <div class="price-field">
-            <label for="feature_animations">Custom animations (+GEL)</label>
-            <input type="number" min="0" step="1" id="feature_animations" name="feature_animations" required>
-          </div>
-          <div class="price-field">
-            <label for="feature_calculator">Interactive calculator (+GEL)</label>
-            <input type="number" min="0" step="1" id="feature_calculator" name="feature_calculator" required>
-          </div>
-          <div class="price-field">
-            <label for="feature_cms">CMS / Blog (+GEL)</label>
-            <input type="number" min="0" step="1" id="feature_cms" name="feature_cms" required>
-          </div>
-          <div class="price-field">
-            <label for="express_delivery">Express delivery, 24h (+GEL)</label>
-            <input type="number" min="0" step="1" id="express_delivery" name="express_delivery" required>
-          </div>
+          <button class="btn btn-ghost" id="refresh-leads">Refresh</button>
         </div>
-        <button type="submit" class="btn" id="save-pricing-btn">Save pricing</button>
-        <p class="status-msg" id="pricing-status"></p>
-      </form>
-    </div>
-  </section>
-</main>
+        <div id="leads-container"><p class="empty">Loading…</p></div>
+      </div>
+    </section>
+
+    <section id="tab-pricing" hidden>
+      <div class="panel">
+        <h2>Calculator pricing</h2>
+        <p class="hint">These are the exact numbers the public price estimator uses. Saving updates the live site instantly.</p>
+        <form id="pricing-form">
+          <div class="price-grid">
+            <div class="price-field">
+              <label for="base_price">Base price — Landing Page (GEL)</label>
+              <input type="number" min="0" step="1" id="base_price" name="base_price" required>
+            </div>
+            <div class="price-field">
+              <label for="multi_page">Multi-page site (+GEL)</label>
+              <input type="number" min="0" step="1" id="multi_page" name="multi_page" required>
+            </div>
+            <div class="price-field">
+              <label for="dual_language">Dual language GE/EN (+GEL)</label>
+              <input type="number" min="0" step="1" id="dual_language" name="dual_language" required>
+            </div>
+            <div class="price-field">
+              <label for="feature_animations">Custom animations (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_animations" name="feature_animations" required>
+            </div>
+            <div class="price-field">
+              <label for="feature_calculator">Interactive calculator (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_calculator" name="feature_calculator" required>
+            </div>
+            <div class="price-field">
+              <label for="feature_cms">CMS / Blog (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_cms" name="feature_cms" required>
+            </div>
+            <div class="price-field">
+              <label for="express_delivery">Express delivery, 24h (+GEL)</label>
+              <input type="number" min="0" step="1" id="express_delivery" name="express_delivery" required>
+            </div>
+          </div>
+          <button type="submit" class="btn" id="save-pricing-btn">Save pricing</button>
+          <p class="status-msg" id="pricing-status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
 
 <script>
 (() => {
   'use strict';
 
+  function escapeHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = value == null ? '' : String(value);
+    return div.innerHTML;
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleString();
+  }
+
+  const loginScreen = document.getElementById('login-screen');
+  const app = document.getElementById('app');
+  const loginForm = document.getElementById('login-form');
+  const loginStatus = document.getElementById('login-status');
+  const loginBtn = document.getElementById('login-btn');
+  const signedInAs = document.getElementById('signed-in-as');
+
+  let sb = null;
+
+  async function authHeader() {
+    const { data } = await sb.auth.getSession();
+    const token = data.session && data.session.access_token;
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  }
+
+  function showApp(user) {
+    loginScreen.hidden = true;
+    app.hidden = false;
+    signedInAs.textContent = user.email || '';
+    loadLeads();
+    loadPricing();
+  }
+
+  function showLogin() {
+    app.hidden = true;
+    loginScreen.hidden = false;
+  }
+
+  async function init() {
+    let config;
+    try {
+      config = await (await fetch('/api/config')).json();
+    } catch (err) {
+      loginStatus.textContent = 'Could not reach the server.';
+      return;
+    }
+    if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      loginStatus.textContent = 'Admin login is not configured on the server yet (missing Supabase settings).';
+      return;
+    }
+
+    sb = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+
+    const { data } = await sb.auth.getSession();
+    if (data.session) {
+      showApp(data.session.user);
+    }
+
+    sb.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        showApp(session.user);
+      } else {
+        showLogin();
+      }
+    });
+  }
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!sb) return;
+    loginBtn.disabled = true;
+    loginStatus.textContent = '';
+
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      loginStatus.textContent = error.message || 'Sign in failed.';
+    } else {
+      loginForm.reset();
+    }
+    loginBtn.disabled = false;
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    if (sb) await sb.auth.signOut();
+  });
+
+  /* ---------------- Tabs ---------------- */
   const tabBtns = document.querySelectorAll('.tab-btn');
   const sections = { leads: document.getElementById('tab-leads'), pricing: document.getElementById('tab-pricing') };
 
@@ -195,18 +343,6 @@
     });
   });
 
-  function escapeHtml(value) {
-    const div = document.createElement('div');
-    div.textContent = value == null ? '' : String(value);
-    return div.innerHTML;
-  }
-
-  function formatDate(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
-    return d.toLocaleString();
-  }
-
   /* ---------------- Leads ---------------- */
   const leadsContainer = document.getElementById('leads-container');
   const STATUSES = ['New', 'Contacted', 'Won', 'Lost'];
@@ -214,7 +350,7 @@
   async function loadLeads() {
     leadsContainer.innerHTML = '<p class="empty">Loading…</p>';
     try {
-      const res = await fetch('/api/admin/leads');
+      const res = await fetch('/api/admin/leads', { headers: await authHeader() });
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Failed to load leads');
       const { leads } = await res.json();
 
@@ -261,7 +397,10 @@
           if (!confirm('Delete this lead? This cannot be undone.')) return;
           btn.disabled = true;
           try {
-            const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, {
+              method: 'DELETE',
+              headers: await authHeader(),
+            });
             if (!res.ok) throw new Error('Delete failed');
             btn.closest('tr').remove();
           } catch (err) {
@@ -279,7 +418,7 @@
           try {
             const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, {
               method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
               body: JSON.stringify({ status }),
             });
             if (!res.ok) throw new Error('Update failed');
@@ -296,7 +435,6 @@
   }
 
   document.getElementById('refresh-leads').addEventListener('click', loadLeads);
-  loadLeads();
 
   /* ---------------- Pricing ---------------- */
   const pricingForm = document.getElementById('pricing-form');
@@ -317,7 +455,6 @@
       pricingStatus.className = 'status-msg err';
     }
   }
-  loadPricing();
 
   pricingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -331,7 +468,7 @@
     try {
       const res = await fetch('/api/admin/pricing', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
@@ -345,6 +482,8 @@
       saveBtn.disabled = false;
     }
   });
+
+  init();
 })();
 </script>
 </body>

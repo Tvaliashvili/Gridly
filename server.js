@@ -14,8 +14,7 @@ const { createClient } = require('@supabase/supabase-js');
 const PORT = process.env.PORT || 3000;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const ADMIN_USER = process.env.ADMIN_USER || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   console.warn(
@@ -24,9 +23,10 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     'See sql/schema.sql for the tables this expects.'
   );
 }
-if (!ADMIN_PASSWORD) {
+if (!SUPABASE_ANON_KEY) {
   console.warn(
-    '[gridly] ADMIN_PASSWORD is not set — the /admin.html panel and every ' +
+    '[gridly] SUPABASE_ANON_KEY is not set — /admin.html cannot sign in ' +
+    '(it needs this to talk to Supabase Auth from the browser) and every ' +
     '/api/admin/* route will refuse access until it is set in .env.'
   );
 }
@@ -50,35 +50,43 @@ const DEFAULT_PRICING = {
 };
 const PRICING_FIELDS = Object.keys(DEFAULT_PRICING);
 
-function requireAdmin(req, res, next) {
-  if (!ADMIN_PASSWORD) {
-    return res.status(503).json({ error: 'Admin access is not configured on the server (set ADMIN_PASSWORD).' });
+// Admin auth is a real Supabase Auth account (create it in the Supabase
+// dashboard: Authentication -> Users -> Add user), not a shared password.
+// admin.html signs in against Supabase directly with the anon key and sends
+// the resulting access token as `Authorization: Bearer <token>`; this
+// middleware asks Supabase to verify that token belongs to a real user.
+async function requireAdmin(req, res, next) {
+  if (!supabase) {
+    return res.status(503).json({ error: 'Admin access is not configured on the server (set SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY).' });
   }
-  const [scheme, encoded] = (req.headers.authorization || '').split(' ');
-  if (scheme === 'Basic' && encoded) {
-    const decoded = Buffer.from(encoded, 'base64').toString('utf8');
-    const sep = decoded.indexOf(':');
-    const user = decoded.slice(0, sep);
-    const pass = decoded.slice(sep + 1);
-    if (user === ADMIN_USER && pass === ADMIN_PASSWORD) {
-      return next();
+  const [scheme, token] = (req.headers.authorization || '').split(' ');
+  if (scheme !== 'Bearer' || !token) {
+    return res.status(401).json({ error: 'Authentication required.' });
+  }
+
+  try {
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error || !data?.user) {
+      return res.status(401).json({ error: 'Invalid or expired session.' });
     }
+    req.adminUser = data.user;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid or expired session.' });
   }
-  res.set('WWW-Authenticate', 'Basic realm="Gridly Admin"');
-  return res.status(401).json({ error: 'Authentication required.' });
 }
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Registered before express.static so the admin page is never served
-// without passing through the Basic Auth check above.
-app.get('/admin.html', requireAdmin, (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin.html'));
-});
-
 app.use(express.static(__dirname));
+
+// Public — lets admin.html initialize the Supabase client in the browser.
+// The anon key is designed to be exposed client-side; it can only do what
+// the project's Row Level Security policies allow.
+app.get('/api/config', (req, res) => {
+  res.json({ supabaseUrl: SUPABASE_URL || null, supabaseAnonKey: SUPABASE_ANON_KEY || null });
+});
 
 /* --------------------------------------------------------------------------
    POST /api/leads
