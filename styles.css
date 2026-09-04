@@ -1218,24 +1218,26 @@ section { padding: 100px 0; }
      nav links + actions never collide with the header's edge-to-edge
      padding on narrower desktops/tablets. ---- */
   .header-inner { padding: 0 24px; }
-  .main-nav { display: none; }
   .menu-toggle { display: flex; width: 44px; height: 44px; }
   .header-actions .lang-switch,
   .header-actions .theme-toggle { display: none; }
   .header-actions .btn-sm.btn-primary { display: none; }
   .header-actions { gap: 8px; }
 
-  /* transform: translateZ(0) forces this panel onto its own GPU
-     compositing layer. Without it, iOS Safari drops the backdrop-filter
-     mid-scroll (the layer isn't repainted in step with the scroll, so it
-     briefly — sometimes permanently until re-opened — renders as plain
-     transparent). Keep position: absolute here: making it position:
-     fixed instead just trades that bug for a worse one, since the
-     header's own backdrop-filter (added by .scrolled once you scroll)
-     turns it into a *new* containing block for fixed descendants, which
-     would silently re-anchor this panel to the header box instead of
+  /* The panel stays mounted (position: absolute, full styling, backdrop-filter
+     and all) at all times instead of display:none/flex-toggling — it's just
+     invisible and non-interactive via opacity/visibility until nav-open. This
+     keeps its GPU compositing layer warm, because toggling display forces
+     Safari to build that layer from scratch each time the menu opens, which
+     is what caused the backdrop-filter to visibly "kick in" a beat late.
+     transform: translateZ(0) reinforces that own layer so scrolling with the
+     menu open doesn't drop the blur either. Keep position: absolute here:
+     making it position: fixed instead just trades that bug for a worse one,
+     since the header's own backdrop-filter (added by .scrolled once you
+     scroll) turns it into a *new* containing block for fixed descendants,
+     which would silently re-anchor this panel to the header box instead of
      the viewport. */
-  .site-header.nav-open .main-nav {
+  .main-nav {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1258,6 +1260,15 @@ section { padding: 100px 0; }
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     will-change: transform;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s var(--ease), visibility 0.2s var(--ease);
+  }
+  .site-header.nav-open .main-nav {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
   .site-header.nav-open .nav-link {
     width: 100%;
@@ -1410,8 +1421,12 @@ section { padding: 100px 0; }
 
   /* ---- Contact: centered copy, full-width form ---- */
   .contact-copy { text-align: center; }
-  .contact-points { align-items: flex-start; width: fit-content; margin-inline: auto; }
-  .contact-points li { justify-content: flex-start; }
+  /* A fixed, capped width (not shrink-to-fit) so every row shares the exact
+     same box: ticks land on one vertical line, wrapped text never forces
+     the list wider than the viewport, and the whole block still centers
+     under the heading via the auto side margins. */
+  .contact-points { align-items: stretch; width: 100%; max-width: 320px; margin-inline: auto; }
+  .contact-points li { justify-content: flex-start; text-align: left; }
   .contact-form { padding: 24px 20px; }
   .form-row input,
   .form-row select,
