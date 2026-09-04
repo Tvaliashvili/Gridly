@@ -104,6 +104,8 @@
     border: 1px solid #23262f;
     color: #f2f3f7;
   }
+  .btn-delete { padding: 6px 12px; font-size: 0.78rem; }
+  .btn-delete:hover { border-color: #f87171; color: #f87171; }
 
   .status-msg { margin-top: 12px; font-size: 0.84rem; }
   .status-msg.ok { color: #34d399; }
@@ -235,6 +237,7 @@
             </select>
           </td>
           <td>${escapeHtml(formatDate(lead.created_at))}</td>
+          <td><button class="btn btn-ghost btn-delete" data-id="${escapeHtml(lead.id)}" title="Delete lead">Delete</button></td>
         </tr>
       `).join('');
 
@@ -244,13 +247,29 @@
             <thead>
               <tr>
                 <th>Name</th><th>Contact</th><th>Business</th><th>Package</th>
-                <th>Price</th><th>Message</th><th>Status</th><th>Received</th>
+                <th>Price</th><th>Message</th><th>Status</th><th>Received</th><th></th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
           </table>
         </div>
       `;
+
+      leadsContainer.querySelectorAll('.btn-delete').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          if (!confirm('Delete this lead? This cannot be undone.')) return;
+          btn.disabled = true;
+          try {
+            const res = await fetch(`/api/admin/leads/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error('Delete failed');
+            btn.closest('tr').remove();
+          } catch (err) {
+            alert('Could not delete lead. Please try again.');
+            btn.disabled = false;
+          }
+        });
+      });
 
       leadsContainer.querySelectorAll('select.status').forEach((select) => {
         select.addEventListener('change', async () => {

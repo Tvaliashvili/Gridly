@@ -194,6 +194,21 @@ app.patch('/api/admin/leads/:id', requireAdmin, async (req, res) => {
   res.json({ lead: data });
 });
 
+app.delete('/api/admin/leads/:id', requireAdmin, async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'Supabase is not configured on the server.' });
+  }
+
+  const { error } = await supabase.from('leads').delete().eq('id', req.params.id);
+
+  if (error) {
+    console.error('[gridly] Supabase lead delete failed:', error.message);
+    return res.status(500).json({ error: 'Could not delete lead.' });
+  }
+
+  res.status(204).end();
+});
+
 app.put('/api/admin/pricing', requireAdmin, async (req, res) => {
   if (!supabase) {
     return res.status(503).json({ error: 'Supabase is not configured on the server.' });
