@@ -55,6 +55,7 @@ button { cursor: pointer; }
 
   --container-w: 1180px;
   --header-h: 76px;
+  --banner-h: 40px;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -272,10 +273,34 @@ h1, h2, h3, h4, p, span, a, li,
   min-width: 168px;
 }
 
+/* ---- Test-mode banner ---- */
+.test-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 110;
+  height: var(--banner-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-inline: 16px;
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  color: #1a1206;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+}
+.test-banner svg { flex-shrink: 0; }
+.test-banner span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ---- Header ---- */
 .site-header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: var(--banner-h); left: 0; right: 0;
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -463,7 +488,7 @@ h1, h2, h3, h4, p, span, a, li,
 
 /* ---- Hero ---- */
 .hero {
-  padding: calc(var(--header-h) + 72px) 0 100px;
+  padding: calc(var(--header-h) + var(--banner-h) + 72px) 0 100px;
 }
 .hero-inner {
   display: grid;
@@ -831,7 +856,7 @@ section { padding: 100px 0; }
 /* ---- Summary: sticky "receipt" card ---- */
 .estimator-summary {
   position: sticky;
-  top: calc(var(--header-h) + 20px);
+  top: calc(var(--header-h) + var(--banner-h) + 20px);
   padding: 32px 28px;
   border-radius: var(--radius-lg);
   background: var(--est-card-bg);
@@ -1200,7 +1225,7 @@ section { padding: 100px 0; }
     left: 0;
     right: 0;
     width: 100%;
-    max-height: calc(100vh - var(--header-h));
+    max-height: calc(100vh - var(--header-h) - var(--banner-h));
     overflow-y: auto;
     background: var(--glass-bg-strong);
     backdrop-filter: blur(20px) saturate(180%);
@@ -1264,6 +1289,9 @@ section { padding: 100px 0; }
 @media (max-width: 767px) {
   .container { padding-inline: 18px; max-width: 100%; }
 
+  .test-banner { font-size: 0.72rem; padding-inline: 12px; gap: 6px; }
+  .test-banner svg { width: 14px; height: 14px; }
+
   /* ---- Containment: nothing may exceed the viewport width ---- */
   .hero-inner,
   .hero-copy,
@@ -1290,7 +1318,7 @@ section { padding: 100px 0; }
   .header-inner { padding: 0 18px; }
 
   /* ---- Hero: centered content, stacked & centered CTAs ---- */
-  .hero { padding: calc(var(--header-h) + 40px) 0 64px; }
+  .hero { padding: calc(var(--header-h) + var(--banner-h) + 40px) 0 64px; }
   .hero-copy { text-align: center; display: flex; flex-direction: column; align-items: center; }
   .hero-title { font-size: max(1.8rem, 5vw); }
   .hero-sub { max-width: 440px; }

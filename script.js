@@ -9,6 +9,7 @@
      ========================================================================== */
   const translations = {
     ge: {
+      'banner.testMode': 'საიტი მუშაობს სატესტო რეჟიმში - ინფორმაცია შეიძლება შეიცვალოს',
       'page.title': 'Gridly - თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
       'page.desc': 'Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.',
       'nav.services': 'სერვისები',
@@ -147,6 +148,7 @@
       'toast.demo': 'დემო მალე იქნება ხელმისაწვდომი - დაგვიკავშირდით საცნობებელი ვერსიის სანახავად.',
     },
     en: {
+      'banner.testMode': 'This website is running in test mode - content may change',
       'page.title': 'Gridly - Modern Websites for Local Businesses',
       'page.desc': 'Gridly builds fast, modern, high-converting websites for local businesses. Custom design, admin panels, SEO & Google Maps setup.',
       'nav.services': 'Services',
