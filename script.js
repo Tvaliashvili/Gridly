@@ -80,7 +80,7 @@
       'estimator.lang.dual': 'ორენოვანი (ქართ./ინგლ.)',
       'estimator.features.title': 'ფუნქციები',
       'estimator.features.contact': 'საკონტაქტო ფორმა',
-      'estimator.features.hosting': 'უფასო ჰოსტინგი',
+      'estimator.features.hosting': 'ჰოსტინგი',
       'estimator.features.animations': 'მორგებული ანიმაციები',
       'estimator.features.calculator': 'ინტერაქტიული კალკულატორი',
       'estimator.features.cms': 'CMS / ბლოგი',
@@ -126,6 +126,8 @@
       'contact.point1': 'უფასო, არაფრით შემზღუდავი კონსულტაცია',
       'contact.point2': 'პასუხი უმოკლეს დროში',
       'contact.point3': 'ფასი მორგებული თქვენს საჭიროებებზე',
+      'contact.estimate.label': 'თქვენი შერჩეული შეფასება (ცვლილება შეუძლებელია)',
+      'contact.estimate.total': 'სავარაუდო ჯამი',
       'form.name.label': 'სრული სახელი',
       'form.name.placeholder': 'მაგ. ნინო ბერიძე',
       'form.contact.label': 'ტელეფონი ან ელფოსტა',
@@ -215,7 +217,7 @@
       'estimator.lang.dual': 'Dual language (GE/EN)',
       'estimator.features.title': 'Features',
       'estimator.features.contact': 'Contact Form',
-      'estimator.features.hosting': 'Free Hosting',
+      'estimator.features.hosting': 'Hosting',
       'estimator.features.animations': 'Custom Animations',
       'estimator.features.calculator': 'Interactive Calculator',
       'estimator.features.cms': 'CMS / Blog',
@@ -261,6 +263,8 @@
       'contact.point1': 'Free, no-obligation consultation',
       'contact.point2': 'Response as soon as possible',
       'contact.point3': 'Pricing tailored to your needs',
+      'contact.estimate.label': 'Your selected estimate (cannot be edited)',
+      'contact.estimate.total': 'Estimated total',
       'form.name.label': 'Full Name',
       'form.name.placeholder': 'e.g. Nino Beridze',
       'form.contact.label': 'Phone or Email',
@@ -581,6 +585,9 @@
     const timeframeUnitEl = document.getElementById('est-timeframe-unit');
     const selectedListEl = document.getElementById('est-selected-list');
     const sendBtn = document.getElementById('est-send-btn');
+    const contactEstimateSummary = document.getElementById('contact-estimate-summary');
+    const contactEstimateList = document.getElementById('contact-estimate-list');
+    const contactEstimateTotalEl = document.getElementById('contact-estimate-total-amount');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
 
@@ -629,10 +636,16 @@
       return text ? text.textContent : input.value;
     }
 
-    // The PDF is generated server-side with a Latin-only base font, so it always
-    // uses these fixed English labels rather than the (possibly Georgian) UI text.
-    function selectedEnLabel(input) {
-      return input.dataset.en || input.value;
+    function getReceiptItems() {
+      return [
+        { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
+        ...checkedInputs()
+          .filter((input) => Number(input.dataset.price || 0) > 0)
+          .map((input) => ({
+            label: selectedLabelText(input),
+            priceDisplay: toDisplay(Number(input.dataset.price)),
+          })),
+      ];
     }
 
     function updateEstimate() {
@@ -654,15 +667,7 @@
 
       // Receipt only lists priced line items (base + paid add-ons) - free/default
       // selections don't need a price row, keeping the summary uncluttered.
-      const receiptItems = [
-        { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
-        ...checkedInputs()
-          .filter((input) => Number(input.dataset.price || 0) > 0)
-          .map((input) => ({
-            label: selectedLabelText(input),
-            priceDisplay: toDisplay(Number(input.dataset.price)),
-          })),
-      ];
+      const receiptItems = getReceiptItems();
       selectedListEl.innerHTML = '';
       receiptItems.forEach((item) => {
         const li = document.createElement('li');
@@ -676,19 +681,14 @@
         selectedListEl.appendChild(li);
       });
 
-      const breakdown = [
-        { label: 'Landing Page (base)', priceDisplay: toDisplay(BASE_PRICE_GEL) },
-        ...checkedInputs()
-          .filter((input) => Number(input.dataset.price || 0) > 0)
-          .map((input) => ({
-            label: selectedEnLabel(input),
-            priceDisplay: toDisplay(Number(input.dataset.price)),
-          })),
-      ];
+      // Keep the read-only recap in the contact form in sync if it's already
+      // showing (client went back and tweaked the estimate after sending it).
+      if (contactEstimateSummary && !contactEstimateSummary.hidden) {
+        renderContactEstimateSummary(receiptItems, totalGel);
+      }
 
       lastEstimate = {
         items,
-        breakdown,
         totalGel,
         totalDisplay: toDisplay(totalGel),
         currency: currentCurrency,
@@ -696,6 +696,28 @@
         timeframeRaw: tfRaw,
         packageSummary: items.join(', '),
       };
+    }
+
+    // Renders a plain, non-editable recap of the estimate into the contact
+    // form so the client can see what they're about to send without it being
+    // a text field they could alter — the actual leads.selected_package and
+    // leads.calculated_price columns are always computed fresh from the
+    // checked inputs at submit time (see the contact form handler below),
+    // never read back from this display.
+    function renderContactEstimateSummary(receiptItems, totalGel) {
+      if (!contactEstimateSummary) return;
+      contactEstimateList.innerHTML = '';
+      receiptItems.forEach((item) => {
+        const li = document.createElement('li');
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = item.label;
+        const priceSpan = document.createElement('span');
+        priceSpan.textContent = `${item.priceDisplay} ${currentCurrency}`;
+        li.append(labelSpan, priceSpan);
+        contactEstimateList.appendChild(li);
+      });
+      contactEstimateTotalEl.textContent = `${toDisplay(totalGel)} ${currentCurrency}`;
+      contactEstimateSummary.hidden = false;
     }
 
     function setCurrencyUI() {
@@ -756,7 +778,9 @@
       // The message field stays untouched — selected_package and calculated_price
       // are sent to the leads table straight from lastEstimate (see the contact
       // form submit handler below), so a client editing their message can't alter
-      // the price or selections we actually receive.
+      // the price or selections we actually receive. This summary is a
+      // read-only recap for the client, not the source of what gets submitted.
+      renderContactEstimateSummary(getReceiptItems(), lastEstimate.totalGel);
       const contactSection = document.getElementById('contact');
       if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -853,6 +877,8 @@
         if (error) throw error;
         formSuccess.classList.add('show');
         form.reset();
+        const estimateSummary = document.getElementById('contact-estimate-summary');
+        if (estimateSummary) estimateSummary.hidden = true;
         setTimeout(() => formSuccess.classList.remove('show'), 5000);
       })
       .catch(() => {

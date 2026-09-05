@@ -307,7 +307,7 @@
 
                 <label class="est-pill est-pill--locked">
                   <input type="checkbox" name="feature" value="hosting" data-price="0" data-en="Free Hosting" checked disabled>
-                  <span class="est-pill-text" data-i18n="estimator.features.hosting">უფასო ჰოსტინგი</span>
+                  <span class="est-pill-text" data-i18n="estimator.features.hosting">ჰოსტინგი</span>
                   <span class="est-pill-price est-pill-price--free" data-i18n="estimator.free">უფასო</span>
                 </label>
 
@@ -543,6 +543,15 @@
             <option value="other" data-i18n="form.business.opt.other">სხვა</option>
           </select>
           <span class="field-error" data-error-for="businessType"></span>
+        </div>
+
+        <div class="contact-estimate-summary" id="contact-estimate-summary" hidden>
+          <span class="contact-estimate-label" data-i18n="contact.estimate.label">თქვენი შერჩეული შეფასება (ცვლილება შეუძლებელია)</span>
+          <ul class="contact-estimate-list" id="contact-estimate-list"></ul>
+          <div class="contact-estimate-total">
+            <span data-i18n="contact.estimate.total">სავარაუდო ჯამი</span>:
+            <strong id="contact-estimate-total-amount"></strong>
+          </div>
         </div>
 
         <div class="form-row">

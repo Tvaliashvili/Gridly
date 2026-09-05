@@ -1111,6 +1111,37 @@ section { padding: 100px 0; }
 .field-error { font-size: 0.78rem; color: var(--danger); min-height: 1px; display: none; }
 .form-row.invalid .field-error { display: block; }
 
+/* Read-only recap of the price-estimator selections, dropped into the
+   contact form so the client can see exactly what they're sending without
+   it living in an editable field (see estimator.send handler in script.js). */
+.contact-estimate-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-soft);
+  background: var(--accent-soft);
+}
+.contact-estimate-label { font-size: 0.82rem; font-weight: 600; color: var(--text-dim); }
+.contact-estimate-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.contact-estimate-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+  color: var(--text);
+}
+.contact-estimate-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .form-success {
   display: none;
   align-items: center;
