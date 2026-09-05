@@ -278,7 +278,15 @@ h1, h2, h3, h4, p, span, a, li,
 }
 
 @media (max-width: 768px) {
-  .girl-perch { display: none; }
+  .girl-perch {
+    transform: translateX(-50%) translateY(30px) scale(0.78);
+    transform-origin: bottom center;
+  }
+}
+@media (max-width: 400px) {
+  .girl-perch {
+    transform: translateX(-50%) translateY(24px) scale(0.62);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .mock-window-wrap { animation: none; }
@@ -1624,9 +1632,9 @@ body {
     order: 2 !important;
     width: 100% !important;
     max-width: 100% !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     margin: 0 auto !important;
-    padding: 0 10px !important;
+    padding: 12px 10px 0 !important;
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
