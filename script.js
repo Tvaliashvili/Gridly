@@ -589,6 +589,7 @@
     const timeframeUnitEl = document.getElementById('est-timeframe-unit');
     const selectedListEl = document.getElementById('est-selected-list');
     const quoteFieldsEl = document.getElementById('est-quote-fields');
+    const expressPriceTagEl = document.getElementById('est-express-price-tag');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
     let lastConsultState = null;
@@ -655,10 +656,27 @@
         .filter((input) => input.name !== 'mode');
     }
 
+    // Express delivery costs more to rush on a multi-page site than a one-pager,
+    // so its price isn't a flat data-price like the other add-ons - it's read
+    // from whichever of the input's two data attributes matches the current
+    // "pages" selection instead.
+    function getExpressPriceGel() {
+      const expressInput = estimatorForm.querySelector('input[name="urgency"][value="express"]');
+      if (!expressInput) return 0;
+      const pagesInput = estimatorForm.querySelector('input[name="pages"]:checked');
+      const key = pagesInput && pagesInput.value === 'multi' ? 'priceMulti' : 'priceLanding';
+      return Number(expressInput.dataset[key] || 0);
+    }
+
+    function getInputPriceGel(input) {
+      if (input.name === 'urgency' && input.value === 'express') return getExpressPriceGel();
+      return Number(input.dataset.price || 0);
+    }
+
     function computeTotalGel() {
       if (isConsultMode()) return 0;
       let total = BASE_PRICE_GEL;
-      checkedInputs().forEach((input) => { total += Number(input.dataset.price || 0); });
+      checkedInputs().forEach((input) => { total += getInputPriceGel(input); });
       return total;
     }
 
@@ -700,10 +718,10 @@
       return [
         { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
         ...checkedInputs()
-          .filter((input) => Number(input.dataset.price || 0) > 0)
+          .filter((input) => getInputPriceGel(input) > 0)
           .map((input) => ({
             label: selectedLabelText(input),
-            priceDisplay: toDisplay(Number(input.dataset.price)),
+            priceDisplay: toDisplay(getInputPriceGel(input)),
           })),
       ];
     }
@@ -719,6 +737,9 @@
         const gel = Number(el.dataset.price);
         el.textContent = `+${toDisplay(gel)} ${currentCurrency}`;
       });
+      if (expressPriceTagEl) {
+        expressPriceTagEl.textContent = `+${toDisplay(getExpressPriceGel())} ${currentCurrency}`;
+      }
 
       const totalGel = computeTotalGel();
       totalAmountEl.textContent = toDisplay(totalGel);
@@ -792,13 +813,12 @@
       feature_cms: 'input[name="feature"][value="cms"]',
       feature_domain: 'input[name="feature"][value="domain"]',
       feature_seo: 'input[name="feature"][value="seo"]',
-      express_delivery: 'input[name="urgency"][value="express"]',
     };
 
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_seo, express_delivery')
+        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_seo, express_delivery_landing, express_delivery_multi')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
@@ -809,6 +829,15 @@
             const input = estimatorForm.querySelector(selector);
             if (input) input.dataset.price = String(Math.round(Number(pricing[field])));
           });
+          const expressInput = estimatorForm.querySelector('input[name="urgency"][value="express"]');
+          if (expressInput) {
+            if (Number.isFinite(Number(pricing.express_delivery_landing))) {
+              expressInput.dataset.priceLanding = String(Math.round(Number(pricing.express_delivery_landing)));
+            }
+            if (Number.isFinite(Number(pricing.express_delivery_multi))) {
+              expressInput.dataset.priceMulti = String(Math.round(Number(pricing.express_delivery_multi)));
+            }
+          }
           updateEstimate();
         })
         .catch(() => { /* offline fallback: keep the defaults already on the page */ });

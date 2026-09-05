@@ -29,13 +29,21 @@ create table if not exists public.pricing_config (
   feature_cms integer not null default 350,
   feature_domain integer not null default 50,
   feature_seo integer not null default 500,
-  express_delivery integer not null default 200,
+  express_delivery_landing integer not null default 200,
+  express_delivery_multi integer not null default 320,
   updated_at timestamptz not null default now()
 );
 -- Adds the two newest priced add-ons (domain, SEO) to a pricing_config table
 -- created before they existed; a no-op on a fresh install.
 alter table public.pricing_config add column if not exists feature_domain integer not null default 50;
 alter table public.pricing_config add column if not exists feature_seo integer not null default 500;
+-- Splits the single flat express-delivery surcharge into two, since a
+-- multi-page site takes meaningfully more work to rush than a one-pager;
+-- a no-op on a fresh install, and harmless to re-run on an install that
+-- already has these columns.
+alter table public.pricing_config add column if not exists express_delivery_landing integer not null default 200;
+alter table public.pricing_config add column if not exists express_delivery_multi integer not null default 320;
+alter table public.pricing_config drop column if exists express_delivery;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 

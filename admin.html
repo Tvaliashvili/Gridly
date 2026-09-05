@@ -357,8 +357,12 @@
               <input type="number" min="0" step="1" id="feature_seo" name="feature_seo" required>
             </div>
             <div class="price-field">
-              <label for="express_delivery">ექსპრესი მიწოდება, 24სთ (+GEL)</label>
-              <input type="number" min="0" step="1" id="express_delivery" name="express_delivery" required>
+              <label for="express_delivery_landing">ექსპრესი მიწოდება - ერთგვერდიანი (+GEL)</label>
+              <input type="number" min="0" step="1" id="express_delivery_landing" name="express_delivery_landing" required>
+            </div>
+            <div class="price-field">
+              <label for="express_delivery_multi">ექსპრესი მიწოდება - მრავალგვერდიანი (+GEL)</label>
+              <input type="number" min="0" step="1" id="express_delivery_multi" name="express_delivery_multi" required>
             </div>
           </div>
           <button type="submit" class="btn" id="save-pricing-btn">ფასების შენახვა</button>
@@ -654,7 +658,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'multi_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_seo', 'express_delivery'];
+  const PRICING_FIELDS = ['base_price', 'multi_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
 
   async function loadPricing() {
     try {
@@ -1041,7 +1045,8 @@
     try {
       const { error } = await sb
         .from('site_config')
-        .upsert({ id: 'default', maintenance_mode: nextValue, updated_at: new Date().toISOString() });
+        .update({ maintenance_mode: nextValue, updated_at: new Date().toISOString() })
+        .eq('id', 'default');
       if (error) throw error;
       updateMaintenanceLabel();
       maintenanceStatus.textContent = 'შენახულია.';
