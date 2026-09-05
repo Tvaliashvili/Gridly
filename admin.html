@@ -214,6 +214,29 @@
   .collapse-toggle[aria-expanded="true"] .collapse-chevron { transform: rotate(180deg); }
   .collapse-body { margin-top: 18px; }
 
+  .switch-row { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.92rem; }
+  .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch-slider {
+    position: absolute;
+    inset: 0;
+    background: #23262f;
+    border-radius: 999px;
+    transition: background 0.2s ease;
+  }
+  .switch-slider::before {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    left: 3px; top: 3px;
+    background: #f2f3f7;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+  }
+  .switch input:checked + .switch-slider { background: #f87171; }
+  .switch input:checked + .switch-slider::before { transform: translateX(20px); }
+  .switch input:disabled + .switch-slider { opacity: 0.6; cursor: default; }
+
   /* ---- Login screen ---- */
   #login-screen {
     min-height: 100vh;
@@ -278,6 +301,7 @@
       <button class="tab-btn active" data-tab="leads">მოთხოვნები</button>
       <button class="tab-btn" data-tab="pricing">ფასები</button>
       <button class="tab-btn" data-tab="subscriptions">გამოწერები</button>
+      <button class="tab-btn" data-tab="site">საიტის სტატუსი</button>
     </nav>
 
   <main>
@@ -406,6 +430,21 @@
         <div id="subscriptions-container" class="collapse-body" hidden><p class="empty">იტვირთება…</p></div>
       </div>
     </section>
+
+    <section id="tab-site" hidden>
+      <div class="panel">
+        <h2>მოვლის რეჟიმი</h2>
+        <p class="hint">როცა ჩართულია, საიტზე შემსვლელები ლენდინგის ნაცვლად დაინახავენ "საიტი მოვლის რეჟიმშია" გვერდს. გამორთვისთანავე საიტი მაშინვე უბრუნდება ჩვეულებრივ რეჟიმს.</p>
+        <label class="switch-row">
+          <span class="switch">
+            <input type="checkbox" id="maintenance-toggle">
+            <span class="switch-slider"></span>
+          </span>
+          <span id="maintenance-status-label">იტვირთება…</span>
+        </label>
+        <p class="status-msg" id="maintenance-status"></p>
+      </div>
+    </section>
   </main>
   </div>
 </div>
@@ -447,6 +486,7 @@
     loadLeads();
     loadPricing();
     loadSubscriptions();
+    loadMaintenanceStatus();
   }
 
   function showLogin() {
@@ -497,6 +537,7 @@
     leads: document.getElementById('tab-leads'),
     pricing: document.getElementById('tab-pricing'),
     subscriptions: document.getElementById('tab-subscriptions'),
+    site: document.getElementById('tab-site'),
   };
 
   tabBtns.forEach((btn) => {
@@ -964,6 +1005,55 @@
     const expanded = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!expanded));
     subscriptionsContainer.hidden = expanded;
+  });
+
+  /* ---------------- Site status (maintenance mode) ---------------- */
+  const maintenanceToggle = document.getElementById('maintenance-toggle');
+  const maintenanceStatusLabel = document.getElementById('maintenance-status-label');
+  const maintenanceStatus = document.getElementById('maintenance-status');
+
+  function updateMaintenanceLabel() {
+    maintenanceStatusLabel.textContent = maintenanceToggle.checked
+      ? 'ჩართულია - საიტი მოვლის რეჟიმშია'
+      : 'გამორთულია - საიტი აქტიურია';
+  }
+
+  async function loadMaintenanceStatus() {
+    try {
+      const { data, error } = await sb
+        .from('site_config')
+        .select('maintenance_mode')
+        .eq('id', 'default')
+        .single();
+      if (error) throw error;
+      maintenanceToggle.checked = !!(data && data.maintenance_mode);
+      updateMaintenanceLabel();
+    } catch (err) {
+      maintenanceStatusLabel.textContent = 'სტატუსის ჩატვირთვა ვერ მოხერხდა.';
+    }
+  }
+
+  maintenanceToggle.addEventListener('change', async () => {
+    const nextValue = maintenanceToggle.checked;
+    maintenanceToggle.disabled = true;
+    maintenanceStatus.textContent = '';
+    maintenanceStatus.className = 'status-msg';
+    try {
+      const { error } = await sb
+        .from('site_config')
+        .upsert({ id: 'default', maintenance_mode: nextValue, updated_at: new Date().toISOString() });
+      if (error) throw error;
+      updateMaintenanceLabel();
+      maintenanceStatus.textContent = 'შენახულია.';
+      maintenanceStatus.className = 'status-msg ok';
+    } catch (err) {
+      maintenanceToggle.checked = !nextValue;
+      updateMaintenanceLabel();
+      maintenanceStatus.textContent = err.message || 'ვერ შეინახა. სცადეთ ხელახლა.';
+      maintenanceStatus.className = 'status-msg err';
+    } finally {
+      maintenanceToggle.disabled = false;
+    }
   });
 
   init();

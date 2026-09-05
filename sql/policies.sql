@@ -68,6 +68,25 @@ drop policy if exists "Admins can update pricing" on public.pricing_config;
 create policy "Admins can update pricing" on public.pricing_config
   for update to authenticated using (true) with check (true);
 
+create table if not exists public.site_config (
+  id text primary key default 'default',
+  maintenance_mode boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+insert into public.site_config (id) values ('default') on conflict (id) do nothing;
+alter table public.site_config enable row level security;
+
+-- site_config: readable by everyone (the public site needs it with no
+-- login to know whether to show the maintenance page), writable only by
+-- a signed-in admin.
+drop policy if exists "Anyone can read site config" on public.site_config;
+create policy "Anyone can read site config" on public.site_config
+  for select to anon, authenticated using (true);
+
+drop policy if exists "Admins can update site config" on public.site_config;
+create policy "Admins can update site config" on public.site_config
+  for update to authenticated using (true) with check (true);
+
 create table if not exists public.subscriptions (
   id uuid primary key default gen_random_uuid(),
   company_name text not null,

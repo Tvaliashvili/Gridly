@@ -14,12 +14,46 @@
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
+  // Toggled from /admin.html. Checked in the background; if it comes back on,
+  // the whole page is swapped for a maintenance notice (translations/t() are
+  // defined further below but already initialized by the time this resolves,
+  // since it's a network round-trip that finishes after the rest of this
+  // script has run synchronously).
+  if (supabase) {
+    supabase
+      .from('site_config')
+      .select('maintenance_mode')
+      .eq('id', 'default')
+      .single()
+      .then(({ data }) => {
+        if (data && data.maintenance_mode) showMaintenancePage();
+      })
+      .catch(() => {});
+  }
+
+  function showMaintenancePage() {
+    document.title = t('maintenance.title');
+    document.body.innerHTML = `
+      <div class="maintenance-screen">
+        <div class="maintenance-card">
+          <div class="maintenance-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h1>${t('maintenance.title')}</h1>
+          <p>${t('maintenance.desc')}</p>
+        </div>
+      </div>
+    `;
+  }
+
   /* ==========================================================================
      Translations (Georgian default, English toggle)
      ========================================================================== */
   const translations = {
     ge: {
       'banner.testMode': 'საიტი მუშაობს სატესტო რეჟიმში - ინფორმაცია შეიძლება შეიცვალოს',
+      'maintenance.title': 'საიტი დროებით მოვლის რეჟიმშია',
+      'maintenance.desc': 'გმადლობთ მოთმინებისთვის - მალე დავბრუნდებით გაუმჯობესებული საიტით.',
       'page.title': 'Gridly - თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
       'page.desc': 'Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.',
       'nav.services': 'სერვისები',
@@ -29,8 +63,6 @@
       'hero.eyebrow': 'ვებ-გვერდები პატარა და საშუალო ბიზნესებისთვის',
       'hero.title': 'გაზარდეთ თქვენი ბიზნესი <span class="text-gradient">Gridly</span>-სთან ერთად',
       'hero.sub': 'სწრაფი, თანამედროვე და მაღალკონვერტირებადი ვებ-გვერდები',
-      'hero.cta1': 'უფასო შეთავაზების მიღება',
-      'hero.cta2': 'დემოების ნახვა',
       'hero.stat1': 'მზადყოფნა',
       'hero.stat2': 'მობილური ადაპტაცია',
       'hero.chip1': 'გაშვება დღეებში, არა თვეებში',
@@ -150,6 +182,8 @@
     },
     en: {
       'banner.testMode': 'This website is running in test mode - content may change',
+      'maintenance.title': 'The site is temporarily under maintenance',
+      'maintenance.desc': "Thanks for your patience - we'll be back shortly with improvements.",
       'page.title': 'Gridly - Modern Websites for Local Businesses',
       'page.desc': 'Gridly builds fast, modern, high-converting websites for local businesses. Custom design, admin panels, SEO & Google Maps setup.',
       'nav.services': 'Services',
@@ -159,8 +193,6 @@
       'hero.eyebrow': 'Websites for small and medium businesses',
       'hero.title': 'Boost Your Business with <span class="text-gradient">Gridly</span>',
       'hero.sub': 'Fast, modern, and high-converting websites.',
-      'hero.cta1': 'Get a Free Quote',
-      'hero.cta2': 'View Demos',
       'hero.stat1': 'Ready',
       'hero.stat2': 'Mobile-ready design',
       'hero.chip1': 'Live in days, not months',
@@ -201,7 +233,7 @@
       'estimator.hours': 'hours',
       'estimator.days': 'days',
       'estimator.mode.title': 'Request type',
-      'estimator.mode.consult': 'Free consultation',
+      'estimator.mode.consult': 'Consultation',
       'estimator.mode.quote': 'Build a project estimate',
       'estimator.pages.title': 'Pages',
       'estimator.base': 'Base package',
