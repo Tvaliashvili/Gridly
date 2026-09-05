@@ -27,9 +27,15 @@ create table if not exists public.pricing_config (
   feature_animations integer not null default 150,
   feature_calculator integer not null default 200,
   feature_cms integer not null default 350,
+  feature_domain integer not null default 50,
+  feature_seo integer not null default 500,
   express_delivery integer not null default 200,
   updated_at timestamptz not null default now()
 );
+-- Adds the two newest priced add-ons (domain, SEO) to a pricing_config table
+-- created before they existed; a no-op on a fresh install.
+alter table public.pricing_config add column if not exists feature_domain integer not null default 50;
+alter table public.pricing_config add column if not exists feature_seo integer not null default 500;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 

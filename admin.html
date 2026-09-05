@@ -226,6 +226,14 @@
               <input type="number" min="0" step="1" id="feature_cms" name="feature_cms" required>
             </div>
             <div class="price-field">
+              <label for="feature_domain">Domain (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_domain" name="feature_domain" required>
+            </div>
+            <div class="price-field">
+              <label for="feature_seo">SEO Optimization (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_seo" name="feature_seo" required>
+            </div>
+            <div class="price-field">
               <label for="express_delivery">Express delivery, 24h (+GEL)</label>
               <input type="number" min="0" step="1" id="express_delivery" name="express_delivery" required>
             </div>
@@ -421,7 +429,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'multi_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'express_delivery'];
+  const PRICING_FIELDS = ['base_price', 'multi_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_seo', 'express_delivery'];
 
   async function loadPricing() {
     try {

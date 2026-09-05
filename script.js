@@ -80,9 +80,12 @@
       'estimator.lang.dual': 'ორენოვანი (ქართ./ინგლ.)',
       'estimator.features.title': 'ფუნქციები',
       'estimator.features.contact': 'საკონტაქტო ფორმა',
+      'estimator.features.hosting': 'უფასო ჰოსტინგი',
       'estimator.features.animations': 'მორგებული ანიმაციები',
       'estimator.features.calculator': 'ინტერაქტიული კალკულატორი',
       'estimator.features.cms': 'CMS / ბლოგი',
+      'estimator.features.domain': 'დომენი',
+      'estimator.features.seo': 'SEO ოპტიმიზაცია',
       'estimator.urgency.title': 'მიწოდების სისწრაფე',
       'estimator.urgency.standard': 'სტანდარტული (48-72სთ)',
       'estimator.urgency.express': 'ექსპრესი (24სთ)',
@@ -90,9 +93,6 @@
       'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
       'estimator.send': 'ამ შეფასების გაგზავნა',
       'estimator.disclaimer': 'საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.',
-      'estimator.msg.header': 'სავარაუდო შეფასება:',
-      'estimator.msg.total': 'სავარაუდო ჯამი',
-      'estimator.msg.timeframe': 'სავარაუდო ვადა',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
       'portfolio.tag': 'ნახეთ საქმეში',
       'portfolio.title': 'დემო პორტფოლიო',
@@ -215,9 +215,12 @@
       'estimator.lang.dual': 'Dual language (GE/EN)',
       'estimator.features.title': 'Features',
       'estimator.features.contact': 'Contact Form',
+      'estimator.features.hosting': 'Free Hosting',
       'estimator.features.animations': 'Custom Animations',
       'estimator.features.calculator': 'Interactive Calculator',
       'estimator.features.cms': 'CMS / Blog',
+      'estimator.features.domain': 'Domain',
+      'estimator.features.seo': 'SEO Optimization',
       'estimator.urgency.title': 'Delivery Urgency',
       'estimator.urgency.standard': 'Standard (48-72h)',
       'estimator.urgency.express': 'Express (24h)',
@@ -225,9 +228,6 @@
       'estimator.timeframe': 'Estimated delivery:',
       'estimator.send': 'Send this estimate',
       'estimator.disclaimer': 'Final pricing may vary slightly based on project details.',
-      'estimator.msg.header': 'Estimated quote:',
-      'estimator.msg.total': 'Estimated total',
-      'estimator.msg.timeframe': 'Estimated timeframe',
       'lead.error': 'Something went wrong sending your request. Please try again.',
       'portfolio.tag': 'See it in action',
       'portfolio.title': 'Demo Portfolio',
@@ -727,13 +727,15 @@
       feature_animations: 'input[name="feature"][value="animations"]',
       feature_calculator: 'input[name="feature"][value="calculator"]',
       feature_cms: 'input[name="feature"][value="cms"]',
+      feature_domain: 'input[name="feature"][value="domain"]',
+      feature_seo: 'input[name="feature"][value="seo"]',
       express_delivery: 'input[name="urgency"][value="express"]',
     };
 
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, express_delivery')
+        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_seo, express_delivery')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
@@ -751,16 +753,10 @@
 
     sendBtn.addEventListener('click', () => {
       if (!lastEstimate) return;
-      const messageField = document.getElementById('message');
-      const lines = [
-        t('estimator.msg.header'),
-        ...lastEstimate.items.map((label) => `- ${label}`),
-        '',
-        `${t('estimator.msg.total')}: ${lastEstimate.totalDisplay} ${lastEstimate.currency}`,
-        `${t('estimator.msg.timeframe')}: ${lastEstimate.timeframeText}`,
-      ];
-      if (messageField) messageField.value = lines.join('\n');
-
+      // The message field stays untouched — selected_package and calculated_price
+      // are sent to the leads table straight from lastEstimate (see the contact
+      // form submit handler below), so a client editing their message can't alter
+      // the price or selections we actually receive.
       const contactSection = document.getElementById('contact');
       if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
