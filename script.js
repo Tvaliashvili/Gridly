@@ -52,8 +52,8 @@
   const translations = {
     ge: {
       'banner.testMode': 'საიტი მუშაობს სატესტო რეჟიმში - ინფორმაცია შეიძლება შეიცვალოს',
-      'maintenance.title': 'საიტი დროებით მოვლის რეჟიმშია',
-      'maintenance.desc': 'გმადლობთ მოთმინებისთვის - მალე დავბრუნდებით გაუმჯობესებული საიტით.',
+      'maintenance.title': 'საიტი დროებით მიუწვდომელია',
+      'maintenance.desc': 'მალე დაგიბრუნდებით.',
       'page.title': 'Gridly - თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
       'page.desc': 'Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.',
       'nav.services': 'სერვისები',
@@ -167,8 +167,8 @@
     },
     en: {
       'banner.testMode': 'This website is running in test mode - content may change',
-      'maintenance.title': 'The site is temporarily under maintenance',
-      'maintenance.desc': "Thanks for your patience - we'll be back shortly with improvements.",
+      'maintenance.title': 'The site is temporarily unavailable',
+      'maintenance.desc': "We'll be back soon.",
       'page.title': 'Gridly - Modern Websites for Local Businesses',
       'page.desc': 'Gridly builds fast, modern, high-converting websites for local businesses. Custom design, admin panels, SEO & Google Maps setup.',
       'nav.services': 'Services',
