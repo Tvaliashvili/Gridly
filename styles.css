@@ -448,6 +448,14 @@ h1, h2, h3, h4, p, span, a, li,
   -webkit-backdrop-filter: none;
   background: var(--glass-bg-strong);
 }
+/* Opening the menu must snap the header into its nav-open state instantly —
+   otherwise the header's own 0.3s background/backdrop-filter transition
+   (meant for the scroll-driven .scrolled state) plays here too, so the menu
+   blurs in noticeably slower once you've scrolled than it does at the top
+   of the page, where there's no such transition to play. */
+.site-header.nav-open {
+  transition: none;
+}
 
 /* Full-width, edge-to-edge header — logo pinned far left, actions pinned far
    right via horizontal padding instead of the centered .container max-width. */
@@ -510,9 +518,14 @@ h1, h2, h3, h4, p, span, a, li,
   color: var(--text-dim);
   white-space: nowrap;
   flex-shrink: 0;
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
-.nav-link:hover { color: var(--text); background: var(--surface-hover); }
+.nav-link:hover {
+  color: #ffffff;
+  background: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(67, 56, 202, 0.35);
+}
 
 .header-actions {
   display: flex;
