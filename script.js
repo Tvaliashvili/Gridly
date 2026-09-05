@@ -390,6 +390,7 @@
       const next = isLight ? 'dark' : 'light';
       applyTheme(next);
       localStorage.setItem(THEME_KEY, next);
+      if (typeof updateScrollColors === 'function') updateScrollColors();
     });
   });
 
@@ -496,6 +497,46 @@
       el.textContent = (el.dataset.target || '0') + counterSuffix(el);
     });
   }
+
+  /* ---------------- Scroll-driven background color shift ---------------- */
+  let bgTicking = false;
+
+  function updateScrollColors() {
+    bgTicking = false;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+    const isLight = root.getAttribute('data-theme') === 'light';
+    const sat = isLight ? '75%' : '85%';
+    const light = isLight ? '55%' : '62%';
+    const alpha = isLight ? 0.12 : 0.18;
+    const baseHue = 220 + progress * 360;
+
+    [0, 55, 110].forEach((offset, i) => {
+      const hue = (baseHue + offset) % 360;
+      root.style.setProperty(`--glow-color-${i + 1}`, `hsla(${hue}, ${sat}, ${light}, ${alpha})`);
+    });
+
+    const glows = document.querySelectorAll('.bg-glow');
+    glows.forEach((el, i) => {
+      const dir = i % 2 === 0 ? 1 : -1;
+      el.style.transform = `translate3d(0, ${dir * progress * 80}px, 0)`;
+    });
+
+    // Base page background gently darkens/lightens and tints as you scroll,
+    // riding two overlapping waves so it doesn't just repeat once per page.
+    const wave = Math.sin(progress * Math.PI * 2.4) * 0.6 + Math.sin(progress * Math.PI * 5.3) * 0.4;
+    const bgSat = isLight ? 22 : 20;
+    const bgLight = isLight ? 97 + wave * 2.5 : 6.5 + wave * 4;
+    root.style.setProperty('--bg', `hsl(${baseHue.toFixed(1)}, ${bgSat}%, ${bgLight.toFixed(1)}%)`);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!bgTicking) {
+      bgTicking = true;
+      requestAnimationFrame(updateScrollColors);
+    }
+  }, { passive: true });
+  updateScrollColors();
 
   /* ---------------- Tilt + glow interactions ---------------- */
   const tiltEls = document.querySelectorAll('.tilt-glow');
