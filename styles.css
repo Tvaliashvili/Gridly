@@ -866,6 +866,11 @@ section { padding: 100px 0; }
   gap: 10px;
 }
 
+.est-quote-fields {
+  overflow: hidden;
+  transition: max-height 0.42s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
 /* Pill-shaped toggle card. white-space: nowrap keeps each label intact —
    a pill wraps to the next line as a whole unit instead of breaking mid-word. */
 .est-pill {

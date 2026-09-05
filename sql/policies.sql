@@ -67,3 +67,33 @@ create policy "Anyone can read pricing" on public.pricing_config
 drop policy if exists "Admins can update pricing" on public.pricing_config;
 create policy "Admins can update pricing" on public.pricing_config
   for update to authenticated using (true) with check (true);
+
+create table if not exists public.subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  company_name text not null,
+  client_ref text,
+  contact_number text,
+  service text not null,
+  price numeric not null default 0,
+  subscribed_on date not null,
+  notes text,
+  created_at timestamptz not null default now()
+);
+alter table public.subscriptions enable row level security;
+
+-- subscriptions: internal billing records — admins only, no public access.
+drop policy if exists "Admins can view subscriptions" on public.subscriptions;
+create policy "Admins can view subscriptions" on public.subscriptions
+  for select to authenticated using (true);
+
+drop policy if exists "Admins can insert subscriptions" on public.subscriptions;
+create policy "Admins can insert subscriptions" on public.subscriptions
+  for insert to authenticated with check (true);
+
+drop policy if exists "Admins can update subscriptions" on public.subscriptions;
+create policy "Admins can update subscriptions" on public.subscriptions
+  for update to authenticated using (true) with check (true);
+
+drop policy if exists "Admins can delete subscriptions" on public.subscriptions;
+create policy "Admins can delete subscriptions" on public.subscriptions
+  for delete to authenticated using (true);

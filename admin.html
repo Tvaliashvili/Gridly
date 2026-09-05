@@ -134,6 +134,68 @@
   .empty { color: #6b6f83; padding: 20px 0; text-align: center; }
   .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .cal-weekday {
+    text-align: center;
+    color: #6b6f83;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-bottom: 6px;
+  }
+  .cal-day {
+    position: relative;
+    min-height: 64px;
+    border-radius: 10px;
+    border: 1px solid #23262f;
+    background: #0c0e15;
+    padding: 8px;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cal-day.empty-cell { border-color: transparent; background: transparent; }
+  .cal-day.is-today { border-color: #22d3ee; }
+  .cal-day .cal-day-num { font-size: 0.82rem; color: #a7abbd; font-weight: 600; }
+  .cal-day.has-due { cursor: pointer; }
+  .cal-day.has-due:hover { border-color: #6366f1; }
+  .cal-day.selected { border-color: #6366f1; background: rgba(99,102,241,0.12); }
+  .cal-day-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.68rem;
+    color: #22d3ee;
+    background: rgba(34,211,238,0.12);
+    border-radius: 999px;
+    padding: 2px 7px;
+    align-self: flex-start;
+  }
+  .calendar-day-panel {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #23262f;
+  }
+  .due-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #1b1d26;
+  }
+  .due-row:last-child { border-bottom: none; }
+  .due-row-info strong { display: block; font-size: 0.92rem; }
+  .due-row-info span { display: block; font-size: 0.8rem; color: #6b6f83; margin-top: 2px; }
+  .due-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-sm { padding: 7px 14px; font-size: 0.78rem; }
+
   /* ---- Login screen ---- */
   #login-screen {
     min-height: 100vh;
@@ -197,6 +259,7 @@
     <nav class="sidebar">
       <button class="tab-btn active" data-tab="leads">მოთხოვნები</button>
       <button class="tab-btn" data-tab="pricing">ფასები</button>
+      <button class="tab-btn" data-tab="subscriptions">გამოწერები</button>
     </nav>
 
   <main>
@@ -261,6 +324,65 @@
         </form>
       </div>
     </section>
+
+    <section id="tab-subscriptions" hidden>
+      <div class="panel">
+        <h2>ახალი აბონენტის დამატება</h2>
+        <p class="hint">დაამატეთ კომპანია, რომელიც იხდის ჩვენს სერვისზე გამოწერას. თარიღის რიცხვი (მაგ. 5) ყოველთვიურად მონიშნავს გადახდის დღეს კალენდარში.</p>
+        <form id="subscription-form">
+          <div class="price-grid">
+            <div class="price-field">
+              <label for="sub-company">კომპანიის დასახელება</label>
+              <input type="text" id="sub-company" required>
+            </div>
+            <div class="price-field">
+              <label for="sub-client-ref">კომპანიის ID</label>
+              <input type="text" id="sub-client-ref">
+            </div>
+            <div class="price-field">
+              <label for="sub-contact">საკონტაქტო ნომერი</label>
+              <input type="text" id="sub-contact">
+            </div>
+            <div class="price-field">
+              <label for="sub-service">სერვისი / პაკეტი</label>
+              <input type="text" id="sub-service" required>
+            </div>
+            <div class="price-field">
+              <label for="sub-price">ყოველთვიური საფასური (GEL)</label>
+              <input type="number" min="0" step="1" id="sub-price" required>
+            </div>
+            <div class="price-field">
+              <label for="sub-date">გამოწერის თარიღი</label>
+              <input type="date" id="sub-date" required>
+            </div>
+          </div>
+          <button type="submit" class="btn" id="save-subscription-btn">დამატება</button>
+          <p class="status-msg" id="subscription-status"></p>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <div>
+            <h2 style="margin-bottom:2px" id="calendar-month-label">გადახდის კალენდარი</h2>
+            <p class="hint" style="margin-bottom:0">დღეები, რომლებზეც კომპანიას გადასახდელი აქვს, მონიშნულია წერტილით.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost" id="cal-prev">‹ წინა</button>
+            <button class="btn btn-ghost" id="cal-today">დღეს</button>
+            <button class="btn btn-ghost" id="cal-next">შემდეგი ›</button>
+          </div>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <div id="calendar-day-panel" class="calendar-day-panel" hidden></div>
+      </div>
+
+      <div class="panel">
+        <h2>ყველა აბონენტი</h2>
+        <p class="hint">გამოწერების სრული სია.</p>
+        <div id="subscriptions-container"><p class="empty">იტვირთება…</p></div>
+      </div>
+    </section>
   </main>
   </div>
 </div>
@@ -301,6 +423,7 @@
     signedInAs.textContent = user.email || '';
     loadLeads();
     loadPricing();
+    loadSubscriptions();
   }
 
   function showLogin() {
@@ -347,7 +470,11 @@
 
   /* ---------------- Tabs ---------------- */
   const tabBtns = document.querySelectorAll('.tab-btn');
-  const sections = { leads: document.getElementById('tab-leads'), pricing: document.getElementById('tab-pricing') };
+  const sections = {
+    leads: document.getElementById('tab-leads'),
+    pricing: document.getElementById('tab-pricing'),
+    subscriptions: document.getElementById('tab-subscriptions'),
+  };
 
   tabBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -506,6 +633,307 @@
     } finally {
       saveBtn.disabled = false;
     }
+  });
+
+  /* ---------------- Subscriptions & billing calendar ---------------- */
+  const subscriptionForm = document.getElementById('subscription-form');
+  const subscriptionStatus = document.getElementById('subscription-status');
+  const saveSubscriptionBtn = document.getElementById('save-subscription-btn');
+  const subscriptionsContainer = document.getElementById('subscriptions-container');
+  const calendarGrid = document.getElementById('calendar-grid');
+  const calendarMonthLabel = document.getElementById('calendar-month-label');
+  const calendarDayPanel = document.getElementById('calendar-day-panel');
+
+  let subscriptionsCache = [];
+  const today = new Date();
+  let calYear = today.getFullYear();
+  let calMonth = today.getMonth();
+  let selectedDateIso = null;
+
+  const WEEKDAY_LABELS = ['ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ', 'კვ'];
+  const MONTH_LABELS = ['იანვარი', 'თებერვალი', 'მარტი', 'აპრილი', 'მაისი', 'ივნისი', 'ივლისი', 'აგვისტო', 'სექტემბერი', 'ოქტომბერი', 'ნოემბერი', 'დეკემბერი'];
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function isoDate(y, m, d) { return `${y}-${pad2(m + 1)}-${pad2(d)}`; }
+
+  function dueDayInMonth(sub, y, m) {
+    const subDate = new Date(sub.subscribed_on);
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    return Math.min(subDate.getDate(), daysInMonth);
+  }
+
+  function isDueByMonth(sub, y, m) {
+    const subDate = new Date(sub.subscribed_on);
+    return y > subDate.getFullYear() || (y === subDate.getFullYear() && m >= subDate.getMonth());
+  }
+
+  function dueSubsForDay(y, m, d) {
+    return subscriptionsCache.filter((s) => isDueByMonth(s, y, m) && dueDayInMonth(s, y, m) === d);
+  }
+
+  function formatDateOnly(isoStr) {
+    if (!isoStr) return '';
+    return new Date(isoStr).toLocaleDateString('ka-GE');
+  }
+
+  async function loadSubscriptions() {
+    subscriptionsContainer.innerHTML = '<p class="empty">იტვირთება…</p>';
+    try {
+      const { data, error } = await sb
+        .from('subscriptions')
+        .select('*')
+        .order('company_name', { ascending: true });
+      if (error) throw error;
+      subscriptionsCache = data || [];
+      renderSubscriptionsTable();
+      renderCalendar();
+      if (selectedDateIso) renderDayPanel(selectedDateIso);
+    } catch (err) {
+      subscriptionsContainer.innerHTML = `<p class="empty">${escapeHtml(err.message || 'გამოწერების ჩატვირთვა ვერ მოხერხდა.')}</p>`;
+    }
+  }
+
+  function renderSubscriptionsTable() {
+    if (!subscriptionsCache.length) {
+      subscriptionsContainer.innerHTML = '<p class="empty">გამოწერები ჯერ არ არის.</p>';
+      return;
+    }
+    const rows = subscriptionsCache.map((s) => `
+      <tr data-id="${escapeHtml(s.id)}">
+        <td>${escapeHtml(s.company_name)}</td>
+        <td>${escapeHtml(s.client_ref || '-')}</td>
+        <td>${escapeHtml(s.contact_number || '-')}</td>
+        <td>${escapeHtml(s.service)}</td>
+        <td>${escapeHtml(s.price)} GEL</td>
+        <td>${escapeHtml(formatDateOnly(s.subscribed_on))}</td>
+        <td><button class="btn btn-ghost btn-delete" data-id="${escapeHtml(s.id)}" title="გამოწერის წაშლა">წაშლა</button></td>
+      </tr>
+    `).join('');
+
+    subscriptionsContainer.innerHTML = `
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>კომპანია</th><th>ID</th><th>კონტაქტი</th><th>სერვისი</th><th>ფასი</th><th>გამოწერის თარიღი</th><th></th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `;
+
+    subscriptionsContainer.querySelectorAll('.btn-delete').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        if (!confirm('წავშალოთ ეს გამოწერა? ამ მოქმედების გაუქმება შეუძლებელია.')) return;
+        btn.disabled = true;
+        try {
+          const { error } = await sb.from('subscriptions').delete().eq('id', id);
+          if (error) throw error;
+          if (selectedDateIso) {
+            const [y, m, d] = selectedDateIso.split('-').map(Number);
+            if (!dueSubsForDay(y, m - 1, d).some((s) => s.id !== id)) {
+              calendarDayPanel.hidden = true;
+              selectedDateIso = null;
+            }
+          }
+          await loadSubscriptions();
+        } catch (err) {
+          alert('გამოწერის წაშლა ვერ მოხერხდა. სცადეთ ხელახლა.');
+          btn.disabled = false;
+        }
+      });
+    });
+  }
+
+  function renderCalendar() {
+    calendarMonthLabel.textContent = `${MONTH_LABELS[calMonth]} ${calYear}`;
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const firstDayIdx = (new Date(calYear, calMonth, 1).getDay() + 6) % 7;
+    const now = new Date();
+    const isCurrentMonth = now.getFullYear() === calYear && now.getMonth() === calMonth;
+
+    let html = WEEKDAY_LABELS.map((w) => `<div class="cal-weekday">${w}</div>`).join('');
+    for (let i = 0; i < firstDayIdx; i++) html += '<div class="cal-day empty-cell"></div>';
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateIso = isoDate(calYear, calMonth, d);
+      const due = dueSubsForDay(calYear, calMonth, d);
+      const classes = ['cal-day'];
+      if (due.length) classes.push('has-due');
+      if (isCurrentMonth && now.getDate() === d) classes.push('is-today');
+      if (dateIso === selectedDateIso) classes.push('selected');
+      html += `
+        <div class="${classes.join(' ')}" data-date="${dateIso}">
+          <span class="cal-day-num">${d}</span>
+          ${due.length ? `<span class="cal-day-dot">● ${due.length} გადასახდელი</span>` : ''}
+        </div>
+      `;
+    }
+
+    calendarGrid.innerHTML = html;
+
+    calendarGrid.querySelectorAll('.cal-day.has-due').forEach((cell) => {
+      cell.addEventListener('click', () => {
+        selectedDateIso = cell.dataset.date;
+        renderCalendar();
+        renderDayPanel(selectedDateIso);
+      });
+    });
+  }
+
+  function renderDayPanel(dateIso) {
+    const [y, m, d] = dateIso.split('-').map(Number);
+    const due = dueSubsForDay(y, m - 1, d);
+    calendarDayPanel.hidden = false;
+    if (!due.length) {
+      calendarDayPanel.innerHTML = '<p class="empty">ამ დღეს გადასახდელი არ არის.</p>';
+      return;
+    }
+    calendarDayPanel.innerHTML = `
+      <h3 style="margin:0 0 8px; font-size:0.98rem;">${formatDateOnly(dateIso)} — გადასახდელები</h3>
+      ${due.map((s) => `
+        <div class="due-row" data-id="${escapeHtml(s.id)}">
+          <div class="due-row-info">
+            <strong>${escapeHtml(s.company_name)}</strong>
+            <span>${escapeHtml(s.service)} • ${escapeHtml(s.price)} GEL${s.client_ref ? ' • ID: ' + escapeHtml(s.client_ref) : ''}${s.contact_number ? ' • ' + escapeHtml(s.contact_number) : ''}</span>
+          </div>
+          <div class="due-row-actions">
+            <button class="btn btn-sm invoice-btn" data-id="${escapeHtml(s.id)}">ინვოისის გენერაცია</button>
+          </div>
+        </div>
+      `).join('')}
+    `;
+
+    calendarDayPanel.querySelectorAll('.invoice-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const sub = subscriptionsCache.find((s) => s.id === btn.dataset.id);
+        if (sub) generateInvoice(sub, dateIso);
+      });
+    });
+  }
+
+  function generateInvoice(sub, dateIso) {
+    const invoiceNumber = `INV-${dateIso.replace(/-/g, '')}-${sub.id.slice(0, 8).toUpperCase()}`;
+    const issueDate = new Date().toLocaleDateString('ka-GE');
+    const dueDate = formatDateOnly(dateIso);
+    const win = window.open('', '_blank');
+    if (!win) { alert('ინვოისის ფანჯარა დაბლოკილია ბრაუზერის მიერ.'); return; }
+    win.document.write(`
+      <!DOCTYPE html>
+      <html lang="ka">
+      <head>
+      <meta charset="UTF-8">
+      <title>${escapeHtml(invoiceNumber)}</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif; color: #1a1c24; padding: 48px; max-width: 720px; margin: 0 auto; }
+        .inv-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
+        .inv-brand { font-weight: 700; font-size: 1.3rem; }
+        .inv-brand span { color: #6366f1; }
+        .inv-meta { text-align: right; font-size: 0.9rem; color: #55596b; }
+        .inv-meta strong { color: #1a1c24; }
+        h1 { font-size: 1.1rem; margin: 0 0 4px; }
+        .inv-section { margin-bottom: 28px; }
+        .inv-section h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a8fa3; margin: 0 0 8px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #e4e6ee; }
+        th { font-size: 0.72rem; text-transform: uppercase; color: #8a8fa3; }
+        .inv-total-row td { font-weight: 700; font-size: 1.05rem; border-bottom: none; padding-top: 16px; }
+        .inv-footer { margin-top: 48px; font-size: 0.8rem; color: #8a8fa3; text-align: center; }
+        @media print { body { padding: 0; } }
+      </style>
+      </head>
+      <body>
+        <div class="inv-header">
+          <div>
+            <div class="inv-brand">Grid<span>ly</span></div>
+            <div style="font-size:0.82rem; color:#55596b; margin-top:4px;">info@gridly.ge</div>
+          </div>
+          <div class="inv-meta">
+            <h1>ინვოისი</h1>
+            <div><strong>№</strong> ${escapeHtml(invoiceNumber)}</div>
+            <div>გამოცემის თარიღი: ${escapeHtml(issueDate)}</div>
+            <div>გადახდის თარიღი: ${escapeHtml(dueDate)}</div>
+          </div>
+        </div>
+
+        <div class="inv-section">
+          <h2>მომხმარებელი</h2>
+          <div>${escapeHtml(sub.company_name)}</div>
+          ${sub.client_ref ? `<div>ID: ${escapeHtml(sub.client_ref)}</div>` : ''}
+          ${sub.contact_number ? `<div>${escapeHtml(sub.contact_number)}</div>` : ''}
+        </div>
+
+        <div class="inv-section">
+          <h2>დეტალები</h2>
+          <table>
+            <thead><tr><th>სერვისი</th><th>პერიოდი</th><th style="text-align:right">თანხა</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>${escapeHtml(sub.service)}</td>
+                <td>ყოველთვიური გამოწერა</td>
+                <td style="text-align:right">${escapeHtml(sub.price)} GEL</td>
+              </tr>
+              <tr class="inv-total-row">
+                <td colspan="2">სულ გადასახდელი</td>
+                <td style="text-align:right">${escapeHtml(sub.price)} GEL</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="inv-footer">მადლობთ, რომ Gridly-ს ენდობით.</div>
+      </body>
+      </html>
+    `);
+    win.document.close();
+    win.focus();
+    win.print();
+  }
+
+  subscriptionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    saveSubscriptionBtn.disabled = true;
+    subscriptionStatus.textContent = '';
+    subscriptionStatus.className = 'status-msg';
+
+    const payload = {
+      company_name: document.getElementById('sub-company').value.trim(),
+      client_ref: document.getElementById('sub-client-ref').value.trim() || null,
+      contact_number: document.getElementById('sub-contact').value.trim() || null,
+      service: document.getElementById('sub-service').value.trim(),
+      price: Number(document.getElementById('sub-price').value),
+      subscribed_on: document.getElementById('sub-date').value,
+    };
+
+    try {
+      const { error } = await sb.from('subscriptions').insert(payload);
+      if (error) throw error;
+      subscriptionStatus.textContent = 'აბონენტი დაემატა.';
+      subscriptionStatus.className = 'status-msg ok';
+      subscriptionForm.reset();
+      await loadSubscriptions();
+    } catch (err) {
+      subscriptionStatus.textContent = err.message || 'აბონენტის დამატება ვერ მოხერხდა.';
+      subscriptionStatus.className = 'status-msg err';
+    } finally {
+      saveSubscriptionBtn.disabled = false;
+    }
+  });
+
+  document.getElementById('cal-prev').addEventListener('click', () => {
+    calMonth -= 1;
+    if (calMonth < 0) { calMonth = 11; calYear -= 1; }
+    renderCalendar();
+  });
+  document.getElementById('cal-next').addEventListener('click', () => {
+    calMonth += 1;
+    if (calMonth > 11) { calMonth = 0; calYear += 1; }
+    renderCalendar();
+  });
+  document.getElementById('cal-today').addEventListener('click', () => {
+    calYear = today.getFullYear();
+    calMonth = today.getMonth();
+    renderCalendar();
   });
 
   init();

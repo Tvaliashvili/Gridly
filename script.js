@@ -71,7 +71,7 @@
       'estimator.hours': 'საათი',
       'estimator.days': 'დღე',
       'estimator.mode.title': 'მოთხოვნის ტიპი',
-      'estimator.mode.consult': 'უფასო კონსულტაცია',
+      'estimator.mode.consult': 'კონსულტაცია',
       'estimator.mode.quote': 'პროექტის შეფასება',
       'estimator.pages.title': 'გვერდები',
       'estimator.base': 'საბაზისო პაკეტი',
@@ -89,8 +89,8 @@
       'estimator.features.domain': 'დომენი',
       'estimator.features.seo': 'SEO ოპტიმიზაცია',
       'estimator.urgency.title': 'მიწოდების სისწრაფე',
-      'estimator.urgency.standard': 'სტანდარტული (48-72სთ)',
-      'estimator.urgency.express': 'ექსპრესი (24სთ)',
+      'estimator.urgency.standard': 'სტანდარტული',
+      'estimator.urgency.express': 'ექსპრესი',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
       'estimator.send': 'მოთხოვნის გაგზავნა',
@@ -219,8 +219,8 @@
       'estimator.features.domain': 'Domain',
       'estimator.features.seo': 'SEO Optimization',
       'estimator.urgency.title': 'Delivery Urgency',
-      'estimator.urgency.standard': 'Standard (48-72h)',
-      'estimator.urgency.express': 'Express (24h)',
+      'estimator.urgency.standard': 'Standard',
+      'estimator.urgency.express': 'Express',
       'estimator.summary.title': 'Estimated total',
       'estimator.timeframe': 'Estimated delivery:',
       'estimator.send': 'Send request',
@@ -615,6 +615,55 @@
     const quoteFieldsEl = document.getElementById('est-quote-fields');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
+    let lastConsultState = null;
+
+    function setQuoteFieldsOpen(open, animate) {
+      quoteFieldsEl.removeEventListener('transitionend', quoteFieldsEl._onTransitionEnd || (() => {}));
+
+      if (!animate) {
+        quoteFieldsEl.style.transition = 'none';
+        if (open) {
+          quoteFieldsEl.hidden = false;
+          quoteFieldsEl.style.maxHeight = 'none';
+          quoteFieldsEl.style.opacity = '1';
+        } else {
+          quoteFieldsEl.hidden = true;
+          quoteFieldsEl.style.maxHeight = '0px';
+          quoteFieldsEl.style.opacity = '0';
+        }
+        void quoteFieldsEl.offsetHeight;
+        quoteFieldsEl.style.transition = '';
+        return;
+      }
+
+      if (open) {
+        quoteFieldsEl.hidden = false;
+        quoteFieldsEl.style.maxHeight = '0px';
+        quoteFieldsEl.style.opacity = '0';
+        void quoteFieldsEl.offsetHeight;
+        quoteFieldsEl.style.maxHeight = `${quoteFieldsEl.scrollHeight}px`;
+        quoteFieldsEl.style.opacity = '1';
+        const onEnd = (e) => {
+          if (e.propertyName !== 'max-height') return;
+          quoteFieldsEl.style.maxHeight = 'none';
+          quoteFieldsEl.removeEventListener('transitionend', onEnd);
+        };
+        quoteFieldsEl._onTransitionEnd = onEnd;
+        quoteFieldsEl.addEventListener('transitionend', onEnd);
+      } else {
+        quoteFieldsEl.style.maxHeight = `${quoteFieldsEl.scrollHeight}px`;
+        void quoteFieldsEl.offsetHeight;
+        quoteFieldsEl.style.maxHeight = '0px';
+        quoteFieldsEl.style.opacity = '0';
+        const onEnd = (e) => {
+          if (e.propertyName !== 'max-height') return;
+          quoteFieldsEl.hidden = true;
+          quoteFieldsEl.removeEventListener('transitionend', onEnd);
+        };
+        quoteFieldsEl._onTransitionEnd = onEnd;
+        quoteFieldsEl.addEventListener('transitionend', onEnd);
+      }
+    }
 
     function toDisplay(gelAmount) {
       return currentCurrency === 'USD' ? Math.round(gelAmount / USD_RATE) : gelAmount;
@@ -685,7 +734,9 @@
 
     function updateEstimate() {
       const consult = isConsultMode();
-      quoteFieldsEl.hidden = consult;
+      const modeChanged = lastConsultState !== null && lastConsultState !== consult;
+      setQuoteFieldsOpen(!consult, modeChanged);
+      lastConsultState = consult;
       timeframeEl.hidden = consult;
 
       document.querySelectorAll('.est-price-tag[data-price]').forEach((el) => {
