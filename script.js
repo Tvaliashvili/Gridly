@@ -726,7 +726,24 @@
       ];
     }
 
+    // Cross-browser CSS stretch (grid or flex) for two boxes side by side
+    // turned out unreliable once real pill wrapping/text lengths were
+    // involved - some engines left the taller box's content spilling past
+    // its own border instead of growing the box to fit. Matching heights
+    // explicitly in JS sidesteps that entirely.
+    function equalizeEstRowHeights() {
+      document.querySelectorAll('.est-row').forEach((row) => {
+        const groups = Array.from(row.children).filter((el) => el.classList.contains('est-group'));
+        if (groups.length < 2) return;
+        groups.forEach((g) => { g.style.height = 'auto'; });
+        const maxHeight = Math.max(...groups.map((g) => g.offsetHeight));
+        groups.forEach((g) => { g.style.height = `${maxHeight}px`; });
+      });
+    }
+
     function updateEstimate() {
+      equalizeEstRowHeights();
+
       const consult = isConsultMode();
       const modeChanged = lastConsultState !== null && lastConsultState !== consult;
       setQuoteFieldsOpen(!consult, modeChanged);
@@ -781,6 +798,12 @@
         packageSummary: items.join(', '),
       };
     }
+
+    let estRowResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(estRowResizeTimer);
+      estRowResizeTimer = setTimeout(equalizeEstRowHeights, 150);
+    });
 
     function setCurrencyUI() {
       currencySwitch.setAttribute('data-active', currentCurrency);
