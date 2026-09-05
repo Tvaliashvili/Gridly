@@ -903,7 +903,7 @@ section { padding: 100px 0; }
 
 .est-row {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 20px;
 }
