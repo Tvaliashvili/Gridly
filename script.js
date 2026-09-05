@@ -57,7 +57,6 @@
       'page.title': 'Gridly - თანამედროვე საიტები ადგილობრივი ბიზნესებისთვის',
       'page.desc': 'Gridly აშენებს სწრაფ, თანამედროვე და მაღალკონვერტირებად ვებგვერდებს ადგილობრივი ბიზნესებისთვის. მორგებული დიზაინი, ადმინ პანელები, SEO და Google Maps.',
       'nav.services': 'სერვისები',
-      'nav.portfolio': 'პორტფოლიო დემოები',
       'nav.faq': 'კითხვები',
       'nav.cta': 'უფასო შეთავაზება',
       'hero.eyebrow': 'ვებ-გვერდები პატარა და საშუალო ბიზნესებისთვის',
@@ -128,19 +127,6 @@
       'estimator.send': 'მოთხოვნის გაგზავნა',
       'estimator.disclaimer': 'საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
-      'portfolio.tag': 'ნახეთ საქმეში',
-      'portfolio.title': 'დემო პორტფოლიო',
-      'portfolio.desc': 'რამდენიმე მაგალითი იმისა, თუ როგორი საიტები გვაქვს აშენებული ისეთი ბიზნესებისთვის, როგორიც თქვენია.',
-      'portfolio.c1.tag': 'სილამაზე და სალონი',
-      'portfolio.c1.title': 'სალონი Luxe Hair',
-      'portfolio.c1.desc': 'ჯავშანზე ორიენტირებული საიტი გალერეით და მომსახურების ფასებით.',
-      'portfolio.c2.tag': 'რესტორანი',
-      'portfolio.c2.title': 'რესტორანი Tavola',
-      'portfolio.c2.desc': 'მენიუ, ჯავშნის ფორმა და მდებარეობის რუკა.',
-      'portfolio.c3.tag': 'ავტოსერვისი',
-      'portfolio.c3.title': 'ავტოსერვისი ProFix',
-      'portfolio.c3.desc': 'სერვისების სია, შეთავაზების მოთხოვნის ფორმა და მომხმარებელთა შეფასებები.',
-      'portfolio.demoBtn': 'დემოს ნახვა',
       'faq.tag': 'კითხვები',
       'faq.title': 'ხშირად დასმული კითხვები',
       'faq.desc': 'გაქვთ კითხვები? აქ არის პასუხები ყველაზე ხშირად დასმულ კითხვებზე.',
@@ -178,7 +164,6 @@
       'footer.navTitle': 'ნავიგაცია',
       'footer.contactTitle': 'დაგვიკავშირდით',
       'footer.copyright': 'ყველა უფლება დაცულია.',
-      'toast.demo': 'დემო მალე იქნება ხელმისაწვდომი - დაგვიკავშირდით საცნობებელი ვერსიის სანახავად.',
     },
     en: {
       'banner.testMode': 'This website is running in test mode - content may change',
@@ -187,7 +172,6 @@
       'page.title': 'Gridly - Modern Websites for Local Businesses',
       'page.desc': 'Gridly builds fast, modern, high-converting websites for local businesses. Custom design, admin panels, SEO & Google Maps setup.',
       'nav.services': 'Services',
-      'nav.portfolio': 'Portfolio Demos',
       'nav.faq': 'FAQ',
       'nav.cta': 'Get a Free Quote',
       'hero.eyebrow': 'Websites for small and medium businesses',
@@ -258,19 +242,6 @@
       'estimator.send': 'Send request',
       'estimator.disclaimer': 'Final pricing may vary slightly based on project details.',
       'lead.error': 'Something went wrong sending your request. Please try again.',
-      'portfolio.tag': 'See it in action',
-      'portfolio.title': 'Demo Portfolio',
-      'portfolio.desc': 'A few examples of the kind of sites we build for local businesses like yours.',
-      'portfolio.c1.tag': 'Beauty & Salon',
-      'portfolio.c1.title': 'Luxe Hair Salon',
-      'portfolio.c1.desc': 'Booking-focused site with gallery & service pricing.',
-      'portfolio.c2.tag': 'Restaurant',
-      'portfolio.c2.title': 'Tavola Restaurant',
-      'portfolio.c2.desc': 'Menu, reservations form & map location.',
-      'portfolio.c3.tag': 'Auto Service',
-      'portfolio.c3.title': 'ProFix Auto Service',
-      'portfolio.c3.desc': 'Service list, quote request form & customer reviews.',
-      'portfolio.demoBtn': 'View Demo',
       'faq.tag': 'Questions',
       'faq.title': 'Frequently Asked Questions',
       'faq.desc': "Got questions? Here are answers to the ones we hear most.",
@@ -308,7 +279,6 @@
       'footer.navTitle': 'Navigate',
       'footer.contactTitle': 'Get in touch',
       'footer.copyright': 'All rights reserved.',
-      'toast.demo': 'demo coming soon - contact us to see a live preview.',
     },
   };
 
@@ -562,8 +532,7 @@
 
   if (supportsHover) {
     tiltEls.forEach((el) => {
-      const isCard = el.classList.contains('portfolio-card');
-      const maxTilt = isCard ? 8 : 4;
+      const maxTilt = 4;
 
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
@@ -598,31 +567,6 @@
       });
 
       btn.setAttribute('aria-expanded', String(!isOpen));
-    });
-  });
-
-  /* ---------------- Demo portfolio buttons ---------------- */
-  const toast = document.getElementById('demo-toast');
-  let toastTimer = null;
-
-  function showToast(message) {
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
-  }
-
-  const demoNames = {
-    salon: { ge: 'Luxe Hair Salon', en: 'Luxe Hair Salon' },
-    restaurant: { ge: 'Tavola Restaurant', en: 'Tavola Restaurant' },
-    auto: { ge: 'ProFix Auto Service', en: 'ProFix Auto Service' },
-  };
-
-  document.querySelectorAll('.demo-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const key = btn.dataset.demo;
-      const name = (demoNames[key] && demoNames[key][currentLang]) || 'this project';
-      showToast(`"${name}" ${t('toast.demo')}`);
     });
   });
 
