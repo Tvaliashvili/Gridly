@@ -32,15 +32,21 @@
   }
 
   function showMaintenancePage() {
-    document.title = t('maintenance.title');
+    // No language switcher exists on this replaced page, so a visitor whose
+    // saved/browser language doesn't match currentLang would otherwise be
+    // stuck reading the wrong one - show both instead of picking one.
+    document.title = `${translations.ge['maintenance.title']} / ${translations.en['maintenance.title']}`;
     document.body.innerHTML = `
       <div class="maintenance-screen">
         <div class="maintenance-card">
           <div class="maintenance-icon">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           </div>
-          <h1>${t('maintenance.title')}</h1>
-          <p>${t('maintenance.desc')}</p>
+          <h1>${translations.ge['maintenance.title']}</h1>
+          <p>${translations.ge['maintenance.desc']}</p>
+          <hr class="maintenance-divider">
+          <h1>${translations.en['maintenance.title']}</h1>
+          <p>${translations.en['maintenance.desc']}</p>
         </div>
       </div>
     `;

@@ -125,6 +125,8 @@ h1, h2, h3, h4, p, span, a, li,
 }
 
 .text-gradient {
+  font-family: 'Orbitron', 'Space Grotesk', sans-serif;
+  letter-spacing: 0.03em;
   background: linear-gradient(90deg, #a5b4fc, #67e8f9, #c4b5fd, #a5b4fc);
   background-size: 300% auto;
   -webkit-background-clip: text;
@@ -483,6 +485,10 @@ h1, h2, h3, h4, p, span, a, li,
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
   font-size: 1.25rem;
+}
+.logo-text {
+  font-family: 'Orbitron', 'Space Grotesk', sans-serif;
+  letter-spacing: 0.04em;
 }
 .logo-mark {
   display: flex;
@@ -1678,3 +1684,5 @@ body {
 }
 .maintenance-card h1 { font-size: 1.35rem; margin: 0 0 12px; }
 .maintenance-card p { color: var(--text-dim); margin: 0; line-height: 1.6; }
+.maintenance-card h1:last-of-type { margin-top: 0; }
+.maintenance-divider { border: none; border-top: 1px solid var(--glass-border); margin: 20px 0; }
