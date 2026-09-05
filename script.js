@@ -601,6 +601,7 @@
         quoteFieldsEl.style.transition = 'none';
         if (open) {
           quoteFieldsEl.hidden = false;
+          equalizeEstRowHeights();
           quoteFieldsEl.style.maxHeight = 'none';
           quoteFieldsEl.style.opacity = '1';
         } else {
@@ -615,6 +616,7 @@
 
       if (open) {
         quoteFieldsEl.hidden = false;
+        equalizeEstRowHeights();
         quoteFieldsEl.style.maxHeight = '0px';
         quoteFieldsEl.style.opacity = '0';
         void quoteFieldsEl.offsetHeight;
@@ -742,8 +744,6 @@
     }
 
     function updateEstimate() {
-      equalizeEstRowHeights();
-
       const consult = isConsultMode();
       const modeChanged = lastConsultState !== null && lastConsultState !== consult;
       setQuoteFieldsOpen(!consult, modeChanged);
