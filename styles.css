@@ -277,7 +277,7 @@ h1, h2, h3, h4, p, span, a, li,
 /* Sun (light mode) / moon (dark mode) floating above the hero mock window */
 .sky-icon {
   position: absolute;
-  top: -78px;
+  top: -56px;
   left: 18%;
   z-index: 4;
   pointer-events: none;
