@@ -902,12 +902,15 @@ section { padding: 100px 0; }
 }
 
 .est-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
 .est-group {
+  flex: 1 1 calc(50% - 10px);
+  min-width: 0;
   padding: 22px 24px;
   border-radius: var(--radius-lg);
   background: var(--est-card-bg);
@@ -1111,7 +1114,7 @@ section { padding: 100px 0; }
 
 /* A single pill-group (the "request type" row) spans both columns instead
    of leaving the second column empty. */
-.est-group-wide { grid-column: 1 / -1; }
+.est-group-wide { flex-basis: 100%; }
 
 /* The [hidden] attribute loses to this element's own `display: flex` under
    normal cascade rules (author beats user-agent regardless of specificity),
@@ -1487,8 +1490,8 @@ section { padding: 100px 0; }
   }
 
   /* ---- Estimator: single column groups, full-width controls ---- */
-  .est-row { grid-template-columns: 1fr; gap: 16px; }
-  .est-group { padding: 20px 18px; }
+  .est-row { gap: 16px; }
+  .est-group { flex-basis: 100%; padding: 20px 18px; }
   .estimator-summary { padding: 24px 20px; }
   .est-total { font-size: 2.1rem; }
   #est-send-btn { min-height: 48px; }
