@@ -936,20 +936,24 @@ section { padding: 100px 0; }
   transition: max-height 0.42s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
-/* Pill-shaped toggle card. white-space: nowrap keeps each label intact —
-   a pill wraps to the next line as a whole unit instead of breaking mid-word. */
+/* Pill-shaped toggle card. A long label + price tag can be wider than
+   whichever box the pill ends up in (the two-column layout leaves each
+   box only about half the row's width) - allowing the label to wrap
+   onto a second line keeps the whole pill inside its container instead
+   of it (or the page) overflowing horizontally. */
 .est-pill {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 42px;
+  max-width: 100%;
   padding: 9px 16px 9px 30px;
   border-radius: var(--radius-full);
   border: 1px solid var(--est-pill-border);
   background: var(--est-pill-bg);
   cursor: pointer;
-  white-space: nowrap;
+  white-space: normal;
   transition: border-color 0.2s var(--ease), background 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
 }
 .est-pill::before {
@@ -987,7 +991,7 @@ section { padding: 100px 0; }
   height: 1px;
 }
 
-.est-pill-text { font-size: 0.86rem; font-weight: 600; color: var(--est-text); white-space: nowrap; }
+.est-pill-text { font-size: 0.86rem; font-weight: 600; color: var(--est-text); white-space: normal; overflow-wrap: break-word; min-width: 0; }
 
 .est-pill-price {
   flex-shrink: 0;
@@ -1495,16 +1499,6 @@ section { padding: 100px 0; }
   .estimator-summary { padding: 24px 20px; }
   .est-total { font-size: 2.1rem; }
   #est-send-btn { min-height: 48px; }
-
-  /* Pills no longer force a single line here — a long label + price tag can
-     be wider than the phone screen itself, which pushed the whole page into
-     horizontal scroll. Let the label wrap onto a second line instead. */
-  .est-pill {
-    max-width: 100%;
-    white-space: normal;
-    padding: 9px 14px 9px 28px;
-  }
-  .est-pill-text { white-space: normal; overflow-wrap: break-word; min-width: 0; }
 
   /* ---- Footer: centered ---- */
   .footer-inner { grid-template-columns: 1fr; gap: 32px; text-align: center; }
