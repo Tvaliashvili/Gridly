@@ -937,7 +937,8 @@ section { padding: 100px 0; }
 .est-timeframe {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px 8px;
   font-size: 0.86rem;
   color: var(--est-text-dim);
   padding-bottom: 18px;
@@ -945,6 +946,7 @@ section { padding: 100px 0; }
 }
 .est-timeframe svg { color: var(--est-accent-2); flex-shrink: 0; }
 .est-timeframe strong { color: var(--est-text); }
+.est-timeframe-value-wrap { white-space: nowrap; }
 
 /* Receipt-style line items */
 .est-receipt {
