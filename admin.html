@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gridly — Admin</title>
+<title>Gridly - Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
   * { box-sizing: border-box; }
@@ -33,22 +33,38 @@
     font-family: 'Georgia', serif;
     color: #08090d;
   }
-  .tabs { display: flex; gap: 8px; align-items: center; }
-  .tab-btn {
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 1px solid #23262f;
-    background: #12141c;
-    color: #a7abbd;
-    font-weight: 600;
-    font-size: 0.86rem;
-    cursor: pointer;
-  }
-  .tab-btn.active { border-color: #6366f1; background: rgba(99,102,241,0.14); color: #fff; }
   .header-right { display: flex; align-items: center; gap: 16px; }
   .signed-in-as { font-size: 0.8rem; color: #6b6f83; }
 
-  main { max-width: 1100px; margin: 0 auto; padding: 28px; }
+  .app-body { display: flex; align-items: flex-start; }
+
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 24px 14px;
+    border-right: 1px solid #23262f;
+    min-height: calc(100vh - 68px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tab-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 11px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #a7abbd;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+  }
+  .tab-btn:hover { background: #171a24; color: #f2f3f7; }
+  .tab-btn.active { border-color: #6366f1; background: rgba(99,102,241,0.14); color: #fff; }
+
+  main { flex: 1; min-width: 0; max-width: 1100px; margin: 0 auto; padding: 28px; }
   section[hidden] { display: none; }
 
   .panel {
@@ -172,14 +188,16 @@
   <header>
     <div class="brand"><span class="brand-mark">G</span> Gridly Admin</div>
     <div class="header-right">
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="leads">Leads</button>
-        <button class="tab-btn" data-tab="pricing">Pricing</button>
-      </div>
       <span class="signed-in-as" id="signed-in-as"></span>
       <button class="btn btn-ghost" id="logout-btn">Sign out</button>
     </div>
   </header>
+
+  <div class="app-body">
+    <nav class="sidebar">
+      <button class="tab-btn active" data-tab="leads">Leads</button>
+      <button class="tab-btn" data-tab="pricing">Pricing</button>
+    </nav>
 
   <main>
     <section id="tab-leads">
@@ -202,7 +220,7 @@
         <form id="pricing-form">
           <div class="price-grid">
             <div class="price-field">
-              <label for="base_price">Base price — Landing Page (GEL)</label>
+              <label for="base_price">Base price - Landing Page (GEL)</label>
               <input type="number" min="0" step="1" id="base_price" name="base_price" required>
             </div>
             <div class="price-field">
@@ -244,6 +262,7 @@
       </div>
     </section>
   </main>
+  </div>
 </div>
 
 <script>
@@ -464,7 +483,7 @@
         .update({ ...payload, updated_at: new Date().toISOString() })
         .eq('id', 'default');
       if (error) throw error;
-      pricingStatus.textContent = 'Saved — the live site now uses these prices.';
+      pricingStatus.textContent = 'Saved - the live site now uses these prices.';
       pricingStatus.className = 'status-msg ok';
     } catch (err) {
       pricingStatus.textContent = err.message || 'Could not save pricing.';
