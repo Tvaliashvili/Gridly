@@ -37,8 +37,8 @@
       'hero.chip1': 'გაშვება დღეებში, არა თვეებში',
       'hero.chip2': '+150% მეტი მოთხოვნა',
       'ps.tag': 'რატომ არის მნიშვნელოვანი',
-      'ps.title': 'ვებგვერდის გარეშე ახალი კლიენტები არ გექნებათ',
-      'ps.desc': 'ყოველ დღეს ვებგვერდის გარეშე, თქვენი კონკურენტები იზიდავენ იმ კლიენტებს, ვინც სწორედ თქვენ გეძებდათ.',
+      'ps.title': 'ვებგვერდის გარეშე ახალი კლიენტები არ გეყოლებათ',
+      'ps.desc': 'ყოველ დღე, სანამ თქვენი ვებ-გვერდი არ არსებობს, კონკურენტები იზიდავენ იმ კლიენტებს, ვინც ზუსტად თქვენ გეძებდათ.',
       'ps.problem.title': 'Gridly-ს გარეშე',
       'ps.problem.li1': 'კლიენტები ვერ გპოულობენ Google-სა და Maps-ზე',
       'ps.problem.li2': 'მოძველებული ან არარსებული საიტი არაპროფესიონალურად გამოიყურება',
@@ -49,15 +49,15 @@
       'ps.solution.li2': 'სწრაფი, თანამედროვე საიტი, რომელიც მყისიერად იმსახურებს ნდობას',
       'ps.solution.li3': 'საკონტაქტო ფორმები, რომლებიც მუშაობს დღე-ღამის განმავლობაში',
       'ps.solution.li4': 'მიიღეთ საიტი, რომელიც ვიზიტორებს რეალურ კლიენტებად აქცევს',
-      'services.tag': 'რას ვაშენებთ',
+      'services.tag': 'რას ვაკეთებთ',
       'services.title': 'სერვისები და შესაძლებლობები',
       'services.desc': 'ყველაფერი, რაც თქვენს ბიზნესს სჭირდება პროფესიონალურად გამოსაჩენად და ონლაინ საპოვნელად.',
       'services.c1.title': 'მორგებული საიტები',
-      'services.c1.desc': 'ხელნაშენი HTML, CSS და JavaScript-ით - არავითარი გადატვირთული შაბლონები, მხოლოდ სუფთა და სწრაფი კოდი.',
+      'services.c1.desc': 'ხელნაკეთი HTML, CSS და JavaScript-ით - არავითარი გადატვირთული შაბლონები, მხოლოდ სუფთა და სწრაფი კოდი.',
       'services.c2.title': 'მორგებული ადმინ პანელი',
       'services.c2.desc': 'მართეთ საკუთარი კონტენტი, ფოტოები და ფასები კოდის ცოდნის გარეშე.',
-      'services.c3.title': 'მობილურად ადაპტირება',
-      'services.c3.desc': 'იდეალურად გამოიყურება ნებისმიერ ეკრანზე - ადგილობრივი კლიენტების უმეტესობა თქვენ მობილურით პოულობს.',
+      'services.c3.title': 'მობილურთან თავსებადი',
+      'services.c3.desc': 'იდეალურად გამოიყურება ნებისმიერ ეკრანზე - კლიენტების უმეტესობა მობილურით გპოულობთ.',
       'services.c4.title': 'SEO ოპტიმიზაცია',
       'services.c4.desc': 'სუფთა სტრუქტურა და მეტამონაცემები, რათა საიტი რეალურად გამოჩნდეს Google-ის ძიებაში.',
       'services.c5.title': 'Google Maps-ის დაყენება',
@@ -73,7 +73,7 @@
       'estimator.days': 'დღე',
       'estimator.pages.title': 'გვერდები',
       'estimator.base': 'საბაზისო პაკეტი',
-      'estimator.pages.landing': 'ლენდინგ გვერდი',
+      'estimator.pages.landing': 'ერთ გვერდიანი',
       'estimator.pages.multi': 'მრავალგვერდიანი საიტი',
       'estimator.lang.title': 'ენა',
       'estimator.lang.ge': 'მხოლოდ ქართული',
@@ -89,23 +89,20 @@
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
       'estimator.send': 'ამ შეფასების გაგზავნა',
-      'estimator.pdf': 'ოფიციალური შეთავაზების ჩამოტვირთვა (PDF)',
       'estimator.disclaimer': 'საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.',
       'estimator.msg.header': 'სავარაუდო შეფასება:',
       'estimator.msg.total': 'სავარაუდო ჯამი',
       'estimator.msg.timeframe': 'სავარაუდო ვადა',
-      'estimator.pdf.error': 'PDF-ის გენერაცია ვერ მოხერხდა. სცადეთ თავიდან.',
-      'estimator.pdf.generating': 'გენერირდება...',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
       'portfolio.tag': 'ნახეთ საქმეში',
-      'portfolio.title': 'დემო პორტფოლიოს ვიტრინა',
+      'portfolio.title': 'დემო პორტფოლიო',
       'portfolio.desc': 'რამდენიმე მაგალითი იმისა, თუ როგორი საიტები გვაქვს აშენებული ისეთი ბიზნესებისთვის, როგორიც თქვენია.',
       'portfolio.c1.tag': 'სილამაზე და სალონი',
       'portfolio.c1.title': 'სალონი Luxe Hair',
       'portfolio.c1.desc': 'ჯავშანზე ორიენტირებული საიტი გალერეით და მომსახურების ფასებით.',
       'portfolio.c2.tag': 'რესტორანი',
       'portfolio.c2.title': 'რესტორანი Tavola',
-      'portfolio.c2.desc': 'მენიუს ვიტრინა, ჯავშნის ფორმა და მდებარეობის რუკა.',
+      'portfolio.c2.desc': 'მენიუ, ჯავშნის ფორმა და მდებარეობის რუკა.',
       'portfolio.c3.tag': 'ავტოსერვისი',
       'portfolio.c3.title': 'ავტოსერვისი ProFix',
       'portfolio.c3.desc': 'სერვისების სია, შეთავაზების მოთხოვნის ფორმა და მომხმარებელთა შეფასებები.',
@@ -125,9 +122,9 @@
       'faq.a5': 'აბსოლუტურად - მუშაობის განმავლობაში მუდმივად გაგიზიარებთ პროგრესს და მოგცემთ საშუალებას ნახოთ და შეაფასოთ საიტი მის საბოლოო გაშვებამდე.',
       'contact.tag': 'მოდი ვისაუბროთ',
       'contact.title': 'მიიღეთ უფასო შეთავაზება',
-      'contact.desc': 'გვიამბეთ ცოტა თქვენი ბიზნესის შესახებ და 24 საათში დაგიკავშირდებით ინდივიდუალური შეთავაზებით.',
+      'contact.desc': 'მოგვიყევით თქვენი ბიზნესის შესახებ. ჩვენი წარმომადგენელი უმოკლეს ვადაში დაგივაკშირდებათ.',
       'contact.point1': 'უფასო, არაფრით შემზღუდავი კონსულტაცია',
-      'contact.point2': 'პასუხი 24 საათში',
+      'contact.point2': 'პასუხი უმოკლეს დროში',
       'contact.point3': 'ფასი მორგებული თქვენს საჭიროებებზე',
       'form.name.label': 'სრული სახელი',
       'form.name.placeholder': 'მაგ. ნინო ბერიძე',
@@ -176,7 +173,7 @@
       'hero.chip2': '+150% more inquiries',
       'ps.tag': 'Why it matters',
       'ps.title': 'No website means no new customers',
-      'ps.desc': 'Every day without a strong online presence, your competitors capture the customers who were searching for you.',
+      'ps.desc': "Every day your website doesn't exist, your competitors are capturing the customers who were searching for exactly you.",
       'ps.problem.title': 'Without Gridly',
       'ps.problem.li1': "Customers can't find you on Google or Maps",
       'ps.problem.li2': 'Outdated or no website looks unprofessional',
@@ -187,15 +184,15 @@
       'ps.solution.li2': 'A fast, modern site that builds instant trust',
       'ps.solution.li3': 'Contact forms & booking that work around the clock',
       'ps.solution.li4': 'Get a site that turns visitors into real clients',
-      'services.tag': 'What we build',
+      'services.tag': 'What we do',
       'services.title': 'Services & Features',
       'services.desc': 'Everything your business needs to look professional and get found online.',
       'services.c1.title': 'Custom Coded Websites',
       'services.c1.desc': 'Hand-built with HTML, CSS & JavaScript - no bloated templates, just clean, fast-loading code.',
       'services.c2.title': 'Custom Admin Panels',
       'services.c2.desc': 'Manage your own content, photos and prices without touching a line of code.',
-      'services.c3.title': 'Mobile Responsiveness',
-      'services.c3.desc': 'Pixel-perfect on every screen - most local customers find you on their phone first.',
+      'services.c3.title': 'Mobile Compatible',
+      'services.c3.desc': 'Pixel-perfect on every screen - most customers find you on their phone first.',
       'services.c4.title': 'SEO Optimization',
       'services.c4.desc': 'Clean structure and metadata so your site actually shows up in Google search results.',
       'services.c5.title': 'Google Maps Setup',
@@ -211,7 +208,7 @@
       'estimator.days': 'days',
       'estimator.pages.title': 'Pages',
       'estimator.base': 'Base package',
-      'estimator.pages.landing': 'Landing Page',
+      'estimator.pages.landing': 'One Page',
       'estimator.pages.multi': 'Multi-page site',
       'estimator.lang.title': 'Language',
       'estimator.lang.ge': 'Georgian only',
@@ -227,23 +224,20 @@
       'estimator.summary.title': 'Estimated total',
       'estimator.timeframe': 'Estimated delivery:',
       'estimator.send': 'Send this estimate',
-      'estimator.pdf': 'Download Official Proposal (PDF)',
       'estimator.disclaimer': 'Final pricing may vary slightly based on project details.',
       'estimator.msg.header': 'Estimated quote:',
       'estimator.msg.total': 'Estimated total',
       'estimator.msg.timeframe': 'Estimated timeframe',
-      'estimator.pdf.error': 'Could not generate the PDF. Please try again.',
-      'estimator.pdf.generating': 'Generating...',
       'lead.error': 'Something went wrong sending your request. Please try again.',
       'portfolio.tag': 'See it in action',
-      'portfolio.title': 'Demo Portfolio Showcase',
+      'portfolio.title': 'Demo Portfolio',
       'portfolio.desc': 'A few examples of the kind of sites we build for local businesses like yours.',
       'portfolio.c1.tag': 'Beauty & Salon',
       'portfolio.c1.title': 'Luxe Hair Salon',
       'portfolio.c1.desc': 'Booking-focused site with gallery & service pricing.',
       'portfolio.c2.tag': 'Restaurant',
       'portfolio.c2.title': 'Tavola Restaurant',
-      'portfolio.c2.desc': 'Menu showcase, reservations form & map location.',
+      'portfolio.c2.desc': 'Menu, reservations form & map location.',
       'portfolio.c3.tag': 'Auto Service',
       'portfolio.c3.title': 'ProFix Auto Service',
       'portfolio.c3.desc': 'Service list, quote request form & customer reviews.',
@@ -263,9 +257,9 @@
       'faq.a5': 'Absolutely - we share progress throughout the build so you can review and give feedback before final launch.',
       'contact.tag': "Let's talk",
       'contact.title': 'Get Your Free Quote',
-      'contact.desc': "Tell us a bit about your business and we'll get back to you within 24 hours with a custom quote.",
+      'contact.desc': "Tell us about your business. Our representative will get back to you as soon as possible.",
       'contact.point1': 'Free, no-obligation consultation',
-      'contact.point2': 'Response within 24 hours',
+      'contact.point2': 'Response as soon as possible',
       'contact.point3': 'Pricing tailored to your needs',
       'form.name.label': 'Full Name',
       'form.name.placeholder': 'e.g. Nino Beridze',
@@ -587,9 +581,6 @@
     const timeframeUnitEl = document.getElementById('est-timeframe-unit');
     const selectedListEl = document.getElementById('est-selected-list');
     const sendBtn = document.getElementById('est-send-btn');
-    const pdfBtn = document.getElementById('est-pdf-btn');
-    const pdfBtnLabel = pdfBtn.querySelector('span');
-    const pdfBtnLabelText = pdfBtnLabel.textContent;
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
 
@@ -774,172 +765,6 @@
       if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    pdfBtn.addEventListener('click', () => {
-      if (!lastEstimate) return;
-      const nameField = document.getElementById('name');
-      const contactField = document.getElementById('contactMethod');
-
-      pdfBtn.disabled = true;
-      pdfBtnLabel.textContent = t('estimator.pdf.generating');
-
-      try {
-        if (!window.jspdf) throw new Error('PDF library not loaded');
-        generateProposalPdf({
-          name: (nameField && nameField.value.trim()) || 'Valued Client',
-          contact: (contactField && contactField.value.trim()) || '-',
-          breakdown: lastEstimate.breakdown,
-          total: lastEstimate.totalDisplay,
-          currency: lastEstimate.currency,
-          timeframeMin: lastEstimate.timeframeRaw.min,
-          timeframeMax: lastEstimate.timeframeRaw.max,
-        });
-      } catch (err) {
-        showToast(t('estimator.pdf.error'));
-      } finally {
-        pdfBtn.disabled = false;
-        pdfBtnLabel.textContent = pdfBtnLabelText;
-      }
-    });
-  }
-
-  /* ---------------- Client-side PDF proposal (jsPDF) ----------------
-     Runs entirely in the browser — no server involved. jsPDF's built-in
-     fonts are Latin-only, so this always uses the English breakdown
-     labels (see data-en on each estimator input) regardless of UI language. */
-  function formatTimeframePdf(min, max) {
-    const lo = Number(min) || 0;
-    const hi = Number(max) || lo;
-    if (hi <= 96) return `${lo}-${hi} hours`;
-    return `${Math.round(lo / 24)}-${Math.round(hi / 24)} days`;
-  }
-
-  function generateProposalPdf(data) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-    const marginX = 50;
-
-    const C = {
-      bg: [15, 17, 23],
-      panel: [18, 20, 28],
-      border: [35, 38, 47],
-      text: [242, 243, 247],
-      dim: [167, 171, 189],
-      accent: [99, 102, 241],
-      accent2: [34, 211, 238],
-    };
-
-    doc.setFillColor(...C.bg);
-    doc.rect(0, 0, pageW, pageH, 'F');
-
-    doc.setFillColor(...C.accent);
-    doc.rect(0, 0, pageW, 130, 'F');
-    doc.setFillColor(255, 255, 255);
-    doc.circle(marginX + 20, 55, 20, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(20);
-    doc.setTextColor(...C.accent);
-    doc.text('G', marginX + 14, 62);
-
-    doc.setFontSize(24);
-    doc.setTextColor(255, 255, 255);
-    doc.text('Gridly', marginX + 52, 58);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(230, 230, 250);
-    doc.text('Websites for small and medium businesses', marginX + 52, 76);
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(13);
-    doc.setTextColor(255, 255, 255);
-    doc.text('OFFICIAL PROJECT PROPOSAL', pageW - marginX, 50, { align: 'right' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(220, 220, 240);
-    doc.text(new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }), pageW - marginX, 70, { align: 'right' });
-
-    let y = 165;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.setTextColor(...C.text);
-    doc.text('Prepared for', marginX, y);
-    y += 20;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(...C.dim);
-    doc.text(`Name: ${data.name}`, marginX, y);
-    y += 16;
-    doc.text(`Contact: ${data.contact}`, marginX, y);
-    y += 34;
-
-    doc.setDrawColor(...C.border);
-    doc.setLineWidth(1);
-    doc.line(marginX, y, pageW - marginX, y);
-    y += 26;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.setTextColor(...C.text);
-    doc.text('Selected Features & Pricing', marginX, y);
-    y += 26;
-
-    data.breakdown.forEach((row, i) => {
-      if (i % 2 === 0) {
-        doc.setFillColor(...C.panel);
-        doc.rect(marginX, y - 14, pageW - marginX * 2, 26, 'F');
-      }
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10.5);
-      doc.setTextColor(...C.text);
-      doc.text(row.label, marginX + 12, y);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(...C.accent2);
-      doc.text(`+${row.priceDisplay} ${data.currency}`, pageW - marginX - 12, y, { align: 'right' });
-      y += 26;
-    });
-
-    y += 10;
-    doc.setDrawColor(...C.border);
-    doc.line(marginX, y, pageW - marginX, y);
-    y += 24;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(...C.text);
-    doc.text('Total Estimated Cost', marginX, y);
-    doc.setFontSize(20);
-    doc.setTextColor(...C.accent2);
-    doc.text(`${data.total} ${data.currency}`, pageW - marginX, y, { align: 'right' });
-    y += 36;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(...C.dim);
-    doc.text(`Estimated delivery: ${formatTimeframePdf(data.timeframeMin, data.timeframeMax)}`, marginX, y);
-    y += 34;
-
-    doc.setFontSize(9.5);
-    const disclaimer = doc.splitTextToSize(
-      'This is an automatically generated estimate based on the options selected on gridly.ge. ' +
-      'Final pricing is confirmed after a short consultation and may vary based on project specifics.',
-      pageW - marginX * 2
-    );
-    doc.text(disclaimer, marginX, y);
-
-    const footerY = pageH - 70;
-    doc.setDrawColor(...C.border);
-    doc.line(marginX, footerY, pageW - marginX, footerY);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(...C.text);
-    doc.text('Gridly', marginX, footerY + 14);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9.5);
-    doc.setTextColor(...C.dim);
-    doc.text('info@gridly.com   |   gridly.ge', marginX, footerY + 30);
-
-    doc.save('gridly-proposal.pdf');
   }
 
   /* ---------------- Contact form validation ---------------- */
