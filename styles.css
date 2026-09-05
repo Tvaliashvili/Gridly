@@ -1374,9 +1374,6 @@ section { padding: 100px 0; }
   .nav-tools .theme-toggle { width: 48px; height: 48px; }
   .nav-tools .btn { width: 100%; min-height: 48px; }
 
-  .hero-inner { grid-template-columns: 1fr; gap: 44px; }
-  .hero-visual { order: -1; max-width: 600px; margin-inline: auto; width: 100%; }
-
   /* Balanced 2-column grid for the 6-item services grid */
   .services-grid { grid-template-columns: repeat(2, 1fr); }
 
@@ -1440,6 +1437,8 @@ section { padding: 100px 0; }
 
   /* ---- Hero: centered content, stacked & centered CTAs ---- */
   .hero { padding: calc(var(--header-h) + var(--banner-h) + 40px) 0 64px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+  .hero-visual { order: -1; max-width: 600px; margin-inline: auto; width: 100%; }
   .hero-copy { text-align: center; display: flex; flex-direction: column; align-items: center; }
   .hero-title { font-size: max(1.8rem, 5vw); }
   .hero-sub { max-width: 440px; }
