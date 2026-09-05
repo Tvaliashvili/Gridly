@@ -866,7 +866,8 @@
             <span>${escapeHtml(s.service)} • ${escapeHtml(s.price)} GEL${s.client_ref ? ' • ID: ' + escapeHtml(s.client_ref) : ''}${s.contact_number ? ' • ' + escapeHtml(s.contact_number) : ''}</span>
           </div>
           <div class="due-row-actions">
-            <button class="btn btn-sm invoice-btn" data-id="${escapeHtml(s.id)}">ინვოისის გენერაცია</button>
+            <button class="btn btn-sm invoice-btn" data-id="${escapeHtml(s.id)}" data-lang="ge">ინვოისი (GE)</button>
+            <button class="btn btn-sm btn-ghost invoice-btn" data-id="${escapeHtml(s.id)}" data-lang="en">Invoice (EN)</button>
           </div>
         </div>
       `).join('')}
@@ -875,81 +876,223 @@
     calendarDayPanel.querySelectorAll('.invoice-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         const sub = subscriptionsCache.find((s) => s.id === btn.dataset.id);
-        if (sub) generateInvoice(sub, dateIso);
+        if (sub) generateInvoice(sub, dateIso, btn.dataset.lang);
       });
     });
   }
 
-  function generateInvoice(sub, dateIso) {
+  const INVOICE_TEXT = {
+    ge: {
+      htmlLang: 'ka',
+      customer: 'მომხმარებელი',
+      invoiceNo: 'ინვოისი №',
+      issueDate: 'გამოცემის თარიღი',
+      dueDate: 'გადახდის თარიღი',
+      title: 'ინვოისი',
+      service: 'სერვისი',
+      amount: 'თანხა',
+      monthly: 'ყოველთვიური გამოწერა',
+      total: 'სულ გადასახდელი',
+      notesTitle: 'შენიშვნა',
+      notesBody: 'მადლობთ, რომ Gridly-ს ენდობით. კითხვების შემთხვევაში დაგვიკავშირდით: info@gridly.ge',
+      page: 'გვერდი 1/1',
+      dateLocale: 'ka-GE',
+    },
+    en: {
+      htmlLang: 'en',
+      customer: 'Customer',
+      invoiceNo: 'Invoice No.',
+      issueDate: 'Issue date',
+      dueDate: 'Due date',
+      title: 'Invoice',
+      service: 'Service',
+      amount: 'Amount',
+      monthly: 'Monthly subscription',
+      total: 'Total due',
+      notesTitle: 'Notes',
+      notesBody: 'Thank you for trusting Gridly. For any questions, contact us at info@gridly.ge',
+      page: 'Page 1/1',
+      dateLocale: 'en-US',
+    },
+  };
+
+  function generateInvoice(sub, dateIso, lang) {
+    const tr = INVOICE_TEXT[lang] || INVOICE_TEXT.ge;
     const invoiceNumber = `INV-${dateIso.replace(/-/g, '')}-${sub.id.slice(0, 8).toUpperCase()}`;
-    const issueDate = new Date().toLocaleDateString('ka-GE');
-    const dueDate = formatDateOnly(dateIso);
+    const issueDate = new Date().toLocaleDateString(tr.dateLocale);
+    const dueDate = new Date(dateIso).toLocaleDateString(tr.dateLocale);
     const win = window.open('', '_blank');
     if (!win) { alert('ინვოისის ფანჯარა დაბლოკილია ბრაუზერის მიერ.'); return; }
     win.document.write(`
       <!DOCTYPE html>
-      <html lang="ka">
+      <html lang="${tr.htmlLang}">
       <head>
       <meta charset="UTF-8">
       <title>${escapeHtml(invoiceNumber)}</title>
       <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif; color: #1a1c24; padding: 48px; max-width: 720px; margin: 0 auto; }
-        .inv-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
-        .inv-brand { font-weight: 700; font-size: 1.3rem; }
-        .inv-brand span { color: #6366f1; }
-        .inv-meta { text-align: right; font-size: 0.9rem; color: #55596b; }
-        .inv-meta strong { color: #1a1c24; }
-        h1 { font-size: 1.1rem; margin: 0 0 4px; }
-        .inv-section { margin-bottom: 28px; }
+        * { box-sizing: border-box; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+          color: #1a1c24;
+          margin: 0;
+          background: #f2f3f7;
+        }
+        .inv-sheet {
+          max-width: 720px;
+          margin: 0 auto;
+          background: #fff;
+          border-top: 8px solid;
+          border-image: linear-gradient(90deg, #6366f1, #22d3ee) 1;
+          padding: 44px 48px 48px;
+        }
+        .inv-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 24px;
+          margin-bottom: 36px;
+        }
+        .inv-brand-row { display: flex; align-items: center; gap: 12px; }
+        .inv-logo-mark {
+          width: 40px; height: 40px;
+          flex-shrink: 0;
+          border-radius: 11px;
+          background: linear-gradient(135deg, #6366f1, #22d3ee);
+          display: flex; align-items: center; justify-content: center;
+          color: #fff; font-weight: 800; font-size: 1.2rem;
+          font-family: 'Space Grotesk', sans-serif;
+        }
+        .inv-brand-name { font-weight: 800; font-size: 1.3rem; font-family: 'Space Grotesk', sans-serif; }
+        .inv-contact {
+          text-align: right;
+          font-size: 0.84rem;
+          color: #55596b;
+          line-height: 1.6;
+        }
+        .inv-contact strong { display: block; color: #1a1c24; font-size: 0.95rem; margin-bottom: 2px; }
+        .inv-meta-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 24px;
+          padding-top: 24px;
+          border-top: 1px solid #e4e6ee;
+          margin-bottom: 24px;
+        }
         .inv-section h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a8fa3; margin: 0 0 8px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #e4e6ee; }
-        th { font-size: 0.72rem; text-transform: uppercase; color: #8a8fa3; }
-        .inv-total-row td { font-weight: 700; font-size: 1.05rem; border-bottom: none; padding-top: 16px; }
-        .inv-footer { margin-top: 48px; font-size: 0.8rem; color: #8a8fa3; text-align: center; }
-        @media print { body { padding: 0; } }
+        .inv-section div { font-size: 0.9rem; line-height: 1.6; }
+        .inv-section strong { display: block; font-size: 0.95rem; }
+        .inv-meta { text-align: right; font-size: 0.88rem; color: #55596b; line-height: 1.7; }
+        .inv-meta strong { color: #1a1c24; }
+        .inv-title { font-size: 2rem; font-weight: 800; letter-spacing: 0.02em; margin: 0 0 28px; font-family: 'Space Grotesk', sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+        th {
+          text-align: left;
+          padding: 12px 14px;
+          font-size: 0.74rem;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          color: #fff;
+          background: linear-gradient(90deg, #6366f1, #22d3ee);
+        }
+        th:last-child, td:last-child { text-align: right; }
+        td { padding: 14px; border-bottom: 1px solid #e4e6ee; font-size: 0.92rem; vertical-align: top; }
+        td strong { display: block; }
+        td span.inv-item-sub { color: #8a8fa3; font-size: 0.82rem; }
+        .inv-totals { display: flex; justify-content: flex-end; margin-bottom: 36px; }
+        .inv-totals-box { min-width: 240px; }
+        .inv-totals-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; width: 100%; padding: 6px 0; font-size: 0.92rem; color: #55596b; }
+        .inv-totals-row.inv-total-final {
+          margin-top: 8px;
+          padding: 14px;
+          background: #eef0f6;
+          border-radius: 8px;
+          font-weight: 800;
+          font-size: 1.05rem;
+          color: #1a1c24;
+        }
+        .inv-notes { font-size: 0.84rem; color: #55596b; line-height: 1.6; margin-bottom: 32px; }
+        .inv-notes h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a8fa3; margin: 0 0 8px; }
+        .inv-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 20px;
+          border-top: 1px solid #e4e6ee;
+          font-size: 0.78rem;
+          color: #8a8fa3;
+        }
+        .inv-footer a { color: #6366f1; text-decoration: none; }
+        @media print {
+          body { background: #fff; }
+          .inv-sheet { max-width: 100%; padding: 0; border-top: none; }
+        }
       </style>
       </head>
       <body>
-        <div class="inv-header">
-          <div>
-            <div class="inv-brand">Grid<span>ly</span></div>
-            <div style="font-size:0.82rem; color:#55596b; margin-top:4px;">info@gridly.ge</div>
+        <div class="inv-sheet">
+          <div class="inv-header">
+            <div class="inv-brand-row">
+              <div class="inv-logo-mark">G</div>
+              <div class="inv-brand-name">Gridly</div>
+            </div>
+            <div class="inv-contact">
+              <strong>Gridly</strong>
+              info@gridly.ge<br>
+              gridly.ge
+            </div>
           </div>
-          <div class="inv-meta">
-            <h1>ინვოისი</h1>
-            <div><strong>№</strong> ${escapeHtml(invoiceNumber)}</div>
-            <div>გამოცემის თარიღი: ${escapeHtml(issueDate)}</div>
-            <div>გადახდის თარიღი: ${escapeHtml(dueDate)}</div>
+
+          <div class="inv-meta-row">
+            <div class="inv-section">
+              <h2>${tr.customer}</h2>
+              <strong>${escapeHtml(sub.company_name)}</strong>
+              ${sub.client_ref ? `<div>ID: ${escapeHtml(sub.client_ref)}</div>` : ''}
+              ${sub.contact_number ? `<div>${escapeHtml(sub.contact_number)}</div>` : ''}
+            </div>
+            <div class="inv-meta">
+              <div><strong>${tr.invoiceNo}</strong> ${escapeHtml(invoiceNumber)}</div>
+              <div>${tr.issueDate}: ${escapeHtml(issueDate)}</div>
+              <div>${tr.dueDate}: ${escapeHtml(dueDate)}</div>
+            </div>
           </div>
-        </div>
 
-        <div class="inv-section">
-          <h2>მომხმარებელი</h2>
-          <div>${escapeHtml(sub.company_name)}</div>
-          ${sub.client_ref ? `<div>ID: ${escapeHtml(sub.client_ref)}</div>` : ''}
-          ${sub.contact_number ? `<div>${escapeHtml(sub.contact_number)}</div>` : ''}
-        </div>
+          <h1 class="inv-title">${tr.title}</h1>
 
-        <div class="inv-section">
-          <h2>დეტალები</h2>
           <table>
-            <thead><tr><th>სერვისი</th><th>პერიოდი</th><th style="text-align:right">თანხა</th></tr></thead>
+            <thead>
+              <tr><th>${tr.service}</th><th>${tr.amount}</th></tr>
+            </thead>
             <tbody>
               <tr>
-                <td>${escapeHtml(sub.service)}</td>
-                <td>ყოველთვიური გამოწერა</td>
-                <td style="text-align:right">${escapeHtml(sub.price)} GEL</td>
-              </tr>
-              <tr class="inv-total-row">
-                <td colspan="2">სულ გადასახდელი</td>
-                <td style="text-align:right">${escapeHtml(sub.price)} GEL</td>
+                <td>
+                  <strong>${escapeHtml(sub.service)}</strong>
+                  <span class="inv-item-sub">${tr.monthly}</span>
+                </td>
+                <td>${escapeHtml(sub.price)} GEL</td>
               </tr>
             </tbody>
           </table>
-        </div>
 
-        <div class="inv-footer">მადლობთ, რომ Gridly-ს ენდობით.</div>
+          <div class="inv-totals">
+            <div class="inv-totals-box">
+              <div class="inv-totals-row inv-total-final">
+                <span>${tr.total}</span>
+                <span>${escapeHtml(sub.price)} GEL</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="inv-notes">
+            <h2>${tr.notesTitle}</h2>
+            ${tr.notesBody}
+          </div>
+
+          <div class="inv-footer">
+            <span>Gridly — <a href="https://gridly.ge">gridly.ge</a></span>
+            <span>${tr.page}</span>
+          </div>
+        </div>
       </body>
       </html>
     `);
