@@ -25,7 +25,6 @@
       'nav.services': 'სერვისები',
       'nav.portfolio': 'პორტფოლიო დემოები',
       'nav.faq': 'კითხვები',
-      'nav.contact': 'კონტაქტი',
       'nav.cta': 'უფასო შეთავაზება',
       'hero.eyebrow': 'ვებ-გვერდები პატარა და საშუალო ბიზნესებისთვის',
       'hero.title': 'გაზარდეთ თქვენი ბიზნესი <span class="text-gradient">Gridly</span>-სთან ერთად',
@@ -71,6 +70,9 @@
       'estimator.free': 'უფასო',
       'estimator.hours': 'საათი',
       'estimator.days': 'დღე',
+      'estimator.mode.title': 'მოთხოვნის ტიპი',
+      'estimator.mode.consult': 'უფასო კონსულტაცია',
+      'estimator.mode.quote': 'პროექტის შეფასება',
       'estimator.pages.title': 'გვერდები',
       'estimator.base': 'საბაზისო პაკეტი',
       'estimator.pages.landing': 'ერთ გვერდიანი',
@@ -91,7 +93,7 @@
       'estimator.urgency.express': 'ექსპრესი (24სთ)',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
-      'estimator.send': 'ამ შეფასების გაგზავნა',
+      'estimator.send': 'მოთხოვნის გაგზავნა',
       'estimator.disclaimer': 'საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
       'portfolio.tag': 'ნახეთ საქმეში',
@@ -120,14 +122,6 @@
       'faq.a4': 'დიახ, ჩვეულებრივ ვითხოვთ 50%-იან წინასწარგადახდას პროექტის დაწყებამდე და დარჩენილს - მზა საიტის ჩაბარებისას.',
       'faq.q5': 'შემიძლია საიტის ტესტირება მზადების პროცესში?',
       'faq.a5': 'აბსოლუტურად - მუშაობის განმავლობაში მუდმივად გაგიზიარებთ პროგრესს და მოგცემთ საშუალებას ნახოთ და შეაფასოთ საიტი მის საბოლოო გაშვებამდე.',
-      'contact.tag': 'მოდი ვისაუბროთ',
-      'contact.title': 'მიიღეთ უფასო შეთავაზება',
-      'contact.desc': 'მოგვიყევით თქვენი ბიზნესის შესახებ. ჩვენი წარმომადგენელი უმოკლეს ვადაში დაგივაკშირდებათ.',
-      'contact.point1': 'უფასო, არაფრით შემზღუდავი კონსულტაცია',
-      'contact.point2': 'პასუხი უმოკლეს დროში',
-      'contact.point3': 'ფასი მორგებული თქვენს საჭიროებებზე',
-      'contact.estimate.label': 'თქვენი შერჩეული შეფასება (ცვლილება შეუძლებელია)',
-      'contact.estimate.total': 'სავარაუდო ჯამი',
       'form.name.label': 'სრული სახელი',
       'form.name.placeholder': 'მაგ. ნინო ბერიძე',
       'form.contact.label': 'ტელეფონი ან ელფოსტა',
@@ -143,7 +137,6 @@
       'form.message.label': 'შეტყობინება',
       'form.message.optional': '(არასავალდებულო)',
       'form.message.placeholder': 'მოგვიყევით ცოტა თქვენი პროექტის შესახებ...',
-      'form.submit': 'შეტყობინების გაგზავნა',
       'form.sending': 'იგზავნება...',
       'form.success': 'მადლობა! თქვენი მოთხოვნა მიღებულია - მალე დაგიკავშირდებით.',
       'form.error.name': 'გთხოვთ მიუთითოთ თქვენი სრული სახელი.',
@@ -162,7 +155,6 @@
       'nav.services': 'Services',
       'nav.portfolio': 'Portfolio Demos',
       'nav.faq': 'FAQ',
-      'nav.contact': 'Contact',
       'nav.cta': 'Get a Free Quote',
       'hero.eyebrow': 'Websites for small and medium businesses',
       'hero.title': 'Boost Your Business with <span class="text-gradient">Gridly</span>',
@@ -208,6 +200,9 @@
       'estimator.free': 'Free',
       'estimator.hours': 'hours',
       'estimator.days': 'days',
+      'estimator.mode.title': 'Request type',
+      'estimator.mode.consult': 'Free consultation',
+      'estimator.mode.quote': 'Build a project estimate',
       'estimator.pages.title': 'Pages',
       'estimator.base': 'Base package',
       'estimator.pages.landing': 'One Page',
@@ -228,7 +223,7 @@
       'estimator.urgency.express': 'Express (24h)',
       'estimator.summary.title': 'Estimated total',
       'estimator.timeframe': 'Estimated delivery:',
-      'estimator.send': 'Send this estimate',
+      'estimator.send': 'Send request',
       'estimator.disclaimer': 'Final pricing may vary slightly based on project details.',
       'lead.error': 'Something went wrong sending your request. Please try again.',
       'portfolio.tag': 'See it in action',
@@ -257,14 +252,6 @@
       'faq.a4': 'Yes, we typically ask for a 50% deposit before starting the project, with the remainder due on delivery of the finished site.',
       'faq.q5': 'Can I test the site while it is being built?',
       'faq.a5': 'Absolutely - we share progress throughout the build so you can review and give feedback before final launch.',
-      'contact.tag': "Let's talk",
-      'contact.title': 'Get Your Free Quote',
-      'contact.desc': "Tell us about your business. Our representative will get back to you as soon as possible.",
-      'contact.point1': 'Free, no-obligation consultation',
-      'contact.point2': 'Response as soon as possible',
-      'contact.point3': 'Pricing tailored to your needs',
-      'contact.estimate.label': 'Your selected estimate (cannot be edited)',
-      'contact.estimate.total': 'Estimated total',
       'form.name.label': 'Full Name',
       'form.name.placeholder': 'e.g. Nino Beridze',
       'form.contact.label': 'Phone or Email',
@@ -280,7 +267,6 @@
       'form.message.label': 'Message',
       'form.message.optional': '(optional)',
       'form.message.placeholder': 'Tell us a little about your project...',
-      'form.submit': 'Send Message',
       'form.sending': 'Sending...',
       'form.success': "Thanks! Your request has been received - we'll be in touch soon.",
       'form.error.name': 'Please enter your full name.',
@@ -608,7 +594,7 @@
     });
   });
 
-  /* ---------------- Price Estimator ---------------- */
+  /* ---------------- Price Estimator + request form ---------------- */
   const estimatorForm = document.getElementById('estimator-form');
 
   if (estimatorForm) {
@@ -622,13 +608,11 @@
     const currencySwitch = document.getElementById('est-currency-switch');
     const totalAmountEl = document.getElementById('est-total-amount');
     const totalCurrencyEl = document.getElementById('est-total-currency');
+    const timeframeEl = document.getElementById('est-timeframe');
     const timeframeValueEl = document.getElementById('est-timeframe-value');
     const timeframeUnitEl = document.getElementById('est-timeframe-unit');
     const selectedListEl = document.getElementById('est-selected-list');
-    const sendBtn = document.getElementById('est-send-btn');
-    const contactEstimateSummary = document.getElementById('contact-estimate-summary');
-    const contactEstimateList = document.getElementById('contact-estimate-list');
-    const contactEstimateTotalEl = document.getElementById('contact-estimate-total-amount');
+    const quoteFieldsEl = document.getElementById('est-quote-fields');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
 
@@ -636,11 +620,18 @@
       return currentCurrency === 'USD' ? Math.round(gelAmount / USD_RATE) : gelAmount;
     }
 
+    function isConsultMode() {
+      const mode = estimatorForm.querySelector('input[name="mode"]:checked');
+      return !mode || mode.value === 'consult';
+    }
+
     function checkedInputs() {
-      return Array.from(estimatorForm.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked'));
+      return Array.from(estimatorForm.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked'))
+        .filter((input) => input.name !== 'mode');
     }
 
     function computeTotalGel() {
+      if (isConsultMode()) return 0;
       let total = BASE_PRICE_GEL;
       checkedInputs().forEach((input) => { total += Number(input.dataset.price || 0); });
       return total;
@@ -678,6 +669,9 @@
     }
 
     function getReceiptItems() {
+      if (isConsultMode()) {
+        return [{ label: t('estimator.mode.consult'), priceDisplay: toDisplay(0) }];
+      }
       return [
         { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
         ...checkedInputs()
@@ -690,6 +684,10 @@
     }
 
     function updateEstimate() {
+      const consult = isConsultMode();
+      quoteFieldsEl.hidden = consult;
+      timeframeEl.hidden = consult;
+
       document.querySelectorAll('.est-price-tag[data-price]').forEach((el) => {
         const gel = Number(el.dataset.price);
         el.textContent = `+${toDisplay(gel)} ${currentCurrency}`;
@@ -699,12 +697,16 @@
       totalAmountEl.textContent = toDisplay(totalGel);
       totalCurrencyEl.textContent = currentCurrency;
 
-      const tfRaw = computeTimeframe();
-      const tf = formatTimeframe(tfRaw);
-      timeframeValueEl.textContent = tf.value;
-      timeframeUnitEl.textContent = tf.unit;
+      let timeframeText = '';
+      if (!consult) {
+        const tfRaw = computeTimeframe();
+        const tf = formatTimeframe(tfRaw);
+        timeframeValueEl.textContent = tf.value;
+        timeframeUnitEl.textContent = tf.unit;
+        timeframeText = `${tf.value} ${tf.unit}`;
+      }
 
-      const items = checkedInputs().map(selectedLabelText);
+      const items = consult ? [t('estimator.mode.consult')] : checkedInputs().map(selectedLabelText);
 
       // Receipt only lists priced line items (base + paid add-ons) - free/default
       // selections don't need a price row, keeping the summary uncluttered.
@@ -722,43 +724,14 @@
         selectedListEl.appendChild(li);
       });
 
-      // Keep the read-only recap in the contact form in sync if it's already
-      // showing (client went back and tweaked the estimate after sending it).
-      if (contactEstimateSummary && !contactEstimateSummary.hidden) {
-        renderContactEstimateSummary(receiptItems, totalGel);
-      }
-
       lastEstimate = {
         items,
         totalGel,
         totalDisplay: toDisplay(totalGel),
         currency: currentCurrency,
-        timeframeText: `${tf.value} ${tf.unit}`,
-        timeframeRaw: tfRaw,
+        timeframeText,
         packageSummary: items.join(', '),
       };
-    }
-
-    // Renders a plain, non-editable recap of the estimate into the contact
-    // form so the client can see what they're about to send without it being
-    // a text field they could alter — the actual leads.selected_package and
-    // leads.calculated_price columns are always computed fresh from the
-    // checked inputs at submit time (see the contact form handler below),
-    // never read back from this display.
-    function renderContactEstimateSummary(receiptItems, totalGel) {
-      if (!contactEstimateSummary) return;
-      contactEstimateList.innerHTML = '';
-      receiptItems.forEach((item) => {
-        const li = document.createElement('li');
-        const labelSpan = document.createElement('span');
-        labelSpan.textContent = item.label;
-        const priceSpan = document.createElement('span');
-        priceSpan.textContent = `${item.priceDisplay} ${currentCurrency}`;
-        li.append(labelSpan, priceSpan);
-        contactEstimateList.appendChild(li);
-      });
-      contactEstimateTotalEl.textContent = `${toDisplay(totalGel)} ${currentCurrency}`;
-      contactEstimateSummary.hidden = false;
     }
 
     function setCurrencyUI() {
@@ -814,122 +787,110 @@
         .catch(() => { /* offline fallback: keep the defaults already on the page */ });
     }
 
-    sendBtn.addEventListener('click', () => {
-      if (!lastEstimate) return;
-      // The message field stays untouched — selected_package and calculated_price
-      // are sent to the leads table straight from lastEstimate (see the contact
-      // form submit handler below), so a client editing their message can't alter
-      // the price or selections we actually receive. This summary is a
-      // read-only recap for the client, not the source of what gets submitted.
-      renderContactEstimateSummary(getReceiptItems(), lastEstimate.totalGel);
-      const contactSection = document.getElementById('contact');
-      if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    /* ---- Request form (built into the estimate summary card) ---- */
+    const form = document.getElementById('estimator-contact-form');
+    const formSuccess = document.getElementById('est-form-success');
 
-  }
-
-  /* ---------------- Contact form validation ---------------- */
-  const form = document.getElementById('contact-form');
-  const formSuccess = document.getElementById('form-success');
-
-  const validators = {
-    name: (value) => value.trim().length >= 2 || t('form.error.name'),
-    contactMethod: (value) => {
-      const v = value.trim();
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRe = /^[+\d][\d\s()-]{6,}$/;
-      return emailRe.test(v) || phoneRe.test(v) || t('form.error.contact');
-    },
-    businessType: (value) => value !== '' || t('form.error.business'),
-  };
-
-  function validateField(field) {
-    const validator = validators[field.name];
-    if (!validator) return true;
-    const row = field.closest('.form-row');
-    const errorEl = row.querySelector('.field-error');
-    const result = validator(field.value);
-
-    if (result === true) {
-      row.classList.remove('invalid');
-      if (errorEl) errorEl.textContent = '';
-      return true;
-    }
-    row.classList.add('invalid');
-    if (errorEl) errorEl.textContent = result;
-    return false;
-  }
-
-  form.querySelectorAll('input[required], select[required]').forEach((field) => {
-    field.addEventListener('blur', () => validateField(field));
-    field.addEventListener('input', () => {
-      if (field.closest('.form-row').classList.contains('invalid')) validateField(field);
-    });
-  });
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const requiredFields = form.querySelectorAll('input[required], select[required]');
-    let allValid = true;
-    requiredFields.forEach((field) => {
-      if (!validateField(field)) allValid = false;
-    });
-
-    if (!allValid) {
-      const firstInvalid = form.querySelector('.form-row.invalid input, .form-row.invalid select');
-      if (firstInvalid) firstInvalid.focus();
-      return;
-    }
-
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const label = submitBtn.querySelector('.btn-label');
-    const originalText = label.textContent;
-
-    submitBtn.disabled = true;
-    label.textContent = t('form.sending');
-
-    const contactValue = form.contactMethod.value.trim();
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isEmail = emailRe.test(contactValue);
-
-    const payload = {
-      name: form.name.value.trim(),
-      email: isEmail ? contactValue : null,
-      phone: isEmail ? null : contactValue,
-      business_type: form.businessType.value || null,
-      message: form.message.value.trim() || null,
-      selected_package: lastEstimate ? lastEstimate.packageSummary : null,
-      calculated_price: lastEstimate ? `${lastEstimate.totalDisplay} ${lastEstimate.currency}` : null,
-      status: 'New',
+    const validators = {
+      name: (value) => value.trim().length >= 2 || t('form.error.name'),
+      contactMethod: (value) => {
+        const v = value.trim();
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRe = /^[+\d][\d\s()-]{6,}$/;
+        return emailRe.test(v) || phoneRe.test(v) || t('form.error.contact');
+      },
+      businessType: (value) => value !== '' || t('form.error.business'),
     };
 
-    if (!supabase) {
-      showToast(t('lead.error'));
-      submitBtn.disabled = false;
-      label.textContent = originalText;
-      return;
+    function validateField(field) {
+      const validator = validators[field.name];
+      if (!validator) return true;
+      const row = field.closest('.form-row');
+      const errorEl = row.querySelector('.field-error');
+      const result = validator(field.value);
+
+      if (result === true) {
+        row.classList.remove('invalid');
+        if (errorEl) errorEl.textContent = '';
+        return true;
+      }
+      row.classList.add('invalid');
+      if (errorEl) errorEl.textContent = result;
+      return false;
     }
 
-    supabase
-      .from('leads')
-      .insert(payload)
-      .then(({ error }) => {
-        if (error) throw error;
-        formSuccess.classList.add('show');
-        form.reset();
-        const estimateSummary = document.getElementById('contact-estimate-summary');
-        if (estimateSummary) estimateSummary.hidden = true;
-        setTimeout(() => formSuccess.classList.remove('show'), 5000);
-      })
-      .catch(() => {
+    form.querySelectorAll('input[required], select[required]').forEach((field) => {
+      field.addEventListener('blur', () => validateField(field));
+      field.addEventListener('input', () => {
+        if (field.closest('.form-row').classList.contains('invalid')) validateField(field);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const requiredFields = form.querySelectorAll('input[required], select[required]');
+      let allValid = true;
+      requiredFields.forEach((field) => {
+        if (!validateField(field)) allValid = false;
+      });
+
+      if (!allValid) {
+        const firstInvalid = form.querySelector('.form-row.invalid input, .form-row.invalid select');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const label = submitBtn.querySelector('.btn-label');
+      const originalText = label.textContent;
+
+      submitBtn.disabled = true;
+      label.textContent = t('form.sending');
+
+      const contactValue = form.contactMethod.value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isEmail = emailRe.test(contactValue);
+
+      // selected_package and calculated_price come straight from lastEstimate
+      // (computed from the checked calculator inputs), never from a text
+      // field the client could edit — the message below has no bearing on them.
+      const payload = {
+        name: form.name.value.trim(),
+        email: isEmail ? contactValue : null,
+        phone: isEmail ? null : contactValue,
+        business_type: form.businessType.value || null,
+        message: form.message.value.trim() || null,
+        selected_package: lastEstimate ? lastEstimate.packageSummary : null,
+        calculated_price: lastEstimate ? `${lastEstimate.totalDisplay} ${lastEstimate.currency}` : null,
+        status: 'New',
+      };
+
+      if (!supabase) {
         showToast(t('lead.error'));
-      })
-      .finally(() => {
         submitBtn.disabled = false;
         label.textContent = originalText;
-      });
-  });
+        return;
+      }
+
+      supabase
+        .from('leads')
+        .insert(payload)
+        .then(({ error }) => {
+          if (error) throw error;
+          formSuccess.classList.add('show');
+          form.reset();
+          setTimeout(() => formSuccess.classList.remove('show'), 5000);
+        })
+        .catch(() => {
+          showToast(t('lead.error'));
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          label.textContent = originalText;
+        });
+    });
+  }
 
   /* ---------------- Footer year ---------------- */
   document.getElementById('year').textContent = new Date().getFullYear();

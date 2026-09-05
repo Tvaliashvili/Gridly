@@ -995,7 +995,10 @@ section { padding: 100px 0; }
 .est-total {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 8px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--est-pill-border);
   font-family: 'Space Grotesk', sans-serif;
   font-size: 2.8rem;
   font-weight: 700;
@@ -1038,6 +1041,18 @@ section { padding: 100px 0; }
 .est-receipt .est-receipt-price { flex-shrink: 0; font-weight: 700; color: var(--est-accent-2); white-space: nowrap; }
 
 .est-disclaimer { font-size: 0.76rem; color: var(--est-text-dim); text-align: center; }
+
+/* A single pill-group (the "request type" row) spans both columns instead
+   of leaving the second column empty. */
+.est-group-wide { grid-column: 1 / -1; }
+
+/* The [hidden] attribute loses to this element's own `display: flex` under
+   normal cascade rules (author beats user-agent regardless of specificity),
+   so it needs an explicit override to actually hide. */
+.est-timeframe[hidden] { display: none; }
+
+/* ---- Request form, built into the estimate summary card ---- */
+.est-contact-form { display: flex; flex-direction: column; gap: 16px; }
 
 /* ---- Portfolio ---- */
 .portfolio { background: var(--bg-elevated); border-block: 1px solid var(--border-soft); position: relative; }
@@ -1136,26 +1151,7 @@ section { padding: 100px 0; }
   padding-bottom: 22px;
 }
 
-/* ---- Contact ---- */
-.contact-inner {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 56px;
-  align-items: start;
-}
-.contact-copy h2 { font-size: clamp(1.9rem, 3.4vw, 2.5rem); margin: 12px 0 16px; }
-.contact-copy p { color: var(--text-dim); font-size: 1.02rem; margin-bottom: 26px; }
-.contact-points { display: flex; flex-direction: column; gap: 14px; }
-.contact-points li { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: var(--text-dim); }
-.contact-points svg { color: var(--success); flex-shrink: 0; }
-
-.contact-form {
-  border-radius: var(--radius-lg);
-  padding: 36px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+/* ---- Shared form field styling (used inside the estimator request form) ---- */
 .form-row { display: flex; flex-direction: column; gap: 8px; position: relative; }
 .form-row label { font-size: 0.88rem; font-weight: 600; color: var(--text-dim); }
 .form-row .optional { font-weight: 400; color: var(--text-faint); }
@@ -1181,37 +1177,6 @@ section { padding: 100px 0; }
 .form-row.invalid input, .form-row.invalid select { border-color: var(--danger); }
 .field-error { font-size: 0.78rem; color: var(--danger); min-height: 1px; display: none; }
 .form-row.invalid .field-error { display: block; }
-
-/* Read-only recap of the price-estimator selections, dropped into the
-   contact form so the client can see exactly what they're sending without
-   it living in an editable field (see estimator.send handler in script.js). */
-.contact-estimate-summary {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--accent-soft);
-  background: var(--accent-soft);
-}
-.contact-estimate-label { font-size: 0.82rem; font-weight: 600; color: var(--text-dim); }
-.contact-estimate-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.contact-estimate-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 0.86rem;
-  color: var(--text);
-}
-.contact-estimate-total {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 10px;
-  border-top: 1px dashed var(--border);
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--text);
-}
 
 .form-success {
   display: none;
@@ -1411,9 +1376,6 @@ section { padding: 100px 0; }
   .ps-grid { grid-template-columns: 1fr; gap: 20px; }
   .ps-arrow { transform: rotate(90deg); margin-inline: auto; }
 
-  .contact-inner { grid-template-columns: 1fr; gap: 44px; }
-  .contact-form { max-width: 560px; margin-inline: auto; width: 100%; }
-
   .footer-inner { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
 }
@@ -1438,7 +1400,6 @@ section { padding: 100px 0; }
   .ps-card,
   .service-card,
   .portfolio-card,
-  .contact-form,
   .faq-item,
   .mock-window,
   .estimator-options,
@@ -1521,29 +1482,20 @@ section { padding: 100px 0; }
   .faq-question[aria-expanded="true"] .faq-icon { transform: translateY(-50%) rotate(135deg); }
   .faq-answer > p { padding-inline: 20px; text-align: center; }
 
-  /* ---- Contact: centered copy, full-width form ---- */
-  .contact-copy { text-align: center; }
-  /* A fixed, capped width (not shrink-to-fit) so every row shares the exact
-     same box: ticks land on one vertical line, wrapped text never forces
-     the list wider than the viewport, and the whole block still centers
-     under the heading via the auto side margins. */
-  .contact-points { align-items: stretch; width: 100%; max-width: 320px; margin-inline: auto; }
-  .contact-points li { justify-content: flex-start; text-align: left; }
-  .contact-form { padding: 24px 20px; }
+  /* ---- Request form fields: full-width, no iOS auto-zoom ---- */
   .form-row input,
   .form-row select,
   .form-row textarea {
     min-height: 48px;
     font-size: 16px; /* prevents iOS Safari auto-zoom on focus */
   }
-  .contact-form .btn { min-height: 48px; }
 
   /* ---- Estimator: single column groups, full-width controls ---- */
   .est-row { grid-template-columns: 1fr; gap: 16px; }
   .est-group { padding: 20px 18px; }
   .estimator-summary { padding: 24px 20px; }
   .est-total { font-size: 2.1rem; }
-  #est-send-btn, #est-pdf-btn { min-height: 48px; }
+  #est-send-btn { min-height: 48px; }
 
   /* Pills no longer force a single line here — a long label + price tag can
      be wider than the phone screen itself, which pushed the whole page into
