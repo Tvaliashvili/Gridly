@@ -196,6 +196,24 @@
   .due-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
   .btn-sm { padding: 7px 14px; font-size: 0.78rem; }
 
+  .collapse-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+  }
+  .collapse-chevron { flex-shrink: 0; color: #6b6f83; transition: transform 0.25s ease; }
+  .collapse-toggle[aria-expanded="true"] .collapse-chevron { transform: rotate(180deg); }
+  .collapse-body { margin-top: 18px; }
+
   /* ---- Login screen ---- */
   #login-screen {
     min-height: 100vh;
@@ -378,9 +396,14 @@
       </div>
 
       <div class="panel">
-        <h2>ყველა აბონენტი</h2>
-        <p class="hint">გამოწერების სრული სია.</p>
-        <div id="subscriptions-container"><p class="empty">იტვირთება…</p></div>
+        <button type="button" class="collapse-toggle" id="subscriptions-toggle" aria-expanded="false">
+          <span>
+            <h2 style="margin-bottom:2px">ყველა აბონენტი</h2>
+            <p class="hint" style="margin-bottom:0">გამოწერების სრული სია.</p>
+          </span>
+          <svg class="collapse-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="subscriptions-container" class="collapse-body" hidden><p class="empty">იტვირთება…</p></div>
       </div>
     </section>
   </main>
@@ -934,6 +957,13 @@
     calYear = today.getFullYear();
     calMonth = today.getMonth();
     renderCalendar();
+  });
+
+  document.getElementById('subscriptions-toggle').addEventListener('click', (e) => {
+    const btn = e.currentTarget;
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    subscriptionsContainer.hidden = expanded;
   });
 
   init();
