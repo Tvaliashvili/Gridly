@@ -36,6 +36,12 @@
   .header-right { display: flex; align-items: center; gap: 16px; }
   .signed-in-as { font-size: 0.8rem; color: #6b6f83; }
 
+  .maintenance-switch { position: relative; display: flex; align-items: center; gap: 8px; }
+  .switch-side-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #4b4f5f; transition: color 0.2s ease; }
+  .maintenance-switch.is-on .switch-side-label.on { color: #f87171; }
+  .maintenance-switch:not(.is-on) .switch-side-label.off { color: #a7abbd; }
+  .maintenance-switch .status-msg { position: absolute; top: 100%; left: 0; margin-top: 6px; white-space: nowrap; }
+
   .topnav {
     display: flex;
     gap: 6px;
@@ -215,7 +221,6 @@
   .collapse-toggle[aria-expanded="true"] .collapse-chevron { transform: rotate(180deg); }
   .collapse-body { margin-top: 18px; }
 
-  .switch-row { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.92rem; }
   .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink: 0; }
   .switch input { opacity: 0; width: 0; height: 0; }
   .switch-slider {
@@ -324,6 +329,15 @@
   <header>
     <div class="brand"><span class="brand-mark">G</span> Gridly ადმინი</div>
     <div class="header-right">
+      <div class="maintenance-switch">
+        <span class="switch-side-label off">off</span>
+        <span class="switch">
+          <input type="checkbox" id="maintenance-toggle">
+          <span class="switch-slider"></span>
+        </span>
+        <span class="switch-side-label on">on</span>
+        <span class="status-msg" id="maintenance-status"></span>
+      </div>
       <span class="signed-in-as" id="signed-in-as"></span>
       <button class="btn btn-ghost" id="logout-btn">გასვლა</button>
     </div>
@@ -333,7 +347,6 @@
     <button class="tab-btn active" data-tab="leads">მოთხოვნები</button>
     <button class="tab-btn" data-tab="pricing">ფასები</button>
     <button class="tab-btn" data-tab="subscriptions">გამოწერები</button>
-    <button class="tab-btn" data-tab="site">საიტის სტატუსი</button>
   </nav>
 
   <main>
@@ -355,7 +368,6 @@
     <section id="tab-pricing" hidden>
       <div class="panel">
         <h2>კალკულატორის ფასები</h2>
-        <p class="hint">ეს არის ზუსტად ის ციფრები, რომლებსაც საჯარო ფასის კალკულატორი იყენებს. შენახვისთანავე ცვლილება მყისიერად აისახება საიტზე.</p>
         <form id="pricing-form">
           <div class="price-grid">
             <div class="price-field">
@@ -480,20 +492,6 @@
         <div id="subscriptions-container" class="collapse-body" hidden><p class="empty">იტვირთება…</p></div>
       </div>
     </section>
-
-    <section id="tab-site" hidden>
-      <div class="panel">
-        <h2>მოვლის რეჟიმი</h2>
-        <label class="switch-row">
-          <span class="switch">
-            <input type="checkbox" id="maintenance-toggle">
-            <span class="switch-slider"></span>
-          </span>
-          <span id="maintenance-status-label">იტვირთება…</span>
-        </label>
-        <p class="status-msg" id="maintenance-status"></p>
-      </div>
-    </section>
   </main>
 </div>
 
@@ -604,7 +602,6 @@
     leads: document.getElementById('tab-leads'),
     pricing: document.getElementById('tab-pricing'),
     subscriptions: document.getElementById('tab-subscriptions'),
-    site: document.getElementById('tab-site'),
   };
 
   tabBtns.forEach((btn) => {
@@ -1305,13 +1302,22 @@
 
   /* ---------------- Site status (maintenance mode) ---------------- */
   const maintenanceToggle = document.getElementById('maintenance-toggle');
-  const maintenanceStatusLabel = document.getElementById('maintenance-status-label');
   const maintenanceStatus = document.getElementById('maintenance-status');
+  const maintenanceSwitchWrap = maintenanceToggle.closest('.maintenance-switch');
+  let maintenanceStatusTimer = null;
 
-  function updateMaintenanceLabel() {
-    maintenanceStatusLabel.textContent = maintenanceToggle.checked
-      ? 'ჩართულია - საიტი მოვლის რეჟიმშია'
-      : 'გამორთულია - საიტი აქტიურია';
+  function syncMaintenanceSwitchState() {
+    maintenanceSwitchWrap.classList.toggle('is-on', maintenanceToggle.checked);
+  }
+
+  function flashMaintenanceStatus(text, ok) {
+    clearTimeout(maintenanceStatusTimer);
+    maintenanceStatus.textContent = text;
+    maintenanceStatus.className = 'status-msg' + (ok ? ' ok' : ' err');
+    maintenanceStatusTimer = setTimeout(() => {
+      maintenanceStatus.textContent = '';
+      maintenanceStatus.className = 'status-msg';
+    }, 2500);
   }
 
   async function loadMaintenanceStatus() {
@@ -1323,31 +1329,27 @@
         .single();
       if (error) throw error;
       maintenanceToggle.checked = !!(data && data.maintenance_mode);
-      updateMaintenanceLabel();
+      syncMaintenanceSwitchState();
     } catch (err) {
-      maintenanceStatusLabel.textContent = 'სტატუსის ჩატვირთვა ვერ მოხერხდა.';
+      flashMaintenanceStatus('სტატუსის ჩატვირთვა ვერ მოხერხდა.', false);
     }
   }
 
   maintenanceToggle.addEventListener('change', async () => {
     const nextValue = maintenanceToggle.checked;
     maintenanceToggle.disabled = true;
-    maintenanceStatus.textContent = '';
-    maintenanceStatus.className = 'status-msg';
+    syncMaintenanceSwitchState();
     try {
       const { error } = await sb
         .from('site_config')
         .update({ maintenance_mode: nextValue, updated_at: new Date().toISOString() })
         .eq('id', 'default');
       if (error) throw error;
-      updateMaintenanceLabel();
-      maintenanceStatus.textContent = 'შენახულია.';
-      maintenanceStatus.className = 'status-msg ok';
+      flashMaintenanceStatus('შენახულია.', true);
     } catch (err) {
       maintenanceToggle.checked = !nextValue;
-      updateMaintenanceLabel();
-      maintenanceStatus.textContent = err.message || 'ვერ შეინახა. სცადეთ ხელახლა.';
-      maintenanceStatus.className = 'status-msg err';
+      syncMaintenanceSwitchState();
+      flashMaintenanceStatus(err.message || 'ვერ შეინახა. სცადეთ ხელახლა.', false);
     } finally {
       maintenanceToggle.disabled = false;
     }
