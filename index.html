@@ -465,15 +465,6 @@
         </form>
 
         <aside class="estimator-summary animated-border" data-reveal>
-          <div class="est-summary-head">
-            <span data-i18n="estimator.summary.title">სავარაუდო ღირებულება</span>
-            <div class="est-currency-switch" id="est-currency-switch" role="group" aria-label="Currency switch">
-              <button type="button" class="est-currency-btn" data-currency="GEL" aria-pressed="true">GEL</button>
-              <button type="button" class="est-currency-btn" data-currency="USD" aria-pressed="false">USD</button>
-              <span class="est-currency-thumb" aria-hidden="true"></span>
-            </div>
-          </div>
-
           <form class="est-contact-form" id="estimator-contact-form" novalidate>
             <div class="form-row">
               <label for="est-name" data-i18n="form.name.label">სრული სახელი</label>
@@ -507,6 +498,15 @@
             </div>
 
             <ul class="est-receipt" id="est-selected-list"></ul>
+
+            <div class="est-summary-head">
+              <span data-i18n="estimator.summary.title">სავარაუდო ღირებულება</span>
+              <div class="est-currency-switch" id="est-currency-switch" role="group" aria-label="Currency switch">
+                <button type="button" class="est-currency-btn" data-currency="GEL" aria-pressed="true">GEL</button>
+                <button type="button" class="est-currency-btn" data-currency="USD" aria-pressed="false">USD</button>
+                <span class="est-currency-thumb" aria-hidden="true"></span>
+              </div>
+            </div>
 
             <div class="est-total">
               <span id="est-total-amount">0</span>
