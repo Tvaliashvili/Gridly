@@ -128,7 +128,7 @@
             </svg>
           </div>
           <div class="maintenance-icon">
-            <svg width="34" height="34" viewBox="0 0 100 100" fill="currentColor">
+            <svg width="46" height="46" viewBox="0 0 100 100" fill="currentColor">
               <defs>
                 <g id="gearUnit">
                   <path fill-rule="evenodd" d="M -30,0 A 30,30 0 1,0 30,0 A 30,30 0 1,0 -30,0 Z M -14,0 A 14,14 0 1,0 14,0 A 14,14 0 1,0 -14,0 Z"/>
@@ -144,9 +144,9 @@
                   <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(324)"/>
                 </g>
               </defs>
-              <g transform="translate(35,35) scale(0.5)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
-              <g transform="translate(71,58) scale(0.36)"><g class="gear-spin gear-spin-ccw"><use href="#gearUnit"/></g></g>
-              <g transform="translate(42,81) scale(0.24)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(35,35) scale(0.62)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(72,60) scale(0.46)"><g class="gear-spin gear-spin-ccw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(44,84) scale(0.32)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
             </svg>
           </div>
           <h1>${translations.ge['maintenance.title']}</h1>
@@ -177,6 +177,7 @@
       const next = isLight ? 'dark' : 'light';
       applyTheme(next);
       localStorage.setItem(THEME_KEY, next);
+      if (typeof updateScrollColors === 'function') updateScrollColors();
     });
   }
 
