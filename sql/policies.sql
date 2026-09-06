@@ -24,12 +24,13 @@ create table if not exists public.pricing_config (
   base_price integer not null default 350,
   feature_animations_simple integer not null default 100,
   feature_animations_complex integer not null default 250,
-  feature_cms integer not null default 350,
   feature_domain integer not null default 50,
   feature_email integer not null default 30,
   feature_seo integer not null default 500,
+  feature_seo_per_page integer not null default 30,
   feature_admin integer not null default 400,
   feature_maintenance integer not null default 150,
+  feature_maintenance_per_page integer not null default 20,
   price_per_page integer not null default 100,
   updated_at timestamptz not null default now()
 );
@@ -72,6 +73,13 @@ alter table public.pricing_config drop column if exists feature_animations;
 alter table public.pricing_config add column if not exists feature_admin integer not null default 400;
 -- Website Maintenance/care as a priced add-on; a no-op on a fresh install.
 alter table public.pricing_config add column if not exists feature_maintenance integer not null default 150;
+-- Maintenance and SEO both scale with page count on a multi-page site
+-- (each charged per page beyond the one the base package already
+-- covers, same as price_per_page); a no-op on a fresh install.
+alter table public.pricing_config add column if not exists feature_maintenance_per_page integer not null default 20;
+alter table public.pricing_config add column if not exists feature_seo_per_page integer not null default 30;
+-- CMS / Blog feature removed; drop its price column.
+alter table public.pricing_config drop column if exists feature_cms;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 

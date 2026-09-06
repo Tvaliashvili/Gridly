@@ -142,6 +142,8 @@
       'estimator.pages.multi': 'მრავალგვერდიანი',
       'estimator.pages.count.label': 'გვერდების რაოდენობა',
       'estimator.pages.extra': 'დამატებითი გვერდები',
+      'estimator.features.maintenance.extra': 'მოვლის დამატებითი გვერდები',
+      'estimator.features.seo.extra': 'SEO დამატებითი გვერდები',
       'estimator.lang.title': 'ენა',
       'estimator.lang.ge': 'მხოლოდ ქართული',
       'estimator.lang.multi': 'მრავალენოვანი',
@@ -154,7 +156,6 @@
       'estimator.features.animations.type.label': 'ანიმაციის ტიპი',
       'estimator.features.animations.simple': 'მარტივი ანიმაციები',
       'estimator.features.animations.complex': 'კომპლექსური ანიმაციები',
-      'estimator.features.cms': 'CMS / ბლოგი',
       'estimator.features.domain': 'დომენი',
       'estimator.features.email': 'ელ. ფოსტა',
       'estimator.features.seo': 'SEO ოპტიმიზაცია',
@@ -254,6 +255,8 @@
       'estimator.pages.multi': 'Multi-page site',
       'estimator.pages.count.label': 'Number of pages',
       'estimator.pages.extra': 'Extra pages',
+      'estimator.features.maintenance.extra': 'Extra maintenance pages',
+      'estimator.features.seo.extra': 'Extra SEO pages',
       'estimator.lang.title': 'Language',
       'estimator.lang.ge': 'Georgian only',
       'estimator.lang.multi': 'Multi-language',
@@ -266,7 +269,6 @@
       'estimator.features.animations.type.label': 'Animation type',
       'estimator.features.animations.simple': 'Simple Animations',
       'estimator.features.animations.complex': 'Complex Animations',
-      'estimator.features.cms': 'CMS / Blog',
       'estimator.features.domain': 'Domain',
       'estimator.features.email': 'Business Email',
       'estimator.features.seo': 'SEO Optimization',
@@ -611,6 +613,8 @@
     let BASE_PRICE_GEL = 350;
     let PRICE_PER_PAGE_GEL = 100;
     let PRICE_PER_LANGUAGE_GEL = 150;
+    let MAINTENANCE_PRICE_PER_PAGE_GEL = 20;
+    let SEO_PRICE_PER_PAGE_GEL = 30;
     // The page-count field can never go below this (a "multi-page" site is
     // at least 2 pages), but the fee-free page count is one lower - so the
     // pre-selected default of 2 already carries one page's worth of fee.
@@ -758,6 +762,30 @@
       return getExtraPagesCount() * PRICE_PER_PAGE_GEL;
     }
 
+    function isMaintenanceSelected() {
+      const input = estimatorForm.querySelector('input[name="feature"][value="maintenance"]');
+      return !!input && input.checked;
+    }
+
+    // Maintenance costs more to cover a multi-page site, scaling with the
+    // same extra-page count the base multi-page pricing already uses.
+    function getMaintenanceExtraPriceGel() {
+      if (!isMaintenanceSelected()) return 0;
+      return getExtraPagesCount() * MAINTENANCE_PRICE_PER_PAGE_GEL;
+    }
+
+    function isSeoSelected() {
+      const input = estimatorForm.querySelector('input[name="feature"][value="seo"]');
+      return !!input && input.checked;
+    }
+
+    // SEO takes more work to cover a multi-page site, scaling with the same
+    // extra-page count the base multi-page pricing already uses.
+    function getSeoExtraPriceGel() {
+      if (!isSeoSelected()) return 0;
+      return getExtraPagesCount() * SEO_PRICE_PER_PAGE_GEL;
+    }
+
     function isMultiLang() {
       const langInput = estimatorForm.querySelector('input[name="lang"]:checked');
       return !!langInput && langInput.value === 'multi';
@@ -783,6 +811,8 @@
       checkedInputs().forEach((input) => { total += getInputPriceGel(input); });
       total += getExtraPagesPriceGel();
       total += getExtraLanguagesPriceGel();
+      total += getMaintenanceExtraPriceGel();
+      total += getSeoExtraPriceGel();
       return total;
     }
 
@@ -816,6 +846,20 @@
         items.push({
           label: `${t('estimator.lang.extra')} (+${extraLanguages})`,
           priceDisplay: toDisplay(getExtraLanguagesPriceGel()),
+        });
+      }
+      const maintenanceExtraGel = getMaintenanceExtraPriceGel();
+      if (maintenanceExtraGel > 0) {
+        items.push({
+          label: `${t('estimator.features.maintenance.extra')} (+${getExtraPagesCount()})`,
+          priceDisplay: toDisplay(maintenanceExtraGel),
+        });
+      }
+      const seoExtraGel = getSeoExtraPriceGel();
+      if (seoExtraGel > 0) {
+        items.push({
+          label: `${t('estimator.features.seo.extra')} (+${getExtraPagesCount()})`,
+          priceDisplay: toDisplay(seoExtraGel),
         });
       }
       return items;
@@ -935,7 +979,6 @@
     const PRICE_FIELD_SELECTORS = {
       feature_animations_simple: 'input[name="animationsType"][value="simple"]',
       feature_animations_complex: 'input[name="animationsType"][value="complex"]',
-      feature_cms: 'input[name="feature"][value="cms"]',
       feature_domain: 'input[name="feature"][value="domain"]',
       feature_email: 'input[name="feature"][value="email"]',
       feature_seo: 'input[name="feature"][value="seo"]',
@@ -946,7 +989,7 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, feature_animations_simple, feature_animations_complex, feature_cms, feature_domain, feature_email, feature_seo, feature_admin, feature_maintenance, price_per_page, price_per_language')
+        .select('base_price, feature_animations_simple, feature_animations_complex, feature_domain, feature_email, feature_seo, feature_admin, feature_maintenance, price_per_page, price_per_language, feature_maintenance_per_page, feature_seo_per_page')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
@@ -954,6 +997,8 @@
           if (Number.isFinite(Number(pricing.base_price))) BASE_PRICE_GEL = Number(pricing.base_price);
           if (Number.isFinite(Number(pricing.price_per_page))) PRICE_PER_PAGE_GEL = Number(pricing.price_per_page);
           if (Number.isFinite(Number(pricing.price_per_language))) PRICE_PER_LANGUAGE_GEL = Number(pricing.price_per_language);
+          if (Number.isFinite(Number(pricing.feature_maintenance_per_page))) MAINTENANCE_PRICE_PER_PAGE_GEL = Number(pricing.feature_maintenance_per_page);
+          if (Number.isFinite(Number(pricing.feature_seo_per_page))) SEO_PRICE_PER_PAGE_GEL = Number(pricing.feature_seo_per_page);
           Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
             if (!Number.isFinite(Number(pricing[field]))) return;
             const input = estimatorForm.querySelector(selector);

@@ -346,10 +346,6 @@
               <input type="number" min="0" step="1" id="feature_animations_complex" name="feature_animations_complex" required>
             </div>
             <div class="price-field">
-              <label for="feature_cms">CMS / ბლოგი (+GEL)</label>
-              <input type="number" min="0" step="1" id="feature_cms" name="feature_cms" required>
-            </div>
-            <div class="price-field">
               <label for="feature_domain">დომენი (+GEL)</label>
               <input type="number" min="0" step="1" id="feature_domain" name="feature_domain" required>
             </div>
@@ -362,12 +358,20 @@
               <input type="number" min="0" step="1" id="feature_seo" name="feature_seo" required>
             </div>
             <div class="price-field">
+              <label for="feature_seo_per_page">SEO - დამატებითი გვერდი (+GEL თითოზე)</label>
+              <input type="number" min="0" step="1" id="feature_seo_per_page" name="feature_seo_per_page" required>
+            </div>
+            <div class="price-field">
               <label for="feature_admin">ადმინ პანელი (+GEL)</label>
               <input type="number" min="0" step="1" id="feature_admin" name="feature_admin" required>
             </div>
             <div class="price-field">
               <label for="feature_maintenance">ვებ-გვერდის მოვლა/პატრონობა (+GEL)</label>
               <input type="number" min="0" step="1" id="feature_maintenance" name="feature_maintenance" required>
+            </div>
+            <div class="price-field">
+              <label for="feature_maintenance_per_page">მოვლა - დამატებითი გვერდი (+GEL თითოზე)</label>
+              <input type="number" min="0" step="1" id="feature_maintenance_per_page" name="feature_maintenance_per_page" required>
             </div>
           </div>
           <button type="submit" class="btn" id="save-pricing-btn">ფასების შენახვა</button>
@@ -670,7 +674,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations_simple', 'feature_animations_complex', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'feature_admin', 'feature_maintenance'];
+  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations_simple', 'feature_animations_complex', 'feature_domain', 'feature_email', 'feature_seo', 'feature_seo_per_page', 'feature_admin', 'feature_maintenance', 'feature_maintenance_per_page'];
 
   async function loadPricing() {
     try {
