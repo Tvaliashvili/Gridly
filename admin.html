@@ -358,6 +358,10 @@
               <input type="number" min="0" step="1" id="feature_domain" name="feature_domain" required>
             </div>
             <div class="price-field">
+              <label for="feature_email">ელ. ფოსტა (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_email" name="feature_email" required>
+            </div>
+            <div class="price-field">
               <label for="feature_seo">SEO ოპტიმიზაცია (+GEL)</label>
               <input type="number" min="0" step="1" id="feature_seo" name="feature_seo" required>
             </div>
@@ -670,7 +674,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'multi_page', 'price_per_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
+  const PRICING_FIELDS = ['base_price', 'multi_page', 'price_per_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
 
   async function loadPricing() {
     try {
