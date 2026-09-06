@@ -102,9 +102,11 @@ drop policy if exists "Admins can update leads" on public.leads;
 create policy "Admins can update leads" on public.leads
   for update to authenticated using (true) with check (true);
 
+-- Deleting a lead is restricted to the super admin (Sandro) - matched by
+-- email straight from the JWT, so it works without needing his user id.
 drop policy if exists "Admins can delete leads" on public.leads;
 create policy "Admins can delete leads" on public.leads
-  for delete to authenticated using (true);
+  for delete to authenticated using ((auth.jwt() ->> 'email') = 'sandrotvaliashvili10@gmail.com');
 
 -- pricing_config: readable by everyone (the public calculator needs it
 -- with no login), writable only by a signed-in admin.
@@ -161,6 +163,8 @@ drop policy if exists "Admins can update subscriptions" on public.subscriptions;
 create policy "Admins can update subscriptions" on public.subscriptions
   for update to authenticated using (true) with check (true);
 
+-- Deleting a subscription is restricted to the super admin (Sandro), same
+-- as leads above.
 drop policy if exists "Admins can delete subscriptions" on public.subscriptions;
 create policy "Admins can delete subscriptions" on public.subscriptions
-  for delete to authenticated using (true);
+  for delete to authenticated using ((auth.jwt() ->> 'email') = 'sandrotvaliashvili10@gmail.com');

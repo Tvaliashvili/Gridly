@@ -503,12 +503,18 @@
     'sandrotvaliashvili10@gmail.com': 'სანდრო თვალიაშვილი',
     'luuka0790@gmail.com': 'ლუკა წილოსანი',
   };
+  // Sandro is the super admin - some actions (deleting leads/subscriptions)
+  // are his alone. This is a UI convenience only; the real enforcement is
+  // the matching email check in the delete policies in sql/policies.sql.
+  const SUPER_ADMIN_EMAIL = 'sandrotvaliashvili10@gmail.com';
   let currentUserName = '';
+  let isSuperAdmin = false;
 
   function showApp(user) {
     loginScreen.hidden = true;
     app.hidden = false;
     currentUserName = ADMIN_NAMES[user.email] || user.email || '';
+    isSuperAdmin = user.email === SUPER_ADMIN_EMAIL;
     signedInAs.textContent = currentUserName;
     loadLeads();
     loadPricing();
@@ -616,7 +622,7 @@
               : `<button class="btn btn-ghost btn-sm claim-btn" data-id="${escapeHtml(lead.id)}">დაჯავშნა</button>`}
           </td>
           <td>${escapeHtml(formatDate(lead.created_at))}</td>
-          <td><button class="btn btn-ghost btn-delete" data-id="${escapeHtml(lead.id)}" title="მოთხოვნის წაშლა">წაშლა</button></td>
+          <td>${isSuperAdmin ? `<button class="btn btn-ghost btn-delete" data-id="${escapeHtml(lead.id)}" title="მოთხოვნის წაშლა">წაშლა</button>` : ''}</td>
         </tr>
       `).join('');
 
@@ -828,7 +834,7 @@
         <td>${escapeHtml(s.service)}</td>
         <td>${escapeHtml(s.price)} GEL</td>
         <td>${escapeHtml(formatDateOnly(s.subscribed_on))}</td>
-        <td><button class="btn btn-ghost btn-delete" data-id="${escapeHtml(s.id)}" title="გამოწერის წაშლა">წაშლა</button></td>
+        <td>${isSuperAdmin ? `<button class="btn btn-ghost btn-delete" data-id="${escapeHtml(s.id)}" title="გამოწერის წაშლა">წაშლა</button>` : ''}</td>
       </tr>
     `).join('');
 
