@@ -1679,7 +1679,11 @@ body {
   color: var(--accent);
   margin-bottom: 20px;
 }
-.maintenance-card h1 { font-size: 1.35rem; margin: 0 0 12px; }
+.maintenance-card h1 { font-size: clamp(1rem, 3.6vw, 1.35rem); white-space: nowrap; margin: 0 0 12px; }
 .maintenance-card p { color: var(--text-dim); margin: 0; line-height: 1.6; }
 .maintenance-card h1:last-of-type { margin-top: 0; }
 .maintenance-divider { border: none; border-top: 1px solid var(--glass-border); margin: 20px 0; }
+
+@media (max-width: 480px) {
+  .maintenance-card h1 { white-space: normal; font-size: 1.2rem; }
+}
