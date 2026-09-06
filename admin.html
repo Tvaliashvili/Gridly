@@ -37,9 +37,7 @@
   .signed-in-as { font-size: 0.8rem; color: #6b6f83; }
 
   .maintenance-switch { position: relative; display: flex; align-items: center; gap: 8px; }
-  .switch-side-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #4b4f5f; transition: color 0.2s ease; }
-  .maintenance-switch.is-on .switch-side-label.on { color: #f87171; }
-  .maintenance-switch:not(.is-on) .switch-side-label.off { color: #a7abbd; }
+  .switch-side-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #a7abbd; }
   .maintenance-switch .status-msg { position: absolute; top: 100%; left: 0; margin-top: 6px; white-space: nowrap; }
 
   .topnav {
@@ -226,7 +224,7 @@
   .switch-slider {
     position: absolute;
     inset: 0;
-    background: #23262f;
+    background: #f87171;
     border-radius: 999px;
     transition: background 0.2s ease;
   }
