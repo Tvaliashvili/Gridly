@@ -1667,9 +1667,7 @@ body {
   font-family: 'Inter', 'Noto Sans Georgian', sans-serif;
 }
 .maintenance-card {
-  position: relative;
   max-width: 420px;
-  margin-top: 26px;
   text-align: center;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -1677,59 +1675,6 @@ body {
   padding: 44px 36px;
   backdrop-filter: blur(16px);
 }
-.maintenance-crew {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -88%);
-  pointer-events: none;
-  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.25));
-}
-
-.crew-hair, .crew-leg, .crew-arm { fill: #1e293b; }
-.crew-boot { fill: #111827; }
-.crew-head { fill: #f4c9a0; }
-.crew-vest { fill: #f59e0b; }
-.crew-vest-alt { fill: #fb923c; }
-.crew-hat { fill: #fde047; }
-.crew-hat-alt { fill: #fbbf24; }
-.crew-hat-brim { fill: #eab308; }
-.crew-arm { transform-box: fill-box; transform-origin: 50% 0%; }
-.crew-arm-left { transform: rotate(-16deg); }
-.crew-arm-right { transform: rotate(16deg); }
-.crew-arm-hammer {
-  transform-origin: 50% 0%;
-  animation: crewHammer 1s ease-in-out infinite;
-}
-@keyframes crewHammer {
-  0%, 100% { transform: rotate(16deg); }
-  50% { transform: rotate(-48deg); }
-}
-
-.tractor-body { fill: var(--accent); }
-.tractor-cabin { fill: #1e293b; }
-.tractor-cabin-window { fill: #22d3ee; opacity: 0.55; }
-.tractor-exhaust { fill: #334155; }
-.tractor-wheel { fill: #111827; }
-.tractor-hub { fill: #64748b; }
-.crew-tractor {
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
-  animation: crewTractorBob 1.6s ease-in-out infinite;
-}
-@keyframes crewTractorBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .crew-arm-hammer, .crew-tractor { animation: none; }
-}
-
-@media (max-width: 480px) {
-  .maintenance-crew svg { width: 170px; height: 54px; }
-}
-
 .maintenance-contact {
   margin-top: 22px;
   display: flex;
