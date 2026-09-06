@@ -22,7 +22,6 @@ alter table public.leads enable row level security;
 create table if not exists public.pricing_config (
   id text primary key default 'default',
   base_price integer not null default 350,
-  dual_language integer not null default 150,
   feature_animations integer not null default 150,
   feature_calculator integer not null default 200,
   feature_cms integer not null default 350,
@@ -54,6 +53,11 @@ alter table public.pricing_config add column if not exists feature_email integer
 -- Multi-page is now free on its own (only extra pages beyond the included
 -- two are charged, via price_per_page above); drop its old flat surcharge.
 alter table public.pricing_config drop column if exists multi_page;
+-- Same treatment for language: multi-language is free on its own, only
+-- languages beyond the first are charged (default of 2 already incurs
+-- one language's worth of fee); replaces the old flat dual_language fee.
+alter table public.pricing_config add column if not exists price_per_language integer not null default 150;
+alter table public.pricing_config drop column if exists dual_language;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 

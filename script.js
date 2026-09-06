@@ -149,7 +149,9 @@
       'estimator.pages.extra': 'დამატებითი გვერდები',
       'estimator.lang.title': 'ენა',
       'estimator.lang.ge': 'მხოლოდ ქართული',
-      'estimator.lang.dual': 'ორენოვანი (ქართ./ინგლ.)',
+      'estimator.lang.multi': 'მრავალენოვანი',
+      'estimator.lang.count.label': 'ენების რაოდენობა',
+      'estimator.lang.extra': 'დამატებითი ენები',
       'estimator.features.title': 'ფუნქციები',
       'estimator.features.contact': 'საკონტაქტო ფორმა',
       'estimator.features.hosting': 'ჰოსტინგი',
@@ -267,7 +269,9 @@
       'estimator.pages.extra': 'Extra pages',
       'estimator.lang.title': 'Language',
       'estimator.lang.ge': 'Georgian only',
-      'estimator.lang.dual': 'Dual language (GE/EN)',
+      'estimator.lang.multi': 'Multi-language',
+      'estimator.lang.count.label': 'Number of languages',
+      'estimator.lang.extra': 'Extra languages',
       'estimator.features.title': 'Features',
       'estimator.features.contact': 'Contact Form',
       'estimator.features.hosting': 'Hosting',
@@ -622,11 +626,16 @@
     // works if Supabase is unreachable.
     let BASE_PRICE_GEL = 350;
     let PRICE_PER_PAGE_GEL = 100;
+    let PRICE_PER_LANGUAGE_GEL = 150;
     // The page-count field can never go below this (a "multi-page" site is
     // at least 2 pages), but the fee-free page count is one lower - so the
     // pre-selected default of 2 already carries one page's worth of fee.
     const MIN_PAGE_COUNT = 2;
     const FREE_PAGE_COUNT = 1;
+    // Same logic as page count: at least 2 languages for "multi-language",
+    // but only the first is fee-free, so the default of 2 already charges.
+    const MIN_LANG_COUNT = 2;
+    const FREE_LANG_COUNT = 1;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
 
@@ -642,6 +651,9 @@
     const pageCountRow = document.getElementById('est-page-count');
     const pageCountInput = document.getElementById('est-pageCount');
     const pageCountPriceEl = document.getElementById('est-page-count-price');
+    const langCountRow = document.getElementById('est-lang-count');
+    const langCountInput = document.getElementById('est-langCount');
+    const langCountPriceEl = document.getElementById('est-lang-count-price');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
     let lastConsultState = null;
@@ -744,23 +756,42 @@
       return getExtraPagesCount() * PRICE_PER_PAGE_GEL;
     }
 
+    function isMultiLang() {
+      const langInput = estimatorForm.querySelector('input[name="lang"]:checked');
+      return !!langInput && langInput.value === 'multi';
+    }
+
+    function getLangCount() {
+      if (!isMultiLang()) return MIN_LANG_COUNT;
+      const value = Math.round(Number(langCountInput.value));
+      return Number.isFinite(value) ? Math.max(MIN_LANG_COUNT, value) : MIN_LANG_COUNT;
+    }
+
+    function getExtraLanguagesCount() {
+      return Math.max(0, getLangCount() - FREE_LANG_COUNT);
+    }
+
+    function getExtraLanguagesPriceGel() {
+      return getExtraLanguagesCount() * PRICE_PER_LANGUAGE_GEL;
+    }
+
     function computeTotalGel() {
       if (isConsultMode()) return 0;
       let total = BASE_PRICE_GEL;
       checkedInputs().forEach((input) => { total += getInputPriceGel(input); });
       total += getExtraPagesPriceGel();
+      total += getExtraLanguagesPriceGel();
       return total;
     }
 
     function computeTimeframe() {
       const pages = estimatorForm.querySelector('input[name="pages"]:checked').value;
-      const lang = estimatorForm.querySelector('input[name="lang"]:checked').value;
       const urgency = estimatorForm.querySelector('input[name="urgency"]:checked').value;
       const features = Array.from(estimatorForm.querySelectorAll('input[name="feature"]:checked')).map((i) => i.value);
 
       let extraDays = 0;
       if (pages === 'multi') extraDays += 3 + Math.ceil(getExtraPagesCount() / 2);
-      if (lang === 'dual') extraDays += 1;
+      extraDays += getExtraLanguagesCount();
       if (features.includes('animations')) extraDays += 2;
       if (features.includes('calculator')) extraDays += 2;
       if (features.includes('cms')) extraDays += 4;
@@ -803,6 +834,13 @@
           priceDisplay: toDisplay(getExtraPagesPriceGel()),
         });
       }
+      const extraLanguages = getExtraLanguagesCount();
+      if (extraLanguages > 0) {
+        items.push({
+          label: `${t('estimator.lang.extra')} (+${extraLanguages})`,
+          priceDisplay: toDisplay(getExtraLanguagesPriceGel()),
+        });
+      }
       return items;
     }
 
@@ -827,6 +865,12 @@
         pageCountPriceEl.textContent = extraGel > 0 ? `+${toDisplay(extraGel)} ${currentCurrency}` : '';
       }
 
+      langCountRow.hidden = !isMultiLang();
+      if (langCountPriceEl) {
+        const extraGel = getExtraLanguagesPriceGel();
+        langCountPriceEl.textContent = extraGel > 0 ? `+${toDisplay(extraGel)} ${currentCurrency}` : '';
+      }
+
       const totalGel = computeTotalGel();
       totalAmountEl.textContent = toDisplay(totalGel);
       totalCurrencyEl.textContent = currentCurrency;
@@ -843,6 +887,7 @@
       const items = consult ? [t('estimator.mode.consult')] : checkedInputs().map((input) => {
         const label = selectedLabelText(input);
         if (input.name === 'pages' && input.value === 'multi') return `${label} (${getPageCount()})`;
+        if (input.name === 'lang' && input.value === 'multi') return `${label} (${getLangCount()})`;
         return label;
       });
 
@@ -888,27 +933,32 @@
       updateEstimate();
     });
 
+    // Block the keys that would let someone type a negative or zero count
+    // directly (the live total already clamps to the field's minimum via
+    // getPageCount/getLangCount, but the field itself should never visibly
+    // show 0/-), and snap back to that minimum once they're done typing.
+    function guardCountInput(input, min) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === '-' || e.key === '+' || e.key === 'e' || e.key === 'E') e.preventDefault();
+      });
+      input.addEventListener('input', updateEstimate);
+      input.addEventListener('blur', () => {
+        const value = Math.round(Number(input.value));
+        input.value = Number.isFinite(value) ? Math.max(min, value) : min;
+        updateEstimate();
+      });
+    }
+
     setCurrencyUI();
     estimatorForm.addEventListener('change', updateEstimate);
-    // Block the keys that would let someone type a negative or zero page
-    // count directly (the live total already clamps to MIN_PAGE_COUNT via
-    // getPageCount, but the field itself should never visibly show 0/-).
-    pageCountInput.addEventListener('keydown', (e) => {
-      if (e.key === '-' || e.key === '+' || e.key === 'e' || e.key === 'E') e.preventDefault();
-    });
-    pageCountInput.addEventListener('input', updateEstimate);
-    pageCountInput.addEventListener('blur', () => {
-      const value = Math.round(Number(pageCountInput.value));
-      pageCountInput.value = Number.isFinite(value) ? Math.max(MIN_PAGE_COUNT, value) : MIN_PAGE_COUNT;
-      updateEstimate();
-    });
+    guardCountInput(pageCountInput, MIN_PAGE_COUNT);
+    guardCountInput(langCountInput, MIN_LANG_COUNT);
     refreshEstimate = updateEstimate;
     updateEstimate();
 
     // Pull live prices set from /admin.html. Maps each priced input to its
     // pricing_config column, then re-renders with whatever loaded.
     const PRICE_FIELD_SELECTORS = {
-      dual_language: 'input[name="lang"][value="dual"]',
       feature_animations: 'input[name="feature"][value="animations"]',
       feature_calculator: 'input[name="feature"][value="calculator"]',
       feature_cms: 'input[name="feature"][value="cms"]',
@@ -920,13 +970,14 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page')
+        .select('base_price, feature_animations, feature_calculator, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page, price_per_language')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
           if (error || !pricing) return;
           if (Number.isFinite(Number(pricing.base_price))) BASE_PRICE_GEL = Number(pricing.base_price);
           if (Number.isFinite(Number(pricing.price_per_page))) PRICE_PER_PAGE_GEL = Number(pricing.price_per_page);
+          if (Number.isFinite(Number(pricing.price_per_language))) PRICE_PER_LANGUAGE_GEL = Number(pricing.price_per_language);
           Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
             if (!Number.isFinite(Number(pricing[field]))) return;
             const input = estimatorForm.querySelector(selector);

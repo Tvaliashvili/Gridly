@@ -334,8 +334,8 @@
               <input type="number" min="0" step="1" id="price_per_page" name="price_per_page" required>
             </div>
             <div class="price-field">
-              <label for="dual_language">ორენოვანი, ქართ./ინგლ. (+GEL)</label>
-              <input type="number" min="0" step="1" id="dual_language" name="dual_language" required>
+              <label for="price_per_language">დამატებითი ენა, 1-ზე მეტი (+GEL თითოზე)</label>
+              <input type="number" min="0" step="1" id="price_per_language" name="price_per_language" required>
             </div>
             <div class="price-field">
               <label for="feature_animations">მორგებული ანიმაციები (+GEL)</label>
@@ -670,7 +670,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'price_per_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
+  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
 
   async function loadPricing() {
     try {
