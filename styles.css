@@ -1016,11 +1016,13 @@ section { padding: 100px 0; }
 
 .est-page-count {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   margin-top: 14px;
   padding-top: 14px;
   border-top: 1px solid var(--est-pill-border);
+  max-width: 100%;
 }
 .est-page-count label {
   font-size: 0.82rem;
@@ -1037,9 +1039,11 @@ section { padding: 100px 0; }
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
+  max-width: 100%;
 }
 .est-page-count select:focus-visible { outline: 2px solid var(--est-accent); outline-offset: 2px; }
 .est-page-count-price {
+  flex-shrink: 0;
   font-size: 0.7rem;
   font-weight: 700;
   padding: 3px 9px;
