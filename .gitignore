@@ -1,2 +1,6 @@
 .DS_Store
 Thumbs.db
+
+# One-time Supabase setup script - not something the deployed site needs,
+# and GitHub Pages serves everything in the repo, so keep it local-only.
+sql/
