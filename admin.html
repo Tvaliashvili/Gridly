@@ -78,15 +78,6 @@
   td.msg { max-width: 260px; color: #a7abbd; white-space: pre-wrap; }
   tr:last-child td { border-bottom: none; }
 
-  select.status {
-    background: #08090d;
-    color: #f2f3f7;
-    border: 1px solid #23262f;
-    border-radius: 8px;
-    padding: 6px 8px;
-    font-size: 0.82rem;
-  }
-
   .price-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px 16px; margin-bottom: 20px; }
   .price-field { display: flex; flex-direction: column; }
   .price-field label { display: flex; align-items: flex-end; min-height: 2.6em; font-size: 0.82rem; color: #a7abbd; margin-bottom: 6px; line-height: 1.3; }
@@ -474,7 +465,11 @@
 
   function formatDate(iso) {
     if (!iso) return '';
-    return new Date(iso).toLocaleString('ka-GE');
+    const d = new Date(iso);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const time = d.toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit' });
+    return `${day}/${month}/${d.getFullYear()} ${time}`;
   }
 
   const loginScreen = document.getElementById('login-screen');
@@ -492,10 +487,19 @@
 
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // Maps the two registered admin accounts to display names, used both for
+  // the "signed in as" label and for whose name gets recorded on a claim.
+  const ADMIN_NAMES = {
+    'sandrotvaliashvili10@gmail.com': 'სანდრო თვალიაშვილი',
+    'luuka0790@gmail.com': 'ლუკა წილოსანი',
+  };
+  let currentUserName = '';
+
   function showApp(user) {
     loginScreen.hidden = true;
     app.hidden = false;
-    signedInAs.textContent = user.email || '';
+    currentUserName = ADMIN_NAMES[user.email] || user.email || '';
+    signedInAs.textContent = currentUserName;
     loadLeads();
     loadPricing();
     loadSubscriptions();
@@ -562,14 +566,6 @@
 
   /* ---------------- Leads ---------------- */
   const leadsContainer = document.getElementById('leads-container');
-  // Values stay in English to match what's already stored in the leads table;
-  // only the visible option labels are translated.
-  const STATUSES = [
-    { value: 'New', label: 'ახალი' },
-    { value: 'Contacted', label: 'დაკავშირებული' },
-    { value: 'Won', label: 'მოგებული' },
-    { value: 'Lost', label: 'წაგებული' },
-  ];
   const BUSINESS_TYPE_LABELS = {
     salon: 'სალონი / სილამაზე',
     restaurant: 'რესტორანი / კაფე',
@@ -602,9 +598,9 @@
           <td>${escapeHtml(lead.calculated_price || '-')}</td>
           <td class="msg">${escapeHtml(lead.message || '-')}</td>
           <td>
-            <select class="status" data-id="${escapeHtml(lead.id)}">
-              ${STATUSES.map((s) => `<option value="${s.value}"${s.value === lead.status ? ' selected' : ''}>${s.label}</option>`).join('')}
-            </select>
+            ${lead.assigned_to
+              ? escapeHtml(lead.assigned_to)
+              : `<button class="btn btn-ghost btn-sm claim-btn" data-id="${escapeHtml(lead.id)}">დაჯავშნა</button>`}
           </td>
           <td>${escapeHtml(formatDate(lead.created_at))}</td>
           <td><button class="btn btn-ghost btn-delete" data-id="${escapeHtml(lead.id)}" title="მოთხოვნის წაშლა">წაშლა</button></td>
@@ -617,7 +613,7 @@
             <thead>
               <tr>
                 <th>სახელი</th><th>კონტაქტი</th><th>ბიზნესი</th><th>პაკეტი</th>
-                <th>ფასი</th><th>შეტყობინება</th><th>სტატუსი</th><th>თარიღი</th><th></th>
+                <th>ფასი</th><th>შეტყობინება</th><th>წარმომადგენელი</th><th>თარიღი</th><th></th>
               </tr>
             </thead>
             <tbody>${rows}</tbody>
@@ -641,18 +637,17 @@
         });
       });
 
-      leadsContainer.querySelectorAll('select.status').forEach((select) => {
-        select.addEventListener('change', async () => {
-          const id = select.dataset.id;
-          const status = select.value;
-          select.disabled = true;
+      leadsContainer.querySelectorAll('.claim-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          btn.disabled = true;
           try {
-            const { error } = await sb.from('leads').update({ status }).eq('id', id);
+            const { error } = await sb.from('leads').update({ assigned_to: currentUserName }).eq('id', id);
             if (error) throw error;
+            btn.replaceWith(document.createTextNode(currentUserName));
           } catch (err) {
-            alert('სტატუსის განახლება ვერ მოხერხდა. სცადეთ ხელახლა.');
-          } finally {
-            select.disabled = false;
+            alert('ჯავშნის შენახვა ვერ მოხერხდა. სცადეთ ხელახლა.');
+            btn.disabled = false;
           }
         });
       });
@@ -750,7 +745,10 @@
 
   function formatDateOnly(isoStr) {
     if (!isoStr) return '';
-    return new Date(isoStr).toLocaleDateString('ka-GE');
+    const d = new Date(isoStr);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}/${d.getFullYear()}`;
   }
 
   async function loadSubscriptions() {

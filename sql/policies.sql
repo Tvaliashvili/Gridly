@@ -18,6 +18,10 @@ create table if not exists public.leads (
   created_at timestamptz not null default now()
 );
 alter table public.leads enable row level security;
+-- Which admin has claimed this lead (display name, not their email/id) -
+-- replaces the status dropdown in admin.html with a "დაჯავშნა" claim
+-- button; a no-op on a fresh install.
+alter table public.leads add column if not exists assigned_to text;
 
 create table if not exists public.pricing_config (
   id text primary key default 'default',
