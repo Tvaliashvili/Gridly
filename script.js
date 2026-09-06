@@ -648,52 +648,74 @@
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
     let lastConsultState = null;
+    let lastMultiPageState = null;
+    let lastMultiLangState = null;
 
-    function setQuoteFieldsOpen(open, animate) {
-      quoteFieldsEl.removeEventListener('transitionend', quoteFieldsEl._onTransitionEnd || (() => {}));
+    // Smoothly reveals/hides a collapsible section by animating max-height
+    // and opacity (plus margin/padding-top, for sections with a border-top
+    // divider that would otherwise leave a visible sliver at 0 height).
+    // Reused by the quote-mode fields, the page-count field, and the
+    // language-count field so all of them expand/collapse the same way.
+    function setCollapseOpen(el, open, animate) {
+      el.removeEventListener('transitionend', el._onTransitionEnd || (() => {}));
+      if (!el._collapseMetrics) {
+        const cs = getComputedStyle(el);
+        el._collapseMetrics = { marginTop: cs.marginTop, paddingTop: cs.paddingTop };
+      }
+      const { marginTop, paddingTop } = el._collapseMetrics;
 
       if (!animate) {
-        quoteFieldsEl.style.transition = 'none';
+        el.style.transition = 'none';
         if (open) {
-          quoteFieldsEl.hidden = false;
-          quoteFieldsEl.style.maxHeight = 'none';
-          quoteFieldsEl.style.opacity = '1';
+          el.hidden = false;
+          el.style.maxHeight = 'none';
+          el.style.opacity = '1';
+          el.style.marginTop = '';
+          el.style.paddingTop = '';
         } else {
-          quoteFieldsEl.hidden = true;
-          quoteFieldsEl.style.maxHeight = '0px';
-          quoteFieldsEl.style.opacity = '0';
+          el.hidden = true;
+          el.style.maxHeight = '0px';
+          el.style.opacity = '0';
+          el.style.marginTop = '0px';
+          el.style.paddingTop = '0px';
         }
-        void quoteFieldsEl.offsetHeight;
-        quoteFieldsEl.style.transition = '';
+        void el.offsetHeight;
+        el.style.transition = '';
         return;
       }
 
       if (open) {
-        quoteFieldsEl.hidden = false;
-        quoteFieldsEl.style.maxHeight = '0px';
-        quoteFieldsEl.style.opacity = '0';
-        void quoteFieldsEl.offsetHeight;
-        quoteFieldsEl.style.maxHeight = `${quoteFieldsEl.scrollHeight}px`;
-        quoteFieldsEl.style.opacity = '1';
+        el.hidden = false;
+        el.style.maxHeight = '0px';
+        el.style.opacity = '0';
+        el.style.marginTop = '0px';
+        el.style.paddingTop = '0px';
+        void el.offsetHeight;
+        el.style.maxHeight = `${el.scrollHeight}px`;
+        el.style.opacity = '1';
+        el.style.marginTop = marginTop;
+        el.style.paddingTop = paddingTop;
         const onEnd = (e) => {
           if (e.propertyName !== 'max-height') return;
-          quoteFieldsEl.style.maxHeight = 'none';
-          quoteFieldsEl.removeEventListener('transitionend', onEnd);
+          el.style.maxHeight = 'none';
+          el.removeEventListener('transitionend', onEnd);
         };
-        quoteFieldsEl._onTransitionEnd = onEnd;
-        quoteFieldsEl.addEventListener('transitionend', onEnd);
+        el._onTransitionEnd = onEnd;
+        el.addEventListener('transitionend', onEnd);
       } else {
-        quoteFieldsEl.style.maxHeight = `${quoteFieldsEl.scrollHeight}px`;
-        void quoteFieldsEl.offsetHeight;
-        quoteFieldsEl.style.maxHeight = '0px';
-        quoteFieldsEl.style.opacity = '0';
+        el.style.maxHeight = `${el.scrollHeight}px`;
+        void el.offsetHeight;
+        el.style.maxHeight = '0px';
+        el.style.opacity = '0';
+        el.style.marginTop = '0px';
+        el.style.paddingTop = '0px';
         const onEnd = (e) => {
           if (e.propertyName !== 'max-height') return;
-          quoteFieldsEl.hidden = true;
-          quoteFieldsEl.removeEventListener('transitionend', onEnd);
+          el.hidden = true;
+          el.removeEventListener('transitionend', onEnd);
         };
-        quoteFieldsEl._onTransitionEnd = onEnd;
-        quoteFieldsEl.addEventListener('transitionend', onEnd);
+        el._onTransitionEnd = onEnd;
+        el.addEventListener('transitionend', onEnd);
       }
     }
 
@@ -813,7 +835,7 @@
     function updateEstimate() {
       const consult = isConsultMode();
       const modeChanged = lastConsultState !== null && lastConsultState !== consult;
-      setQuoteFieldsOpen(!consult, modeChanged);
+      setCollapseOpen(quoteFieldsEl, !consult, modeChanged);
       lastConsultState = consult;
 
       document.querySelectorAll('.est-price-tag[data-price]').forEach((el) => {
@@ -824,13 +846,19 @@
         expressPriceTagEl.textContent = `+${toDisplay(getExpressPriceGel())} ${currentCurrency}`;
       }
 
-      pageCountRow.hidden = !isMultiPage();
+      const multiPage = isMultiPage();
+      const multiPageChanged = lastMultiPageState !== null && lastMultiPageState !== multiPage;
+      setCollapseOpen(pageCountRow, multiPage, multiPageChanged);
+      lastMultiPageState = multiPage;
       if (pageCountPriceEl) {
         const extraGel = getExtraPagesPriceGel();
         pageCountPriceEl.textContent = extraGel > 0 ? `+${toDisplay(extraGel)} ${currentCurrency}` : '';
       }
 
-      langCountRow.hidden = !isMultiLang();
+      const multiLang = isMultiLang();
+      const multiLangChanged = lastMultiLangState !== null && lastMultiLangState !== multiLang;
+      setCollapseOpen(langCountRow, multiLang, multiLangChanged);
+      lastMultiLangState = multiLang;
       if (langCountPriceEl) {
         const extraGel = getExtraLanguagesPriceGel();
         langCountPriceEl.textContent = extraGel > 0 ? `+${toDisplay(extraGel)} ${currentCurrency}` : '';
