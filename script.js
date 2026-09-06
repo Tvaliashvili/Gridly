@@ -646,6 +646,12 @@
     let lastMultiLangState = null;
     let lastAnimationsState = null;
 
+    // Tracks the order options were selected in, so the receipt lists them
+    // in that order instead of a fixed layout order - the map's insertion
+    // order is what getReceiptItems sorts by.
+    let selectionSeq = 0;
+    const selectionOrder = new Map();
+
     // Smoothly reveals/hides a collapsible section by animating max-height
     // and opacity (plus margin/padding-top, for sections with a border-top
     // divider that would otherwise leave a visible sliver at 0 height).
@@ -821,48 +827,92 @@
       return text ? text.textContent : input.value;
     }
 
+    // The key each priced option is tracked under in selectionOrder - an
+    // extra-pages/languages/maintenance/seo surcharge line shares its
+    // parent option's key, so it sorts right alongside it.
+    function orderKeyFor(input) {
+      if (input.name === 'animationsType') return 'feature:animations';
+      if (input.name === 'feature') return `feature:${input.value}`;
+      if (input.name === 'pages') return 'pages';
+      if (input.name === 'lang') return 'lang';
+      return input.name;
+    }
+
+    // Every option that can appear as its own receipt line, currently active.
+    function getActiveOrderKeys() {
+      const keys = new Set();
+      checkedInputs()
+        .filter((input) => getInputPriceGel(input) > 0)
+        .forEach((input) => keys.add(orderKeyFor(input)));
+      if (getExtraPagesCount() > 0) keys.add('pages');
+      if (getExtraLanguagesCount() > 0) keys.add('lang');
+      if (getMaintenanceExtraPriceGel() > 0) keys.add('feature:maintenance');
+      if (getSeoExtraPriceGel() > 0) keys.add('feature:seo');
+      return keys;
+    }
+
+    // Keeps selectionOrder in sync with what's currently selected, so the
+    // receipt can sort by "when was this picked" instead of a fixed layout
+    // order. Newly active options get the next sequence number; options no
+    // longer active are forgotten (so re-picking one later re-queues it).
+    function syncSelectionOrder() {
+      const active = getActiveOrderKeys();
+      Array.from(selectionOrder.keys()).forEach((key) => {
+        if (!active.has(key)) selectionOrder.delete(key);
+      });
+      active.forEach((key) => {
+        if (!selectionOrder.has(key)) selectionOrder.set(key, ++selectionSeq);
+      });
+    }
+
     function getReceiptItems() {
       if (isConsultMode()) {
         return [{ label: t('estimator.mode.consult'), priceDisplay: toDisplay(0) }];
       }
-      const items = [
-        { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
-        ...checkedInputs()
-          .filter((input) => getInputPriceGel(input) > 0)
-          .map((input) => ({
-            label: selectedLabelText(input),
-            priceDisplay: toDisplay(getInputPriceGel(input)),
-          })),
-      ];
+      const dynamicItems = checkedInputs()
+        .filter((input) => getInputPriceGel(input) > 0)
+        .map((input) => ({
+          label: selectedLabelText(input),
+          priceDisplay: toDisplay(getInputPriceGel(input)),
+          orderKey: orderKeyFor(input),
+        }));
       const extraPages = getExtraPagesCount();
       if (extraPages > 0) {
-        items.push({
+        dynamicItems.push({
           label: `${t('estimator.pages.extra')} (+${extraPages})`,
           priceDisplay: toDisplay(getExtraPagesPriceGel()),
+          orderKey: 'pages',
         });
       }
       const extraLanguages = getExtraLanguagesCount();
       if (extraLanguages > 0) {
-        items.push({
+        dynamicItems.push({
           label: `${t('estimator.lang.extra')} (+${extraLanguages})`,
           priceDisplay: toDisplay(getExtraLanguagesPriceGel()),
+          orderKey: 'lang',
         });
       }
       const maintenanceExtraGel = getMaintenanceExtraPriceGel();
       if (maintenanceExtraGel > 0) {
-        items.push({
+        dynamicItems.push({
           label: `${t('estimator.features.maintenance.extra')} (+${getExtraPagesCount()})`,
           priceDisplay: toDisplay(maintenanceExtraGel),
+          orderKey: 'feature:maintenance',
         });
       }
       const seoExtraGel = getSeoExtraPriceGel();
       if (seoExtraGel > 0) {
-        items.push({
+        dynamicItems.push({
           label: `${t('estimator.features.seo.extra')} (+${getExtraPagesCount()})`,
           priceDisplay: toDisplay(seoExtraGel),
+          orderKey: 'feature:seo',
         });
       }
-      return items;
+      dynamicItems.sort((a, b) => (selectionOrder.get(a.orderKey) ?? 0) - (selectionOrder.get(b.orderKey) ?? 0));
+      return [
+        { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
+        ...dynamicItems,
+      ];
     }
 
     function updateEstimate() {
@@ -870,6 +920,7 @@
       const modeChanged = lastConsultState !== null && lastConsultState !== consult;
       setCollapseOpen(quoteFieldsEl, !consult, modeChanged);
       lastConsultState = consult;
+      syncSelectionOrder();
 
       document.querySelectorAll('.est-price-tag[data-price]').forEach((el) => {
         const gel = Number(el.dataset.price);
