@@ -54,8 +54,45 @@
     document.body.innerHTML = `
       <div class="maintenance-screen">
         <div class="maintenance-card">
-          <div class="maintenance-construction" aria-hidden="true">
-            <span>🚧</span><span>👷</span><span>🚜</span><span>👷‍♀️</span><span>🚧</span>
+          <div class="maintenance-crew" aria-hidden="true">
+            <svg viewBox="0 0 250 78" width="230" height="72" xmlns="http://www.w3.org/2000/svg">
+              <g class="crew-worker" transform="translate(4,6)">
+                <rect class="crew-leg" x="6" y="38" width="7" height="22" rx="3"/>
+                <rect class="crew-leg" x="17" y="38" width="7" height="22" rx="3"/>
+                <ellipse class="crew-boot" cx="9.5" cy="61" rx="5.5" ry="3.2"/>
+                <ellipse class="crew-boot" cx="20.5" cy="61" rx="5.5" ry="3.2"/>
+                <path class="crew-vest" d="M2 21 Q15 15 28 21 L26 41 Q15 46 4 41 Z"/>
+                <rect class="crew-arm crew-arm-left" x="0" y="23" width="6.5" height="16" rx="3.2"/>
+                <rect class="crew-arm crew-arm-right crew-arm-hammer" x="23.5" y="23" width="6.5" height="16" rx="3.2"/>
+                <circle class="crew-head" cx="15" cy="11" r="9"/>
+                <path class="crew-hat" d="M4.2 10a10.8 10.8 0 0 1 21.6 0Z"/>
+                <rect class="crew-hat-brim" x="2" y="9" width="26" height="3" rx="1.5"/>
+              </g>
+              <g transform="translate(60,26)">
+                <g class="crew-tractor">
+                  <rect class="tractor-exhaust" x="33" y="-8" width="4.5" height="13" rx="1.5"/>
+                  <rect class="tractor-cabin" x="40" y="0" width="26" height="20" rx="3"/>
+                  <rect class="tractor-cabin-window" x="44" y="4" width="18" height="11" rx="1.5"/>
+                  <rect class="tractor-body" x="0" y="14" width="72" height="19" rx="4"/>
+                  <circle class="tractor-wheel" cx="16" cy="37" r="14"/>
+                  <circle class="tractor-hub" cx="16" cy="37" r="5"/>
+                  <circle class="tractor-wheel tractor-wheel-front" cx="60" cy="37" r="8.5"/>
+                  <circle class="tractor-hub tractor-hub-front" cx="60" cy="37" r="3"/>
+                </g>
+              </g>
+              <g class="crew-worker" transform="translate(202,6)">
+                <rect class="crew-leg" x="6" y="38" width="7" height="22" rx="3"/>
+                <rect class="crew-leg" x="17" y="38" width="7" height="22" rx="3"/>
+                <ellipse class="crew-boot" cx="9.5" cy="61" rx="5.5" ry="3.2"/>
+                <ellipse class="crew-boot" cx="20.5" cy="61" rx="5.5" ry="3.2"/>
+                <path class="crew-vest crew-vest-alt" d="M2 21 Q15 15 28 21 L26 41 Q15 46 4 41 Z"/>
+                <rect class="crew-arm crew-arm-left" x="0" y="23" width="6.5" height="16" rx="3.2"/>
+                <rect class="crew-arm crew-arm-right" x="23.5" y="23" width="6.5" height="16" rx="3.2"/>
+                <circle class="crew-head" cx="15" cy="11" r="9"/>
+                <path class="crew-hat crew-hat-alt" d="M4.2 10a10.8 10.8 0 0 1 21.6 0Z"/>
+                <rect class="crew-hat-brim" x="2" y="9" width="26" height="3" rx="1.5"/>
+              </g>
+            </svg>
           </div>
           <div class="maintenance-icon">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
@@ -66,7 +103,20 @@
           <h1>${translations.en['maintenance.title']}</h1>
           <p>${translations.en['maintenance.desc']}</p>
         </div>
-        <a class="maintenance-email" href="mailto:info@gridly.ge">info@gridly.ge</a>
+        <div class="maintenance-contact">
+          <a class="maintenance-email" href="mailto:info@gridly.ge">info@gridly.ge</a>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
     `;
   }
