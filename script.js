@@ -144,9 +144,8 @@
                   <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(324)"/>
                 </g>
               </defs>
-              <g transform="translate(35,35) scale(0.62)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
-              <g transform="translate(72,60) scale(0.46)"><g class="gear-spin gear-spin-ccw"><use href="#gearUnit"/></g></g>
-              <g transform="translate(44,84) scale(0.32)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(33,33) scale(0.72)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(70,68) scale(0.54)"><g class="gear-spin gear-spin-ccw"><use href="#gearUnit"/></g></g>
             </svg>
           </div>
           <h1>${translations.ge['maintenance.title']}</h1>
