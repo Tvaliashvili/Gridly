@@ -1670,7 +1670,7 @@ body {
   max-width: 420px;
   text-align: center;
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 44px 36px;
   backdrop-filter: blur(16px);
