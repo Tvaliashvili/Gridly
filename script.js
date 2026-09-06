@@ -622,10 +622,9 @@
     // works if Supabase is unreachable.
     let BASE_PRICE_GEL = 350;
     let PRICE_PER_PAGE_GEL = 100;
-    // How many pages the flat multi-page price already covers - the
-    // page-count field only charges for pages beyond this, and can never
-    // go lower (no zero or negative page counts).
-    const BASE_PAGE_COUNT = 1;
+    // Multi-page itself is free - only pages beyond this count are charged
+    // (via the page-count field), which can never go lower than this.
+    const BASE_PAGE_COUNT = 2;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
 
@@ -907,7 +906,6 @@
     // Pull live prices set from /admin.html. Maps each priced input to its
     // pricing_config column, then re-renders with whatever loaded.
     const PRICE_FIELD_SELECTORS = {
-      multi_page: 'input[name="pages"][value="multi"]',
       dual_language: 'input[name="lang"][value="dual"]',
       feature_animations: 'input[name="feature"][value="animations"]',
       feature_calculator: 'input[name="feature"][value="calculator"]',
@@ -920,7 +918,7 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page')
+        .select('base_price, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {

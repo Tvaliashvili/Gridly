@@ -22,7 +22,6 @@ alter table public.leads enable row level security;
 create table if not exists public.pricing_config (
   id text primary key default 'default',
   base_price integer not null default 350,
-  multi_page integer not null default 250,
   dual_language integer not null default 150,
   feature_animations integer not null default 150,
   feature_calculator integer not null default 200,
@@ -47,10 +46,13 @@ alter table public.pricing_config add column if not exists express_delivery_land
 alter table public.pricing_config add column if not exists express_delivery_multi integer not null default 320;
 alter table public.pricing_config drop column if exists express_delivery;
 -- Per-extra-page surcharge for multi-page sites, charged for each page beyond
--- the one the flat multi_page price already covers; a no-op on a fresh install.
+-- the two the base package already covers; a no-op on a fresh install.
 alter table public.pricing_config add column if not exists price_per_page integer not null default 100;
 -- Business email as a priced add-on; a no-op on a fresh install.
 alter table public.pricing_config add column if not exists feature_email integer not null default 30;
+-- Multi-page is now free on its own (only extra pages beyond the included
+-- two are charged, via price_per_page above); drop its old flat surcharge.
+alter table public.pricing_config drop column if exists multi_page;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 
