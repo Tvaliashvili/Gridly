@@ -141,7 +141,7 @@
       'estimator.mode.quote': 'პროექტის შეფასება',
       'estimator.pages.title': 'ვებ-გვერდი',
       'estimator.base': 'საბაზისო პაკეტი',
-      'estimator.pages.landing': 'ერთ გვერდიანი',
+      'estimator.pages.landing': 'სავიზიტო',
       'estimator.pages.multi': 'მრავალგვერდიანი',
       'estimator.pages.count.label': 'გვერდების რაოდენობა',
       'estimator.pages.extra': 'დამატებითი გვერდები',
@@ -756,7 +756,7 @@
     }
 
     function getPageCount() {
-      if (!isMultiPage()) return MIN_PAGE_COUNT;
+      if (!isMultiPage()) return FREE_PAGE_COUNT;
       const value = Math.round(Number(pageCountInput.value));
       return Number.isFinite(value) ? Math.max(MIN_PAGE_COUNT, value) : MIN_PAGE_COUNT;
     }
@@ -775,7 +775,7 @@
     }
 
     function getLangCount() {
-      if (!isMultiLang()) return MIN_LANG_COUNT;
+      if (!isMultiLang()) return FREE_LANG_COUNT;
       const value = Math.round(Number(langCountInput.value));
       return Number.isFinite(value) ? Math.max(MIN_LANG_COUNT, value) : MIN_LANG_COUNT;
     }
