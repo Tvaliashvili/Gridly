@@ -380,6 +380,15 @@ h1, h2, h3, h4, p, span, a, li,
 
 .btn-primary {
   background: var(--gradient);
+  /* Chromium mis-rasterizes a gradient background clipped to border-box on
+     a rounded corner when combined with even a fully transparent border -
+     it shows up as a thin wrong-colored (often the gradient's opposite-end
+     color) sliver right at the curve, worst on a wide pill-shaped button
+     like #est-send-btn. Clipping to padding-box instead sidesteps it
+     entirely; harmless since the border is transparent anyway. Must come
+     after the `background` shorthand above, which resets background-clip
+     to its initial border-box as a side effect of being a shorthand. */
+  background-clip: padding-box;
   color: #fff;
   box-shadow: 0 4px 20px rgba(99,102,241,0.35);
 }
@@ -1299,8 +1308,10 @@ section { padding: 100px 0; }
   max-width: 380px;
   padding: 32px 28px 28px;
   border-radius: var(--radius-lg);
-  background: var(--est-card-bg);
-  border: 1px solid var(--est-pill-border);
+  /* Always white regardless of site theme - a confirmation popup reads
+     clearest as a plain neutral card, not tinted by dark mode. */
+  background: #fff;
+  border: 1px solid rgba(15, 17, 23, 0.08);
   box-shadow: var(--shadow-md);
   text-align: center;
   display: flex;
@@ -1319,7 +1330,7 @@ section { padding: 100px 0; }
 }
 .est-modal--success .est-modal-icon { background: rgba(52, 211, 153, 0.14); color: var(--success); }
 .est-modal--error .est-modal-icon { background: rgba(248, 113, 113, 0.14); color: var(--danger); }
-.est-modal-message { color: var(--est-text); font-size: 0.98rem; line-height: 1.5; }
+.est-modal-message { color: #1a1c24; font-size: 0.98rem; line-height: 1.5; }
 .est-modal-ok { min-width: 120px; }
 
 /* ---- Footer ---- */
