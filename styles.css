@@ -480,6 +480,20 @@ h1, h2, h3, h4, p, span, a, li,
   .header-inner { padding: 0 64px; }
 }
 
+/* The whole site was capped at a fixed 1180px content column with a 16px
+   base font-size regardless of viewport, so on a 1440p/4K display it read
+   as a tiny strip of content adrift in a huge empty page. Scale both up
+   past 1600px so the design actually fills a big screen instead of just
+   sitting small in the middle of it. */
+@media (min-width: 1600px) {
+  html { font-size: 17px; }
+  :root { --container-w: 1360px; }
+}
+@media (min-width: 2200px) {
+  html { font-size: 19px; }
+  :root { --container-w: 1600px; }
+}
+
 .logo {
   display: flex;
   align-items: center;
