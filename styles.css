@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* ---- Reset ---- */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -325,7 +325,7 @@ h1, h2, h3, h4, p, span, a, li,
   50% { transform: translateY(-10px); }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 599px) {
   .girl-perch {
     transform: translateX(-50%) translateY(30px) scale(0.78);
     transform-origin: bottom center;
@@ -360,6 +360,14 @@ h1, h2, h3, h4, p, span, a, li,
   flex-shrink: 0;
 }
 .btn:active { transform: scale(0.97); }
+/* Mobile browsers paint their own default tap-highlight/focus ring in a
+   color that has nothing to do with the site palette - on a rounded
+   gradient button like #est-send-btn that shows up as an odd-colored
+   sliver poking out at the corners, since outlines aren't clipped by the
+   button's own overflow:hidden. Replace it with a palette-matched ring
+   for keyboard focus, and drop it entirely for a tap/click. */
+.btn:focus { outline: none; }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .btn-primary {
   background: var(--gradient);
@@ -1450,9 +1458,8 @@ section { padding: 100px 0; }
     padding-top: 20px;
     border-top: 1px solid var(--border-soft);
   }
-  .nav-tools .lang-switch { align-self: center; }
+  .nav-tools-row { display: flex; align-items: center; gap: 12px; }
   .nav-tools .theme-toggle { width: 48px; height: 48px; }
-  .nav-tools .btn { width: 100%; min-height: 48px; }
 
   /* Balanced 2-column grid for the 6-item services grid */
   .services-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1513,34 +1520,6 @@ section { padding: 100px 0; }
 
   .header-inner { padding: 0 18px; }
 
-  /* ---- Hero: centered content, stacked & centered CTAs ---- */
-  .hero { padding: calc(var(--header-h) + var(--banner-h) + 40px) 0 64px; }
-  .hero-inner { grid-template-columns: 1fr; gap: 44px; }
-  .hero-visual { order: -1; max-width: 600px; margin-inline: auto; width: 100%; }
-  .hero-copy { text-align: center; display: flex; flex-direction: column; align-items: center; }
-  .hero-title { font-size: max(1.8rem, 5vw); }
-  .hero-sub { max-width: 440px; }
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    max-width: 320px;
-    margin-inline: auto;
-    gap: 12px;
-    margin-bottom: 36px;
-  }
-  .hero-actions .btn { width: 100%; min-height: 48px; }
-  .hero-stats {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    gap: 18px;
-  }
-  .stat { align-items: center; }
-
-  .hero-visual { max-width: 100%; padding-inline: 8px; }
   .floating-chip { font-size: 0.72rem; padding: 8px 12px; }
   .chip-1 { top: -10px; right: 0; }
   .chip-2 { bottom: -10px; left: 0; }
@@ -1609,7 +1588,23 @@ body {
   width: 100%;
 }
 
-@media (max-width: 768px) {
+/* ---------------------------------------------------------------------
+   Tablet hero (600px-1024px): the hero used to force-stack into a single
+   column at anything up to 768px, which swallowed most real tablets
+   (768px is standard iPad-portrait width). Keep it side-by-side here
+   like on desktop, just with smaller text/gaps/visual so both columns
+   actually fit without the mockup overflowing or getting cramped.
+   --------------------------------------------------------------------- */
+@media (min-width: 600px) and (max-width: 1024px) {
+  .hero-inner { gap: 28px; grid-template-columns: 1.1fr 0.9fr; }
+  .hero-title { font-size: clamp(1.7rem, 3.6vw, 2.4rem); }
+  .hero-sub { font-size: 1rem; margin-bottom: 26px; }
+  .hero-stats { gap: 24px; }
+  .hero-visual { max-width: 100%; padding-inline: 8px; }
+  .girl-perch { transform: translateX(-50%) translateY(34px) scale(0.85); transform-origin: bottom center; }
+}
+
+@media (max-width: 599px) {
   /* NOTE: intentionally 100% here, not 100vw — 100vw includes the vertical
      scrollbar's width in most browsers and is a common self-inflicted
      source of a few pixels of horizontal overflow. */
