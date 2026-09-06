@@ -474,14 +474,6 @@
             </div>
           </div>
 
-          <div class="est-timeframe" id="est-timeframe" hidden>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-            <span data-i18n="estimator.timeframe">სავარაუდო მზადყოფნა:</span>
-            <span class="est-timeframe-value-wrap"><strong id="est-timeframe-value">48-72</strong> <span id="est-timeframe-unit" data-i18n="estimator.hours">საათი</span></span>
-          </div>
-
-          <ul class="est-receipt" id="est-selected-list"></ul>
-
           <form class="est-contact-form" id="estimator-contact-form" novalidate>
             <div class="form-row">
               <label for="est-name" data-i18n="form.name.label">სრული სახელი</label>
@@ -513,6 +505,8 @@
               <label for="est-message"><span data-i18n="form.message.label">შეტყობინება</span> <span class="optional" data-i18n="form.message.optional">(არასავალდებულო)</span></label>
               <textarea id="est-message" name="message" rows="3" data-i18n-placeholder="form.message.placeholder" placeholder="მოგვიყევით ცოტა თქვენი პროექტის შესახებ..."></textarea>
             </div>
+
+            <ul class="est-receipt" id="est-selected-list"></ul>
 
             <div class="est-total">
               <span id="est-total-amount">0</span>

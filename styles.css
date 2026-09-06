@@ -1132,19 +1132,6 @@ section { padding: 100px 0; }
 }
 .est-total-currency { font-size: 1.1rem; font-weight: 600; color: var(--est-text-dim); }
 
-.est-timeframe {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px 8px;
-  font-size: 0.86rem;
-  color: var(--est-text-dim);
-  padding-bottom: 18px;
-  border-bottom: 1px dashed var(--est-pill-border);
-}
-.est-timeframe svg { color: var(--est-accent-2); flex-shrink: 0; }
-.est-timeframe strong { color: var(--est-text); }
-.est-timeframe-value-wrap { white-space: nowrap; }
 
 /* Receipt-style line items */
 .est-receipt {
@@ -1175,7 +1162,6 @@ section { padding: 100px 0; }
 /* The [hidden] attribute loses to this element's own `display: flex` under
    normal cascade rules (author beats user-agent regardless of specificity),
    so it needs an explicit override to actually hide. */
-.est-timeframe[hidden] { display: none; }
 .est-page-count[hidden] { display: none; }
 
 /* ---- Request form, built into the estimate summary card ---- */

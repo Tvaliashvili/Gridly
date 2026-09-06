@@ -136,8 +136,6 @@
       'estimator.title': 'ფასის კალკულატორი',
       'estimator.desc': 'აირჩიეთ საჭირო ფუნქციები და მიიღეთ სავარაუდო ფასი და ვადა მყისიერად.',
       'estimator.free': 'უფასო',
-      'estimator.hours': 'საათი',
-      'estimator.days': 'დღე',
       'estimator.mode.title': 'მოთხოვნის ტიპი',
       'estimator.mode.consult': 'კონსულტაცია',
       'estimator.mode.quote': 'პროექტის შეფასება',
@@ -165,7 +163,6 @@
       'estimator.urgency.standard': 'სტანდარტული',
       'estimator.urgency.express': 'ექსპრესი',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
-      'estimator.timeframe': 'სავარაუდო მზადყოფნა:',
       'estimator.send': 'მოთხოვნის გაგზავნა',
       'estimator.disclaimer': 'საბოლოო ფასი შეიძლება ოდნავ განსხვავდებოდეს პროექტის დეტალების მიხედვით.',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
@@ -256,8 +253,6 @@
       'estimator.title': 'Price Estimator',
       'estimator.desc': 'Pick the features you need and get an instant estimated price and delivery timeframe.',
       'estimator.free': 'Free',
-      'estimator.hours': 'hours',
-      'estimator.days': 'days',
       'estimator.mode.title': 'Request type',
       'estimator.mode.consult': 'Consultation',
       'estimator.mode.quote': 'Build a project estimate',
@@ -285,7 +280,6 @@
       'estimator.urgency.standard': 'Standard',
       'estimator.urgency.express': 'Express',
       'estimator.summary.title': 'Estimated total',
-      'estimator.timeframe': 'Estimated delivery:',
       'estimator.send': 'Send request',
       'estimator.disclaimer': 'Final pricing may vary slightly based on project details.',
       'lead.error': 'Something went wrong sending your request. Please try again.',
@@ -642,9 +636,6 @@
     const currencySwitch = document.getElementById('est-currency-switch');
     const totalAmountEl = document.getElementById('est-total-amount');
     const totalCurrencyEl = document.getElementById('est-total-currency');
-    const timeframeEl = document.getElementById('est-timeframe');
-    const timeframeValueEl = document.getElementById('est-timeframe-value');
-    const timeframeUnitEl = document.getElementById('est-timeframe-unit');
     const selectedListEl = document.getElementById('est-selected-list');
     const quoteFieldsEl = document.getElementById('est-quote-fields');
     const expressPriceTagEl = document.getElementById('est-express-price-tag');
@@ -784,31 +775,6 @@
       return total;
     }
 
-    function computeTimeframe() {
-      const pages = estimatorForm.querySelector('input[name="pages"]:checked').value;
-      const urgency = estimatorForm.querySelector('input[name="urgency"]:checked').value;
-      const features = Array.from(estimatorForm.querySelectorAll('input[name="feature"]:checked')).map((i) => i.value);
-
-      let extraDays = 0;
-      if (pages === 'multi') extraDays += 3 + Math.ceil(getExtraPagesCount() / 2);
-      extraDays += getExtraLanguagesCount();
-      if (features.includes('animations')) extraDays += 2;
-      if (features.includes('calculator')) extraDays += 2;
-      if (features.includes('cms')) extraDays += 4;
-
-      if (urgency === 'express') {
-        return { min: 24, max: extraDays > 3 ? 48 : 24 };
-      }
-      return { min: 48 + extraDays * 24, max: 72 + extraDays * 24 };
-    }
-
-    function formatTimeframe(tf) {
-      if (tf.max <= 96) {
-        return { value: `${tf.min}-${tf.max}`, unit: t('estimator.hours') };
-      }
-      return { value: `${Math.round(tf.min / 24)}-${Math.round(tf.max / 24)}`, unit: t('estimator.days') };
-    }
-
     function selectedLabelText(input) {
       const text = input.closest('.est-pill').querySelector('.est-pill-text');
       return text ? text.textContent : input.value;
@@ -849,7 +815,6 @@
       const modeChanged = lastConsultState !== null && lastConsultState !== consult;
       setQuoteFieldsOpen(!consult, modeChanged);
       lastConsultState = consult;
-      timeframeEl.hidden = consult;
 
       document.querySelectorAll('.est-price-tag[data-price]').forEach((el) => {
         const gel = Number(el.dataset.price);
@@ -874,15 +839,6 @@
       const totalGel = computeTotalGel();
       totalAmountEl.textContent = toDisplay(totalGel);
       totalCurrencyEl.textContent = currentCurrency;
-
-      let timeframeText = '';
-      if (!consult) {
-        const tfRaw = computeTimeframe();
-        const tf = formatTimeframe(tfRaw);
-        timeframeValueEl.textContent = tf.value;
-        timeframeUnitEl.textContent = tf.unit;
-        timeframeText = `${tf.value} ${tf.unit}`;
-      }
 
       const items = consult ? [t('estimator.mode.consult')] : checkedInputs().map((input) => {
         const label = selectedLabelText(input);
@@ -912,7 +868,6 @@
         totalGel,
         totalDisplay: toDisplay(totalGel),
         currency: currentCurrency,
-        timeframeText,
         packageSummary: items.join(', '),
       };
     }
