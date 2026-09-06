@@ -636,7 +636,7 @@
     const quoteFieldsEl = document.getElementById('est-quote-fields');
     const expressPriceTagEl = document.getElementById('est-express-price-tag');
     const pageCountRow = document.getElementById('est-page-count');
-    const pageCountSelect = document.getElementById('est-pageCount');
+    const pageCountInput = document.getElementById('est-pageCount');
     const pageCountPriceEl = document.getElementById('est-page-count-price');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
@@ -727,7 +727,9 @@
     }
 
     function getPageCount() {
-      return isMultiPage() ? Number(pageCountSelect.value || BASE_PAGE_COUNT) : BASE_PAGE_COUNT;
+      if (!isMultiPage()) return BASE_PAGE_COUNT;
+      const value = Math.round(Number(pageCountInput.value));
+      return Number.isFinite(value) ? Math.max(BASE_PAGE_COUNT, value) : BASE_PAGE_COUNT;
     }
 
     function getExtraPagesCount() {
@@ -884,6 +886,7 @@
 
     setCurrencyUI();
     estimatorForm.addEventListener('change', updateEstimate);
+    pageCountInput.addEventListener('input', updateEstimate);
     refreshEstimate = updateEstimate;
     updateEstimate();
 
