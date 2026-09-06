@@ -46,7 +46,8 @@ alter table public.pricing_config add column if not exists express_delivery_land
 alter table public.pricing_config add column if not exists express_delivery_multi integer not null default 320;
 alter table public.pricing_config drop column if exists express_delivery;
 -- Per-extra-page surcharge for multi-page sites, charged for each page beyond
--- the two the base package already covers; a no-op on a fresh install.
+-- the one the base package already covers (so the pre-selected default of
+-- 2 pages already incurs one page's worth of fee); a no-op on a fresh install.
 alter table public.pricing_config add column if not exists price_per_page integer not null default 100;
 -- Business email as a priced add-on; a no-op on a fresh install.
 alter table public.pricing_config add column if not exists feature_email integer not null default 30;

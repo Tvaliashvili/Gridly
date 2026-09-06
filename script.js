@@ -622,9 +622,11 @@
     // works if Supabase is unreachable.
     let BASE_PRICE_GEL = 350;
     let PRICE_PER_PAGE_GEL = 100;
-    // Multi-page itself is free - only pages beyond this count are charged
-    // (via the page-count field), which can never go lower than this.
-    const BASE_PAGE_COUNT = 2;
+    // The page-count field can never go below this (a "multi-page" site is
+    // at least 2 pages), but the fee-free page count is one lower - so the
+    // pre-selected default of 2 already carries one page's worth of fee.
+    const MIN_PAGE_COUNT = 2;
+    const FREE_PAGE_COUNT = 1;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
 
@@ -729,13 +731,13 @@
     }
 
     function getPageCount() {
-      if (!isMultiPage()) return BASE_PAGE_COUNT;
+      if (!isMultiPage()) return MIN_PAGE_COUNT;
       const value = Math.round(Number(pageCountInput.value));
-      return Number.isFinite(value) ? Math.max(BASE_PAGE_COUNT, value) : BASE_PAGE_COUNT;
+      return Number.isFinite(value) ? Math.max(MIN_PAGE_COUNT, value) : MIN_PAGE_COUNT;
     }
 
     function getExtraPagesCount() {
-      return Math.max(0, getPageCount() - BASE_PAGE_COUNT);
+      return Math.max(0, getPageCount() - FREE_PAGE_COUNT);
     }
 
     function getExtraPagesPriceGel() {
@@ -889,7 +891,7 @@
     setCurrencyUI();
     estimatorForm.addEventListener('change', updateEstimate);
     // Block the keys that would let someone type a negative or zero page
-    // count directly (the live total already clamps to BASE_PAGE_COUNT via
+    // count directly (the live total already clamps to MIN_PAGE_COUNT via
     // getPageCount, but the field itself should never visibly show 0/-).
     pageCountInput.addEventListener('keydown', (e) => {
       if (e.key === '-' || e.key === '+' || e.key === 'e' || e.key === 'E') e.preventDefault();
@@ -897,7 +899,7 @@
     pageCountInput.addEventListener('input', updateEstimate);
     pageCountInput.addEventListener('blur', () => {
       const value = Math.round(Number(pageCountInput.value));
-      pageCountInput.value = Number.isFinite(value) ? Math.max(BASE_PAGE_COUNT, value) : BASE_PAGE_COUNT;
+      pageCountInput.value = Number.isFinite(value) ? Math.max(MIN_PAGE_COUNT, value) : MIN_PAGE_COUNT;
       updateEstimate();
     });
     refreshEstimate = updateEstimate;
