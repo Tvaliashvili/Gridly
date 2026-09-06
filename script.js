@@ -1161,6 +1161,12 @@
           if (error) throw error;
           formSuccess.classList.add('show');
           form.reset();
+          // Send the whole calculator back to its pre-selected "უფასო
+          // კონსულტაცია" state too, not just the name/contact fields -
+          // the success message alone is confirmation enough, the client
+          // shouldn't see their old selections still sitting there.
+          estimatorForm.reset();
+          updateEstimate();
           setTimeout(() => formSuccess.classList.remove('show'), 5000);
         })
         .catch(() => {
