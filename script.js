@@ -1002,7 +1002,15 @@
           Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
             if (!Number.isFinite(Number(pricing[field]))) return;
             const input = estimatorForm.querySelector(selector);
-            if (input) input.dataset.price = String(Math.round(Number(pricing[field])));
+            if (!input) return;
+            const priceStr = String(Math.round(Number(pricing[field])));
+            input.dataset.price = priceStr;
+            // The visible "+X GEL" pill badge carries its own data-price
+            // (read by the .est-price-tag refresh in updateEstimate) rather
+            // than reading the input's - keep it in sync too, or admin edits
+            // never show up on the pill even though the total is correct.
+            const priceTag = input.closest('.est-pill')?.querySelector('.est-price-tag');
+            if (priceTag) priceTag.dataset.price = priceStr;
           });
           updateEstimate();
         })
