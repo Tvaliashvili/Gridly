@@ -381,7 +381,7 @@
       'estimator.mode.title': 'Request type',
       'estimator.mode.consult': 'Consultation',
       'estimator.mode.quote': 'Build a project estimate',
-      'estimator.pages.title': 'Web-page',
+      'estimator.pages.title': 'Website',
       'estimator.base': 'Base package',
       'estimator.pages.landing': 'One Page',
       'estimator.pages.multi': 'Multi-page',
