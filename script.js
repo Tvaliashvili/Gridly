@@ -621,8 +621,9 @@
     let BASE_PRICE_GEL = 350;
     let PRICE_PER_PAGE_GEL = 100;
     // How many pages the flat multi-page price already covers - the
-    // page-count dropdown only charges for pages beyond this.
-    const BASE_PAGE_COUNT = 2;
+    // page-count field only charges for pages beyond this, and can never
+    // go lower (no zero or negative page counts).
+    const BASE_PAGE_COUNT = 1;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
 
@@ -886,7 +887,18 @@
 
     setCurrencyUI();
     estimatorForm.addEventListener('change', updateEstimate);
+    // Block the keys that would let someone type a negative or zero page
+    // count directly (the live total already clamps to BASE_PAGE_COUNT via
+    // getPageCount, but the field itself should never visibly show 0/-).
+    pageCountInput.addEventListener('keydown', (e) => {
+      if (e.key === '-' || e.key === '+' || e.key === 'e' || e.key === 'E') e.preventDefault();
+    });
     pageCountInput.addEventListener('input', updateEstimate);
+    pageCountInput.addEventListener('blur', () => {
+      const value = Math.round(Number(pageCountInput.value));
+      pageCountInput.value = Number.isFinite(value) ? Math.max(BASE_PAGE_COUNT, value) : BASE_PAGE_COUNT;
+      updateEstimate();
+    });
     refreshEstimate = updateEstimate;
     updateEstimate();
 

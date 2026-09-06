@@ -1016,8 +1016,7 @@ section { padding: 100px 0; }
 
 .est-page-count {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
   margin-top: 14px;
   padding-top: 14px;
@@ -1028,7 +1027,12 @@ section { padding: 100px 0; }
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--est-text-dim);
-  flex-shrink: 0;
+}
+.est-page-count-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 .est-page-count input[type="number"] {
   width: 76px;
