@@ -68,7 +68,7 @@
         <div class="maintenance-contact">
           <a class="maintenance-email" href="mailto:info@gridly.ge">info@gridly.ge</a>
           <div class="social-links">
-            <a href="#" aria-label="Facebook">
+            <a href="https://www.facebook.com/people/%E1%83%92%E1%83%A0%E1%83%98%E1%83%93%E1%83%9A%E1%83%98-Gridly/61594259906901/" target="_blank" rel="noopener" aria-label="Facebook">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
             <a href="#" aria-label="Instagram">
@@ -162,6 +162,7 @@
       'estimator.features.email': 'ელ. ფოსტა',
       'estimator.features.seo': 'SEO ოპტიმიზაცია',
       'estimator.features.admin': 'ადმინ პანელი',
+      'estimator.features.maintenance': 'ვებ-გვერდის მოვლა/პატრონობა',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.send': 'მოთხოვნის გაგზავნა',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
@@ -199,7 +200,6 @@
       'form.error.contact': 'შეიყვანეთ სწორი ტელეფონის ნომერი ან ელფოსტა.',
       'form.error.business': 'გთხოვთ აირჩიოთ ბიზნესის ტიპი.',
       'footer.tagline': 'ვებ-გვერდები პატარა და საშუალო ბიზნესებისთვის.',
-      'footer.navTitle': 'ნავიგაცია',
       'footer.contactTitle': 'დაგვიკავშირდით',
       'footer.copyright': 'ყველა უფლება დაცულია.',
     },
@@ -278,6 +278,7 @@
       'estimator.features.email': 'Business Email',
       'estimator.features.seo': 'SEO Optimization',
       'estimator.features.admin': 'Admin Panel',
+      'estimator.features.maintenance': 'Website Maintenance',
       'estimator.summary.title': 'Estimated total',
       'estimator.send': 'Send request',
       'lead.error': 'Something went wrong sending your request. Please try again.',
@@ -315,7 +316,6 @@
       'form.error.contact': 'Enter a valid phone number or email.',
       'form.error.business': 'Please select your business type.',
       'footer.tagline': 'Websites for small and medium businesses.',
-      'footer.navTitle': 'Navigate',
       'footer.contactTitle': 'Get in touch',
       'footer.copyright': 'All rights reserved.',
     },
@@ -948,12 +948,13 @@
       feature_email: 'input[name="feature"][value="email"]',
       feature_seo: 'input[name="feature"][value="seo"]',
       feature_admin: 'input[name="feature"][value="admin"]',
+      feature_maintenance: 'input[name="feature"][value="maintenance"]',
     };
 
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, feature_animations_simple, feature_animations_complex, feature_cms, feature_domain, feature_email, feature_seo, feature_admin, price_per_page, price_per_language')
+        .select('base_price, feature_animations_simple, feature_animations_complex, feature_cms, feature_domain, feature_email, feature_seo, feature_admin, feature_maintenance, price_per_page, price_per_language')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
