@@ -338,8 +338,12 @@
               <input type="number" min="0" step="1" id="price_per_language" name="price_per_language" required>
             </div>
             <div class="price-field">
-              <label for="feature_animations">მორგებული ანიმაციები (+GEL)</label>
-              <input type="number" min="0" step="1" id="feature_animations" name="feature_animations" required>
+              <label for="feature_animations_simple">ანიმაციები - მარტივი (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_animations_simple" name="feature_animations_simple" required>
+            </div>
+            <div class="price-field">
+              <label for="feature_animations_complex">ანიმაციები - კომპლექსური (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_animations_complex" name="feature_animations_complex" required>
             </div>
             <div class="price-field">
               <label for="feature_cms">CMS / ბლოგი (+GEL)</label>
@@ -658,7 +662,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo'];
+  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations_simple', 'feature_animations_complex', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo'];
 
   async function loadPricing() {
     try {

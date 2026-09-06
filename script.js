@@ -153,7 +153,10 @@
       'estimator.features.title': 'ფუნქციები',
       'estimator.features.contact': 'საკონტაქტო ფორმა',
       'estimator.features.hosting': 'ჰოსტინგი',
-      'estimator.features.animations': 'მორგებული ანიმაციები',
+      'estimator.features.animations': 'ანიმაციები',
+      'estimator.features.animations.type.label': 'ანიმაციის ტიპი',
+      'estimator.features.animations.simple': 'მარტივი ანიმაციები',
+      'estimator.features.animations.complex': 'კომპლექსური ანიმაციები',
       'estimator.features.cms': 'CMS / ბლოგი',
       'estimator.features.domain': 'დომენი',
       'estimator.features.email': 'ელ. ფოსტა',
@@ -265,7 +268,10 @@
       'estimator.features.title': 'Features',
       'estimator.features.contact': 'Contact Form',
       'estimator.features.hosting': 'Hosting',
-      'estimator.features.animations': 'Custom Animations',
+      'estimator.features.animations': 'Animations',
+      'estimator.features.animations.type.label': 'Animation type',
+      'estimator.features.animations.simple': 'Simple Animations',
+      'estimator.features.animations.complex': 'Complex Animations',
       'estimator.features.cms': 'CMS / Blog',
       'estimator.features.domain': 'Domain',
       'estimator.features.email': 'Business Email',
@@ -634,11 +640,13 @@
     const langCountRow = document.getElementById('est-lang-count');
     const langCountInput = document.getElementById('est-langCount');
     const langCountPriceEl = document.getElementById('est-lang-count-price');
+    const animationsTypeRow = document.getElementById('est-animations-type');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
     let lastConsultState = null;
     let lastMultiPageState = null;
     let lastMultiLangState = null;
+    let lastAnimationsState = null;
 
     // Smoothly reveals/hides a collapsible section by animating max-height
     // and opacity (plus margin/padding-top, for sections with a border-top
@@ -717,9 +725,20 @@
       return !mode || mode.value === 'consult';
     }
 
+    function isAnimationsSelected() {
+      const input = estimatorForm.querySelector('input[name="feature"][value="animations"]');
+      return !!input && input.checked;
+    }
+
     function checkedInputs() {
+      const animationsOn = isAnimationsSelected();
       return Array.from(estimatorForm.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked'))
-        .filter((input) => input.name !== 'mode');
+        .filter((input) => input.name !== 'mode')
+        // The "ანიმაციები" checkbox itself is just a reveal toggle (free) - the
+        // actual priced line item is whichever animationsType radio is picked,
+        // and that radio only counts while the toggle is checked.
+        .filter((input) => !(input.name === 'feature' && input.value === 'animations'))
+        .filter((input) => input.name !== 'animationsType' || animationsOn);
     }
 
     function getInputPriceGel(input) {
@@ -837,6 +856,11 @@
         langCountPriceEl.textContent = extraGel > 0 ? `+${toDisplay(extraGel)} ${currentCurrency}` : '';
       }
 
+      const animationsOn = isAnimationsSelected();
+      const animationsChanged = lastAnimationsState !== null && lastAnimationsState !== animationsOn;
+      setCollapseOpen(animationsTypeRow, animationsOn, animationsChanged);
+      lastAnimationsState = animationsOn;
+
       const totalGel = computeTotalGel();
       totalAmountEl.textContent = toDisplay(totalGel);
       totalCurrencyEl.textContent = currentCurrency;
@@ -915,7 +939,8 @@
     // Pull live prices set from /admin.html. Maps each priced input to its
     // pricing_config column, then re-renders with whatever loaded.
     const PRICE_FIELD_SELECTORS = {
-      feature_animations: 'input[name="feature"][value="animations"]',
+      feature_animations_simple: 'input[name="animationsType"][value="simple"]',
+      feature_animations_complex: 'input[name="animationsType"][value="complex"]',
       feature_cms: 'input[name="feature"][value="cms"]',
       feature_domain: 'input[name="feature"][value="domain"]',
       feature_email: 'input[name="feature"][value="email"]',
@@ -925,7 +950,7 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, feature_animations, feature_cms, feature_domain, feature_email, feature_seo, price_per_page, price_per_language')
+        .select('base_price, feature_animations_simple, feature_animations_complex, feature_cms, feature_domain, feature_email, feature_seo, price_per_page, price_per_language')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
