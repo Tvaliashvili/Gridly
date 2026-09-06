@@ -239,7 +239,7 @@
     border-radius: 50%;
     transition: transform 0.2s ease;
   }
-  .switch input:checked + .switch-slider { background: #f87171; }
+  .switch input:checked + .switch-slider { background: #34d399; }
   .switch input:checked + .switch-slider::before { transform: translateX(20px); }
   .switch input:disabled + .switch-slider { opacity: 0.6; cursor: default; }
 
@@ -1328,7 +1328,7 @@
         .eq('id', 'default')
         .single();
       if (error) throw error;
-      maintenanceToggle.checked = !!(data && data.maintenance_mode);
+      maintenanceToggle.checked = !(data && data.maintenance_mode);
       syncMaintenanceSwitchState();
     } catch (err) {
       flashMaintenanceStatus('სტატუსის ჩატვირთვა ვერ მოხერხდა.', false);
@@ -1336,18 +1336,18 @@
   }
 
   maintenanceToggle.addEventListener('change', async () => {
-    const nextValue = maintenanceToggle.checked;
+    const siteLive = maintenanceToggle.checked;
     maintenanceToggle.disabled = true;
     syncMaintenanceSwitchState();
     try {
       const { error } = await sb
         .from('site_config')
-        .update({ maintenance_mode: nextValue, updated_at: new Date().toISOString() })
+        .update({ maintenance_mode: !siteLive, updated_at: new Date().toISOString() })
         .eq('id', 'default');
       if (error) throw error;
       flashMaintenanceStatus('შენახულია.', true);
     } catch (err) {
-      maintenanceToggle.checked = !nextValue;
+      maintenanceToggle.checked = !siteLive;
       syncMaintenanceSwitchState();
       flashMaintenanceStatus(err.message || 'ვერ შეინახა. სცადეთ ხელახლა.', false);
     } finally {
