@@ -128,9 +128,25 @@
             </svg>
           </div>
           <div class="maintenance-icon">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-              <g transform="translate(-1.6,-1.6) scale(0.8)"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm7.4 4a7.4 7.4 0 0 0-.12-1.3l2.1-1.65-2-3.46-2.49 1a7.42 7.42 0 0 0-2.24-1.3L14 2h-4l-.65 2.3a7.42 7.42 0 0 0-2.24 1.3l-2.49-1-2 3.46 2.1 1.65A7.4 7.4 0 0 0 4.6 12c0 .44.04.87.12 1.3l-2.1 1.65 2 3.46 2.49-1c.68.56 1.44 1 2.24 1.3L10 22h4l.65-2.3c.8-.3 1.56-.74 2.24-1.3l2.49 1 2-3.46-2.1-1.65c.08-.43.12-.86.12-1.3z"/></g>
-              <g transform="translate(9.8,9.8) scale(0.6)"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm7.4 4a7.4 7.4 0 0 0-.12-1.3l2.1-1.65-2-3.46-2.49 1a7.42 7.42 0 0 0-2.24-1.3L14 2h-4l-.65 2.3a7.42 7.42 0 0 0-2.24 1.3l-2.49-1-2 3.46 2.1 1.65A7.4 7.4 0 0 0 4.6 12c0 .44.04.87.12 1.3l-2.1 1.65 2 3.46 2.49-1c.68.56 1.44 1 2.24 1.3L10 22h4l.65-2.3c.8-.3 1.56-.74 2.24-1.3l2.49 1 2-3.46-2.1-1.65c.08-.43.12-.86.12-1.3z"/></g>
+            <svg width="34" height="34" viewBox="0 0 100 100" fill="currentColor">
+              <defs>
+                <g id="gearUnit">
+                  <path fill-rule="evenodd" d="M -30,0 A 30,30 0 1,0 30,0 A 30,30 0 1,0 -30,0 Z M -14,0 A 14,14 0 1,0 14,0 A 14,14 0 1,0 -14,0 Z"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(36)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(72)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(108)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(144)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(180)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(216)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(252)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(288)"/>
+                  <rect x="-5" y="-42" width="10" height="14" rx="2" transform="rotate(324)"/>
+                </g>
+              </defs>
+              <g transform="translate(35,35) scale(0.5)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(71,58) scale(0.36)"><g class="gear-spin gear-spin-ccw"><use href="#gearUnit"/></g></g>
+              <g transform="translate(42,81) scale(0.24)"><g class="gear-spin gear-spin-cw"><use href="#gearUnit"/></g></g>
             </svg>
           </div>
           <h1>${translations.ge['maintenance.title']}</h1>

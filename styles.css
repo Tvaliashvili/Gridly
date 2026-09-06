@@ -348,6 +348,7 @@ h1, h2, h3, h4, p, span, a, li,
 }
 @media (prefers-reduced-motion: reduce) {
   .mock-window-wrap, .maintenance-card { animation: none; }
+  .gear-spin-cw, .gear-spin-ccw { animation: none; }
   .sky-icon { animation: none; }
   .sky-icon-sun, .sky-icon-moon, .sky-star { animation: none; }
   .girl-leg-left, .girl-leg-right { animation: none; transform: rotate(2deg); }
@@ -1811,6 +1812,11 @@ body {
   color: var(--accent);
   margin-bottom: 20px;
 }
+.gear-spin { transform-box: fill-box; transform-origin: 50% 50%; }
+.gear-spin-cw { animation: gearSpinCW 6s linear infinite; }
+.gear-spin-ccw { animation: gearSpinCCW 4.5s linear infinite; }
+@keyframes gearSpinCW { to { transform: rotate(360deg); } }
+@keyframes gearSpinCCW { to { transform: rotate(-360deg); } }
 .maintenance-card h1 { font-size: clamp(1rem, 3.6vw, 1.35rem); white-space: nowrap; margin: 0 0 12px; }
 .maintenance-card p { color: var(--text-dim); margin: 0; line-height: 1.6; }
 .maintenance-card h1:last-of-type { margin-top: 0; }
