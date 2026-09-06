@@ -161,6 +161,7 @@
       'estimator.features.domain': 'დომენი',
       'estimator.features.email': 'ელ. ფოსტა',
       'estimator.features.seo': 'SEO ოპტიმიზაცია',
+      'estimator.features.admin': 'ადმინ პანელი',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.send': 'მოთხოვნის გაგზავნა',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
@@ -276,6 +277,7 @@
       'estimator.features.domain': 'Domain',
       'estimator.features.email': 'Business Email',
       'estimator.features.seo': 'SEO Optimization',
+      'estimator.features.admin': 'Admin Panel',
       'estimator.summary.title': 'Estimated total',
       'estimator.send': 'Send request',
       'lead.error': 'Something went wrong sending your request. Please try again.',
@@ -945,12 +947,13 @@
       feature_domain: 'input[name="feature"][value="domain"]',
       feature_email: 'input[name="feature"][value="email"]',
       feature_seo: 'input[name="feature"][value="seo"]',
+      feature_admin: 'input[name="feature"][value="admin"]',
     };
 
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, feature_animations_simple, feature_animations_complex, feature_cms, feature_domain, feature_email, feature_seo, price_per_page, price_per_language')
+        .select('base_price, feature_animations_simple, feature_animations_complex, feature_cms, feature_domain, feature_email, feature_seo, feature_admin, price_per_page, price_per_language')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {

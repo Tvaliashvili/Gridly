@@ -361,6 +361,10 @@
               <label for="feature_seo">SEO ოპტიმიზაცია (+GEL)</label>
               <input type="number" min="0" step="1" id="feature_seo" name="feature_seo" required>
             </div>
+            <div class="price-field">
+              <label for="feature_admin">ადმინ პანელი (+GEL)</label>
+              <input type="number" min="0" step="1" id="feature_admin" name="feature_admin" required>
+            </div>
           </div>
           <button type="submit" class="btn" id="save-pricing-btn">ფასების შენახვა</button>
           <p class="status-msg" id="pricing-status"></p>
@@ -662,7 +666,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations_simple', 'feature_animations_complex', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo'];
+  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations_simple', 'feature_animations_complex', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'feature_admin'];
 
   async function loadPricing() {
     try {

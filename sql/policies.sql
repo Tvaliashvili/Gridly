@@ -28,6 +28,7 @@ create table if not exists public.pricing_config (
   feature_domain integer not null default 50,
   feature_email integer not null default 30,
   feature_seo integer not null default 500,
+  feature_admin integer not null default 400,
   price_per_page integer not null default 100,
   updated_at timestamptz not null default now()
 );
@@ -66,6 +67,8 @@ alter table public.pricing_config drop column if exists express_delivery_multi;
 alter table public.pricing_config add column if not exists feature_animations_simple integer not null default 100;
 alter table public.pricing_config add column if not exists feature_animations_complex integer not null default 250;
 alter table public.pricing_config drop column if exists feature_animations;
+-- Admin Panel as a priced add-on; a no-op on a fresh install.
+alter table public.pricing_config add column if not exists feature_admin integer not null default 400;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 
