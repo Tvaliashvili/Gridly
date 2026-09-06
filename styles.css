@@ -1014,6 +1014,41 @@ section { padding: 100px 0; }
 }
 .est-pill-price--free { color: var(--success); background: rgba(52, 211, 153, 0.14); }
 
+.est-page-count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--est-pill-border);
+}
+.est-page-count label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--est-text-dim);
+  flex-shrink: 0;
+}
+.est-page-count select {
+  padding: 8px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--est-pill-border);
+  background: var(--est-pill-bg);
+  color: var(--est-text);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.est-page-count select:focus-visible { outline: 2px solid var(--est-accent); outline-offset: 2px; }
+.est-page-count-price {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  color: var(--est-accent-2);
+  background: var(--accent-2-soft);
+}
+
 /* ---- Summary: sticky "receipt" card ---- */
 .estimator-summary {
   position: sticky;

@@ -334,6 +334,10 @@
               <input type="number" min="0" step="1" id="multi_page" name="multi_page" required>
             </div>
             <div class="price-field">
+              <label for="price_per_page">დამატებითი გვერდი, 2-ზე მეტი (+GEL თითოზე)</label>
+              <input type="number" min="0" step="1" id="price_per_page" name="price_per_page" required>
+            </div>
+            <div class="price-field">
               <label for="dual_language">ორენოვანი, ქართ./ინგლ. (+GEL)</label>
               <input type="number" min="0" step="1" id="dual_language" name="dual_language" required>
             </div>
@@ -666,7 +670,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'multi_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
+  const PRICING_FIELDS = ['base_price', 'multi_page', 'price_per_page', 'dual_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
 
   async function loadPricing() {
     try {

@@ -358,6 +358,22 @@
                   <span class="est-pill-price est-price-tag" data-price="250"></span>
                 </label>
               </div>
+
+              <div class="est-page-count" id="est-page-count" hidden>
+                <label for="est-pageCount" data-i18n="estimator.pages.count.label">გვერდების რაოდენობა</label>
+                <select id="est-pageCount" name="pageCount">
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10+</option>
+                </select>
+                <span class="est-page-count-price" id="est-page-count-price"></span>
+              </div>
             </div>
 
             <div class="est-group">
@@ -382,14 +398,14 @@
               <h3 data-i18n="estimator.features.title">ფუნქციები</h3>
               <div class="est-pills">
                 <label class="est-pill est-pill--locked">
-                  <input type="checkbox" name="feature" value="contact" data-price="0" data-en="Contact Form" checked disabled>
-                  <span class="est-pill-text" data-i18n="estimator.features.contact">საკონტაქტო ფორმა</span>
+                  <input type="checkbox" name="feature" value="hosting" data-price="0" data-en="Free Hosting" checked disabled>
+                  <span class="est-pill-text" data-i18n="estimator.features.hosting">ჰოსტინგი</span>
                   <span class="est-pill-price est-pill-price--free" data-i18n="estimator.free">უფასო</span>
                 </label>
 
-                <label class="est-pill est-pill--locked">
-                  <input type="checkbox" name="feature" value="hosting" data-price="0" data-en="Free Hosting" checked disabled>
-                  <span class="est-pill-text" data-i18n="estimator.features.hosting">ჰოსტინგი</span>
+                <label class="est-pill">
+                  <input type="checkbox" name="feature" value="contact" data-price="0" data-en="Contact Form">
+                  <span class="est-pill-text" data-i18n="estimator.features.contact">საკონტაქტო ფორმა</span>
                   <span class="est-pill-price est-pill-price--free" data-i18n="estimator.free">უფასო</span>
                 </label>
 

@@ -145,6 +145,8 @@
       'estimator.base': 'საბაზისო პაკეტი',
       'estimator.pages.landing': 'ერთ გვერდიანი',
       'estimator.pages.multi': 'მრავალგვერდიანი საიტი',
+      'estimator.pages.count.label': 'გვერდების რაოდენობა',
+      'estimator.pages.extra': 'დამატებითი გვერდები',
       'estimator.lang.title': 'ენა',
       'estimator.lang.ge': 'მხოლოდ ქართული',
       'estimator.lang.dual': 'ორენოვანი (ქართ./ინგლ.)',
@@ -260,6 +262,8 @@
       'estimator.base': 'Base package',
       'estimator.pages.landing': 'One Page',
       'estimator.pages.multi': 'Multi-page site',
+      'estimator.pages.count.label': 'Number of pages',
+      'estimator.pages.extra': 'Extra pages',
       'estimator.lang.title': 'Language',
       'estimator.lang.ge': 'Georgian only',
       'estimator.lang.dual': 'Dual language (GE/EN)',
@@ -615,6 +619,10 @@
     // these are just the offline/fallback defaults so the calculator still
     // works if Supabase is unreachable.
     let BASE_PRICE_GEL = 350;
+    let PRICE_PER_PAGE_GEL = 100;
+    // How many pages the flat multi-page price already covers - the
+    // page-count dropdown only charges for pages beyond this.
+    const BASE_PAGE_COUNT = 2;
     const USD_RATE = 2.7;
     const CUR_KEY = 'gridly-estimator-currency';
 
@@ -627,6 +635,9 @@
     const selectedListEl = document.getElementById('est-selected-list');
     const quoteFieldsEl = document.getElementById('est-quote-fields');
     const expressPriceTagEl = document.getElementById('est-express-price-tag');
+    const pageCountRow = document.getElementById('est-page-count');
+    const pageCountSelect = document.getElementById('est-pageCount');
+    const pageCountPriceEl = document.getElementById('est-page-count-price');
 
     let currentCurrency = localStorage.getItem(CUR_KEY) === 'USD' ? 'USD' : 'GEL';
     let lastConsultState = null;
@@ -710,10 +721,28 @@
       return Number(input.dataset.price || 0);
     }
 
+    function isMultiPage() {
+      const pagesInput = estimatorForm.querySelector('input[name="pages"]:checked');
+      return !!pagesInput && pagesInput.value === 'multi';
+    }
+
+    function getPageCount() {
+      return isMultiPage() ? Number(pageCountSelect.value || BASE_PAGE_COUNT) : BASE_PAGE_COUNT;
+    }
+
+    function getExtraPagesCount() {
+      return Math.max(0, getPageCount() - BASE_PAGE_COUNT);
+    }
+
+    function getExtraPagesPriceGel() {
+      return getExtraPagesCount() * PRICE_PER_PAGE_GEL;
+    }
+
     function computeTotalGel() {
       if (isConsultMode()) return 0;
       let total = BASE_PRICE_GEL;
       checkedInputs().forEach((input) => { total += getInputPriceGel(input); });
+      total += getExtraPagesPriceGel();
       return total;
     }
 
@@ -724,7 +753,7 @@
       const features = Array.from(estimatorForm.querySelectorAll('input[name="feature"]:checked')).map((i) => i.value);
 
       let extraDays = 0;
-      if (pages === 'multi') extraDays += 3;
+      if (pages === 'multi') extraDays += 3 + Math.ceil(getExtraPagesCount() / 2);
       if (lang === 'dual') extraDays += 1;
       if (features.includes('animations')) extraDays += 2;
       if (features.includes('calculator')) extraDays += 2;
@@ -752,7 +781,7 @@
       if (isConsultMode()) {
         return [{ label: t('estimator.mode.consult'), priceDisplay: toDisplay(0) }];
       }
-      return [
+      const items = [
         { label: t('estimator.base'), priceDisplay: toDisplay(BASE_PRICE_GEL) },
         ...checkedInputs()
           .filter((input) => getInputPriceGel(input) > 0)
@@ -761,6 +790,14 @@
             priceDisplay: toDisplay(getInputPriceGel(input)),
           })),
       ];
+      const extraPages = getExtraPagesCount();
+      if (extraPages > 0) {
+        items.push({
+          label: `${t('estimator.pages.extra')} (+${extraPages})`,
+          priceDisplay: toDisplay(getExtraPagesPriceGel()),
+        });
+      }
+      return items;
     }
 
     function updateEstimate() {
@@ -778,6 +815,12 @@
         expressPriceTagEl.textContent = `+${toDisplay(getExpressPriceGel())} ${currentCurrency}`;
       }
 
+      pageCountRow.hidden = !isMultiPage();
+      if (pageCountPriceEl) {
+        const extraGel = getExtraPagesPriceGel();
+        pageCountPriceEl.textContent = extraGel > 0 ? `+${toDisplay(extraGel)} ${currentCurrency}` : '';
+      }
+
       const totalGel = computeTotalGel();
       totalAmountEl.textContent = toDisplay(totalGel);
       totalCurrencyEl.textContent = currentCurrency;
@@ -791,7 +834,11 @@
         timeframeText = `${tf.value} ${tf.unit}`;
       }
 
-      const items = consult ? [t('estimator.mode.consult')] : checkedInputs().map(selectedLabelText);
+      const items = consult ? [t('estimator.mode.consult')] : checkedInputs().map((input) => {
+        const label = selectedLabelText(input);
+        if (input.name === 'pages' && input.value === 'multi') return `${label} (${getPageCount()})`;
+        return label;
+      });
 
       // Receipt only lists priced line items (base + paid add-ons) - free/default
       // selections don't need a price row, keeping the summary uncluttered.
@@ -855,12 +902,13 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_seo, express_delivery_landing, express_delivery_multi')
+        .select('base_price, multi_page, dual_language, feature_animations, feature_calculator, feature_cms, feature_domain, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
           if (error || !pricing) return;
           if (Number.isFinite(Number(pricing.base_price))) BASE_PRICE_GEL = Number(pricing.base_price);
+          if (Number.isFinite(Number(pricing.price_per_page))) PRICE_PER_PAGE_GEL = Number(pricing.price_per_page);
           Object.entries(PRICE_FIELD_SELECTORS).forEach(([field, selector]) => {
             if (!Number.isFinite(Number(pricing[field]))) return;
             const input = estimatorForm.querySelector(selector);

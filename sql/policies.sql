@@ -31,6 +31,7 @@ create table if not exists public.pricing_config (
   feature_seo integer not null default 500,
   express_delivery_landing integer not null default 200,
   express_delivery_multi integer not null default 320,
+  price_per_page integer not null default 100,
   updated_at timestamptz not null default now()
 );
 -- Adds the two newest priced add-ons (domain, SEO) to a pricing_config table
@@ -44,6 +45,9 @@ alter table public.pricing_config add column if not exists feature_seo integer n
 alter table public.pricing_config add column if not exists express_delivery_landing integer not null default 200;
 alter table public.pricing_config add column if not exists express_delivery_multi integer not null default 320;
 alter table public.pricing_config drop column if exists express_delivery;
+-- Per-extra-page surcharge for multi-page sites, charged for each page beyond
+-- the two the flat multi_page price already covers; a no-op on a fresh install.
+alter table public.pricing_config add column if not exists price_per_page integer not null default 100;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 
