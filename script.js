@@ -402,7 +402,7 @@
       'estimator.features.animations.simple': 'Simple Animations',
       'estimator.features.animations.complex': 'Complex Animations',
       'estimator.features.domain': 'Domain',
-      'estimator.features.email': 'Business Email',
+      'estimator.features.email': 'Email',
       'estimator.features.seo': 'SEO Optimization',
       'estimator.features.admin': 'Admin Panel',
       'estimator.features.maintenance': 'Website Maintenance',
