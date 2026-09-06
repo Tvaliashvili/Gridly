@@ -27,8 +27,6 @@ create table if not exists public.pricing_config (
   feature_domain integer not null default 50,
   feature_email integer not null default 30,
   feature_seo integer not null default 500,
-  express_delivery_landing integer not null default 200,
-  express_delivery_multi integer not null default 320,
   price_per_page integer not null default 100,
   updated_at timestamptz not null default now()
 );
@@ -59,6 +57,9 @@ alter table public.pricing_config add column if not exists price_per_language in
 alter table public.pricing_config drop column if exists dual_language;
 -- Interactive Calculator feature removed; drop its price column.
 alter table public.pricing_config drop column if exists feature_calculator;
+-- Delivery urgency (express delivery) removed entirely; drop its columns.
+alter table public.pricing_config drop column if exists express_delivery_landing;
+alter table public.pricing_config drop column if exists express_delivery_multi;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 

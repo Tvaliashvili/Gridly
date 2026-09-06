@@ -134,7 +134,7 @@
       'nav.estimator': 'კალკულატორი',
       'estimator.tag': 'გამოთვალეთ ღირებულება',
       'estimator.title': 'ფასის კალკულატორი',
-      'estimator.desc': 'აირჩიეთ საჭირო ფუნქციები და მიიღეთ სავარაუდო ფასი და ვადა მყისიერად.',
+      'estimator.desc': 'აირჩიეთ საჭირო ფუნქციები და მიიღეთ სავარაუდო ფასი მყისიერად.',
       'estimator.free': 'უფასო',
       'estimator.mode.title': 'მოთხოვნის ტიპი',
       'estimator.mode.consult': 'კონსულტაცია',
@@ -158,9 +158,6 @@
       'estimator.features.domain': 'დომენი',
       'estimator.features.email': 'ელ. ფოსტა',
       'estimator.features.seo': 'SEO ოპტიმიზაცია',
-      'estimator.urgency.title': 'მიწოდების სისწრაფე',
-      'estimator.urgency.standard': 'სტანდარტული',
-      'estimator.urgency.express': 'ექსპრესი',
       'estimator.summary.title': 'სავარაუდო ღირებულება',
       'estimator.send': 'მოთხოვნის გაგზავნა',
       'lead.error': 'შეცდომა მოთხოვნის გაგზავნისას. სცადეთ თავიდან.',
@@ -249,7 +246,7 @@
       'nav.estimator': 'Estimator',
       'estimator.tag': 'Calculate your cost',
       'estimator.title': 'Price Estimator',
-      'estimator.desc': 'Pick the features you need and get an instant estimated price and delivery timeframe.',
+      'estimator.desc': 'Pick the features you need and get an instant estimated price.',
       'estimator.free': 'Free',
       'estimator.mode.title': 'Request type',
       'estimator.mode.consult': 'Consultation',
@@ -273,9 +270,6 @@
       'estimator.features.domain': 'Domain',
       'estimator.features.email': 'Business Email',
       'estimator.features.seo': 'SEO Optimization',
-      'estimator.urgency.title': 'Delivery Urgency',
-      'estimator.urgency.standard': 'Standard',
-      'estimator.urgency.express': 'Express',
       'estimator.summary.title': 'Estimated total',
       'estimator.send': 'Send request',
       'lead.error': 'Something went wrong sending your request. Please try again.',
@@ -634,7 +628,6 @@
     const totalCurrencyEl = document.getElementById('est-total-currency');
     const selectedListEl = document.getElementById('est-selected-list');
     const quoteFieldsEl = document.getElementById('est-quote-fields');
-    const expressPriceTagEl = document.getElementById('est-express-price-tag');
     const pageCountRow = document.getElementById('est-page-count');
     const pageCountInput = document.getElementById('est-pageCount');
     const pageCountPriceEl = document.getElementById('est-page-count-price');
@@ -729,20 +722,7 @@
         .filter((input) => input.name !== 'mode');
     }
 
-    // Express delivery costs more to rush on a multi-page site than a one-pager,
-    // so its price isn't a flat data-price like the other add-ons - it's read
-    // from whichever of the input's two data attributes matches the current
-    // "pages" selection instead.
-    function getExpressPriceGel() {
-      const expressInput = estimatorForm.querySelector('input[name="urgency"][value="express"]');
-      if (!expressInput) return 0;
-      const pagesInput = estimatorForm.querySelector('input[name="pages"]:checked');
-      const key = pagesInput && pagesInput.value === 'multi' ? 'priceMulti' : 'priceLanding';
-      return Number(expressInput.dataset[key] || 0);
-    }
-
     function getInputPriceGel(input) {
-      if (input.name === 'urgency' && input.value === 'express') return getExpressPriceGel();
       return Number(input.dataset.price || 0);
     }
 
@@ -838,9 +818,6 @@
         const gel = Number(el.dataset.price);
         el.textContent = `+${toDisplay(gel)} ${currentCurrency}`;
       });
-      if (expressPriceTagEl) {
-        expressPriceTagEl.textContent = `+${toDisplay(getExpressPriceGel())} ${currentCurrency}`;
-      }
 
       const multiPage = isMultiPage();
       const multiPageChanged = lastMultiPageState !== null && lastMultiPageState !== multiPage;
@@ -948,7 +925,7 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, feature_animations, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page, price_per_language')
+        .select('base_price, feature_animations, feature_cms, feature_domain, feature_email, feature_seo, price_per_page, price_per_language')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
@@ -961,15 +938,6 @@
             const input = estimatorForm.querySelector(selector);
             if (input) input.dataset.price = String(Math.round(Number(pricing[field])));
           });
-          const expressInput = estimatorForm.querySelector('input[name="urgency"][value="express"]');
-          if (expressInput) {
-            if (Number.isFinite(Number(pricing.express_delivery_landing))) {
-              expressInput.dataset.priceLanding = String(Math.round(Number(pricing.express_delivery_landing)));
-            }
-            if (Number.isFinite(Number(pricing.express_delivery_multi))) {
-              expressInput.dataset.priceMulti = String(Math.round(Number(pricing.express_delivery_multi)));
-            }
-          }
           updateEstimate();
         })
         .catch(() => { /* offline fallback: keep the defaults already on the page */ });
