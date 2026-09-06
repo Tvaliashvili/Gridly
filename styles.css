@@ -1248,19 +1248,48 @@ section { padding: 100px 0; }
 .field-error { font-size: 0.78rem; color: var(--danger); min-height: 1px; display: none; }
 .form-row.invalid .field-error { display: block; }
 
-.form-success {
-  display: none;
+/* ---- Success/error popup (replaces the old inline green banner - a
+   modal is much harder for a client to miss than text sitting in the
+   form). ---- */
+.est-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 16px;
-  border-radius: var(--radius-sm);
-  background: rgba(52,211,153,0.12);
-  color: var(--success);
-  font-size: 0.9rem;
-  font-weight: 600;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 5, 8, 0.72);
+  backdrop-filter: blur(3px);
 }
-.form-success svg { flex-shrink: 0; }
-.form-success.show { display: flex; }
+.est-modal-overlay[hidden] { display: none; }
+.est-modal {
+  width: 100%;
+  max-width: 380px;
+  padding: 32px 28px 28px;
+  border-radius: var(--radius-lg);
+  background: var(--est-card-bg);
+  border: 1px solid var(--est-pill-border);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.est-modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.est-modal--success .est-modal-icon { background: rgba(52, 211, 153, 0.14); color: var(--success); }
+.est-modal--error .est-modal-icon { background: rgba(248, 113, 113, 0.14); color: var(--danger); }
+.est-modal-message { color: var(--est-text); font-size: 0.98rem; line-height: 1.5; }
+.est-modal-ok { min-width: 120px; }
 
 /* ---- Footer ---- */
 .site-footer {

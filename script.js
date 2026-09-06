@@ -83,6 +83,47 @@
     `;
   }
 
+  /* ---------------- Popup notification (success/error) ----------------
+     A modal is much harder to miss than the old inline green banner, and
+     doubles as the error path (which previously called an undefined
+     showToast()). Closed via the OK button, the backdrop, or Escape. */
+  const modalOverlay = document.getElementById('est-modal-overlay');
+  const modalIcon = document.getElementById('est-modal-icon');
+  const modalMessage = document.getElementById('est-modal-message');
+  const modalOkBtn = document.getElementById('est-modal-ok');
+
+  const MODAL_ICONS = {
+    success: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+    error: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>',
+  };
+
+  function hideModal() {
+    modalOverlay.hidden = true;
+    document.removeEventListener('keydown', onModalKeydown);
+  }
+
+  function onModalKeydown(e) {
+    if (e.key === 'Escape') hideModal();
+  }
+
+  function showModal(message, type) {
+    if (!modalOverlay) return;
+    modalOverlay.classList.remove('est-modal--success', 'est-modal--error');
+    modalOverlay.classList.add(`est-modal--${type}`);
+    modalIcon.innerHTML = MODAL_ICONS[type] || '';
+    modalMessage.textContent = message;
+    modalOverlay.hidden = false;
+    modalOkBtn.focus();
+    document.addEventListener('keydown', onModalKeydown);
+  }
+
+  if (modalOverlay) {
+    modalOkBtn.addEventListener('click', hideModal);
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) hideModal();
+    });
+  }
+
   /* ==========================================================================
      Translations (Georgian default, English toggle)
      ========================================================================== */
@@ -1070,7 +1111,6 @@
 
     /* ---- Request form (built into the estimate summary card) ---- */
     const form = document.getElementById('estimator-contact-form');
-    const formSuccess = document.getElementById('est-form-success');
 
     const validators = {
       name: (value) => value.trim().length >= 2 || t('form.error.name'),
@@ -1148,7 +1188,7 @@
       };
 
       if (!supabase) {
-        showToast(t('lead.error'));
+        showModal(t('lead.error'), 'error');
         submitBtn.disabled = false;
         label.textContent = originalText;
         return;
@@ -1159,18 +1199,17 @@
         .insert(payload)
         .then(({ error }) => {
           if (error) throw error;
-          formSuccess.classList.add('show');
+          showModal(t('form.success'), 'success');
           form.reset();
           // Send the whole calculator back to its pre-selected "უფასო
           // კონსულტაცია" state too, not just the name/contact fields -
-          // the success message alone is confirmation enough, the client
-          // shouldn't see their old selections still sitting there.
+          // the popup alone is confirmation enough, the client shouldn't
+          // see their old selections still sitting there.
           estimatorForm.reset();
           updateEstimate();
-          setTimeout(() => formSuccess.classList.remove('show'), 5000);
         })
         .catch(() => {
-          showToast(t('lead.error'));
+          showModal(t('lead.error'), 'error');
         })
         .finally(() => {
           submitBtn.disabled = false;

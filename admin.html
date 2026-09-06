@@ -311,7 +311,10 @@
             <h2 style="margin-bottom:2px">მიღებული მოთხოვნები</h2>
             <p class="hint" style="margin-bottom:0">ყველა მოთხოვნა, გაგზავნილი ფასის კალკულატორიდან.</p>
           </div>
-          <button class="btn btn-ghost" id="refresh-leads">განახლება</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost btn-delete" id="bulk-delete-leads" hidden>წაშლა (<span id="bulk-delete-count">0</span>)</button>
+            <button class="btn btn-ghost" id="refresh-leads">განახლება</button>
+          </div>
         </div>
         <div id="leads-container"><p class="empty">იტვირთება…</p></div>
       </div>
@@ -607,6 +610,7 @@
 
       const rows = leads.map((lead) => `
         <tr data-id="${escapeHtml(lead.id)}">
+          ${isSuperAdmin ? `<td><input type="checkbox" class="lead-select" data-id="${escapeHtml(lead.id)}"></td>` : ''}
           <td>${escapeHtml(lead.name)}</td>
           <td>${escapeHtml(lead.email || lead.phone || '-')}</td>
           <td>${escapeHtml(BUSINESS_TYPE_LABELS[lead.business_type] || lead.business_type || '-')}</td>
@@ -631,6 +635,7 @@
           <table>
             <thead>
               <tr>
+                ${isSuperAdmin ? '<th><input type="checkbox" id="leads-select-all"></th>' : ''}
                 <th>სახელი</th><th>კონტაქტი</th><th>ბიზნესი</th><th>პაკეტი</th>
                 <th>ფასი</th><th>შეტყობინება</th><th>წარმომადგენელი</th><th>თარიღი</th><th></th>
               </tr>
@@ -704,12 +709,52 @@
 
       leadsContainer.querySelectorAll('.claim-btn').forEach(bindClaimBtn);
       leadsContainer.querySelectorAll('.unclaim-btn').forEach(bindUnclaimBtn);
+
+      if (isSuperAdmin) {
+        const selectAll = document.getElementById('leads-select-all');
+        selectAll.addEventListener('change', () => {
+          leadsContainer.querySelectorAll('.lead-select').forEach((cb) => { cb.checked = selectAll.checked; });
+          updateBulkDeleteUI();
+        });
+        leadsContainer.querySelectorAll('.lead-select').forEach((cb) => {
+          cb.addEventListener('change', () => {
+            if (!cb.checked) selectAll.checked = false;
+            updateBulkDeleteUI();
+          });
+        });
+        updateBulkDeleteUI();
+      }
     } catch (err) {
       leadsContainer.innerHTML = `<p class="empty">${escapeHtml(err.message || 'მოთხოვნების ჩატვირთვა ვერ მოხერხდა.')}</p>`;
     }
   }
 
   document.getElementById('refresh-leads').addEventListener('click', loadLeads);
+
+  const bulkDeleteBtn = document.getElementById('bulk-delete-leads');
+  const bulkDeleteCountEl = document.getElementById('bulk-delete-count');
+
+  function updateBulkDeleteUI() {
+    const count = leadsContainer.querySelectorAll('.lead-select:checked').length;
+    bulkDeleteCountEl.textContent = String(count);
+    bulkDeleteBtn.hidden = count === 0;
+  }
+
+  bulkDeleteBtn.addEventListener('click', async () => {
+    const ids = Array.from(leadsContainer.querySelectorAll('.lead-select:checked')).map((cb) => cb.dataset.id);
+    if (!ids.length) return;
+    if (!confirm(`წავშალოთ არჩეული ${ids.length} მოთხოვნა? ამ მოქმედების გაუქმება შეუძლებელია.`)) return;
+    bulkDeleteBtn.disabled = true;
+    try {
+      const { error } = await sb.from('leads').delete().in('id', ids);
+      if (error) throw error;
+      await loadLeads();
+    } catch (err) {
+      alert('არჩეული მოთხოვნების წაშლა ვერ მოხერხდა. სცადეთ ხელახლა.');
+    } finally {
+      bulkDeleteBtn.disabled = false;
+    }
+  });
 
   /* ---------------- Pricing ---------------- */
   const pricingForm = document.getElementById('pricing-form');
