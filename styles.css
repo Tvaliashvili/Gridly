@@ -1168,6 +1168,7 @@ section { padding: 100px 0; }
    normal cascade rules (author beats user-agent regardless of specificity),
    so it needs an explicit override to actually hide. */
 .est-timeframe[hidden] { display: none; }
+.est-page-count[hidden] { display: none; }
 
 /* ---- Request form, built into the estimate summary card ---- */
 .est-contact-form { display: flex; flex-direction: column; gap: 16px; }
