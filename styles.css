@@ -898,7 +898,7 @@ section { padding: 100px 0; }
 .estimator-options {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 
 .est-row {
