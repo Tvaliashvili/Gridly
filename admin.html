@@ -374,41 +374,6 @@
 
     <section id="tab-subscriptions" hidden>
       <div class="panel">
-        <h2>ახალი აბონენტის დამატება</h2>
-        <p class="hint">დაამატეთ კომპანია, რომელიც იხდის ჩვენს სერვისზე გამოწერას. თარიღის რიცხვი (მაგ. 5) ყოველთვიურად მონიშნავს გადახდის დღეს კალენდარში.</p>
-        <form id="subscription-form">
-          <div class="price-grid">
-            <div class="price-field">
-              <label for="sub-company">კომპანიის დასახელება</label>
-              <input type="text" id="sub-company" required>
-            </div>
-            <div class="price-field">
-              <label for="sub-client-ref">კომპანიის ID</label>
-              <input type="text" id="sub-client-ref">
-            </div>
-            <div class="price-field">
-              <label for="sub-contact">საკონტაქტო ნომერი</label>
-              <input type="text" id="sub-contact">
-            </div>
-            <div class="price-field">
-              <label for="sub-service">სერვისი / პაკეტი</label>
-              <input type="text" id="sub-service" required>
-            </div>
-            <div class="price-field">
-              <label for="sub-price">ყოველთვიური საფასური (GEL)</label>
-              <input type="number" min="0" step="1" id="sub-price" required>
-            </div>
-            <div class="price-field">
-              <label for="sub-date">გამოწერის თარიღი</label>
-              <input type="date" id="sub-date" required>
-            </div>
-          </div>
-          <button type="submit" class="btn" id="save-subscription-btn">დამატება</button>
-          <p class="status-msg" id="subscription-status"></p>
-        </form>
-      </div>
-
-      <div class="panel">
         <div class="toolbar">
           <div>
             <h2 style="margin-bottom:2px" id="calendar-month-label">გადახდის კალენდარი</h2>
@@ -422,6 +387,48 @@
         </div>
         <div class="calendar-grid" id="calendar-grid"></div>
         <div id="calendar-day-panel" class="calendar-day-panel" hidden></div>
+      </div>
+
+      <div class="panel">
+        <button type="button" class="collapse-toggle" id="add-subscription-toggle" aria-expanded="false">
+          <span>
+            <h2 style="margin-bottom:2px">ახალი აბონენტის დამატება</h2>
+            <p class="hint" style="margin-bottom:0">დაამატეთ კომპანია, რომელიც იხდის ჩვენს სერვისზე გამოწერას. თარიღის რიცხვი (მაგ. 5) ყოველთვიურად მონიშნავს გადახდის დღეს კალენდარში.</p>
+          </span>
+          <svg class="collapse-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="add-subscription-body" class="collapse-body" hidden>
+          <form id="subscription-form">
+            <div class="price-grid">
+              <div class="price-field">
+                <label for="sub-company">კომპანიის დასახელება</label>
+                <input type="text" id="sub-company" required>
+              </div>
+              <div class="price-field">
+                <label for="sub-client-ref">კომპანიის ID</label>
+                <input type="text" id="sub-client-ref">
+              </div>
+              <div class="price-field">
+                <label for="sub-contact">საკონტაქტო ნომერი</label>
+                <input type="text" id="sub-contact">
+              </div>
+              <div class="price-field">
+                <label for="sub-service">სერვისი / პაკეტი</label>
+                <input type="text" id="sub-service" required>
+              </div>
+              <div class="price-field">
+                <label for="sub-price">ყოველთვიური საფასური (GEL)</label>
+                <input type="number" min="0" step="1" id="sub-price" required>
+              </div>
+              <div class="price-field">
+                <label for="sub-date">გამოწერის თარიღი</label>
+                <input type="date" id="sub-date" required>
+              </div>
+            </div>
+            <button type="submit" class="btn" id="save-subscription-btn">დამატება</button>
+            <p class="status-msg" id="subscription-status"></p>
+          </form>
+        </div>
       </div>
 
       <div class="panel">
@@ -1159,6 +1166,13 @@
     const expanded = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!expanded));
     subscriptionsContainer.hidden = expanded;
+  });
+
+  document.getElementById('add-subscription-toggle').addEventListener('click', (e) => {
+    const btn = e.currentTarget;
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    document.getElementById('add-subscription-body').hidden = expanded;
   });
 
   /* ---------------- Site status (maintenance mode) ---------------- */
