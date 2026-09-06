@@ -60,6 +60,73 @@
           <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         </button>
         <div class="maintenance-card">
+          <div class="girl-perch" aria-hidden="true">
+            <svg viewBox="0 0 60 90" width="56" height="90" xmlns="http://www.w3.org/2000/svg">
+              <g class="girl-leg girl-leg-left">
+                <rect x="19" y="44" width="8" height="28" rx="4"/>
+                <ellipse class="girl-shoe" cx="23" cy="74" rx="6" ry="4"/>
+              </g>
+              <g class="girl-leg girl-leg-right">
+                <rect x="33" y="44" width="8" height="28" rx="4"/>
+                <ellipse class="girl-shoe" cx="37" cy="74" rx="6" ry="4"/>
+              </g>
+              <ellipse class="girl-hair" cx="30" cy="16" rx="15" ry="16"/>
+              <path class="girl-dress" d="M15 28 Q30 22 45 28 L49 50 Q30 58 11 50 Z"/>
+              <rect class="girl-arm girl-arm-left" x="9" y="30" width="7" height="18" rx="3.5"/>
+              <rect class="girl-arm girl-arm-right" x="44" y="30" width="7" height="18" rx="3.5"/>
+              <g class="girl-laptop">
+                <rect class="girl-laptop-base" x="15" y="48" width="30" height="5" rx="1.5"/>
+                <rect class="girl-laptop-screen" x="17" y="31" width="26" height="18" rx="1.5"/>
+                <rect class="girl-laptop-rim" x="17" y="31" width="26" height="18" rx="1.5" fill="none"/>
+                <circle class="girl-laptop-logo" cx="30" cy="40" r="2.2"/>
+              </g>
+              <circle class="girl-head" cx="30" cy="16" r="12"/>
+              <circle class="girl-pigtail" cx="15" cy="17" r="5"/>
+              <circle class="girl-pigtail" cx="45" cy="17" r="5"/>
+              <circle class="girl-eye" cx="25" cy="16.5" r="1.5"/>
+              <circle class="girl-eye" cx="35" cy="16.5" r="1.5"/>
+              <path class="girl-smile" d="M24 20 Q30 25 36 20" fill="none"/>
+            </svg>
+          </div>
+          <div class="sky-icon" aria-hidden="true">
+            <svg class="sky-stars" width="34" height="34" viewBox="0 0 34 34">
+              <path class="sky-star sky-star-1" d="M8 2 L9.4 6.6 L14 8 L9.4 9.4 L8 14 L6.6 9.4 L2 8 L6.6 6.6 Z" fill="#e0e7ff"/>
+              <circle class="sky-star sky-star-2" cx="26" cy="7" r="1.6" fill="#e0e7ff"/>
+              <circle class="sky-star sky-star-3" cx="20" cy="24" r="1.3" fill="#e0e7ff"/>
+              <circle class="sky-star sky-star-4" cx="29" cy="20" r="1.1" fill="#e0e7ff"/>
+            </svg>
+            <svg class="sky-icon-sun" width="40" height="40" viewBox="0 0 40 40">
+              <defs>
+                <radialGradient id="maintenanceSunGradient" cx="50%" cy="42%" r="60%">
+                  <stop offset="0%" stop-color="#fff4cc"/>
+                  <stop offset="55%" stop-color="#fbbf24"/>
+                  <stop offset="100%" stop-color="#f59e0b"/>
+                </radialGradient>
+              </defs>
+              <g fill="#fbbf24" opacity="0.9">
+                <path d="M20 1 L22.6 8.4 L17.4 8.4 Z"/>
+                <path d="M20 39 L22.6 31.6 L17.4 31.6 Z"/>
+                <path d="M1 20 L8.4 17.4 L8.4 22.6 Z"/>
+                <path d="M39 20 L31.6 22.6 L31.6 17.4 Z"/>
+                <path d="M6.2 6.2 L12.5 10.2 L10.2 12.5 Z"/>
+                <path d="M33.8 33.8 L27.5 29.8 L29.8 27.5 Z"/>
+                <path d="M6.2 33.8 L10.2 27.5 L12.5 29.8 Z"/>
+                <path d="M33.8 6.2 L29.8 12.5 L27.5 10.2 Z"/>
+              </g>
+              <circle cx="20" cy="20" r="10.5" fill="url(#maintenanceSunGradient)"/>
+              <circle cx="17" cy="17" r="3" fill="#fff8e1" opacity="0.55"/>
+            </svg>
+            <svg class="sky-icon-moon" width="36" height="36" viewBox="0 0 40 40">
+              <defs>
+                <radialGradient id="maintenanceMoonGradient" cx="38%" cy="35%" r="70%">
+                  <stop offset="0%" stop-color="#f5f3ff"/>
+                  <stop offset="60%" stop-color="#c7d2fe"/>
+                  <stop offset="100%" stop-color="#818cf8"/>
+                </radialGradient>
+              </defs>
+              <path d="M25 5a14 14 0 1 0 10 22 11 11 0 0 1-10-22z" fill="url(#maintenanceMoonGradient)"/>
+            </svg>
+          </div>
           <div class="maintenance-icon">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           </div>

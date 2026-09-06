@@ -347,7 +347,7 @@ h1, h2, h3, h4, p, span, a, li,
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mock-window-wrap { animation: none; }
+  .mock-window-wrap, .maintenance-card { animation: none; }
   .sky-icon { animation: none; }
   .sky-icon-sun, .sky-icon-moon, .sky-star { animation: none; }
   .girl-leg-left, .girl-leg-right { animation: none; transform: rotate(2deg); }
@@ -1783,6 +1783,7 @@ body {
   padding: 44px 36px;
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow-glow);
+  animation: float 6s ease-in-out infinite;
 }
 .maintenance-card .maintenance-divider { width: 100%; }
 .maintenance-contact {
