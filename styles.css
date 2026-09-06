@@ -968,6 +968,7 @@ section { padding: 100px 0; }
   flex-wrap: wrap;
   gap: 10px;
 }
+html[lang="en"] .est-pills--pages { flex-direction: column; }
 
 .est-quote-fields {
   overflow: hidden;
