@@ -119,7 +119,7 @@ h1, h2, h3, h4 {
 /* Prevent long words (URLs, unbroken Georgian compounds) from overflowing
    their container on narrow viewports. */
 h1, h2, h3, h4, p, span, a, li,
-.btn, .nav-link, .section-tag, .eyebrow {
+.btn, .nav-link, .eyebrow {
   overflow-wrap: break-word;
   word-break: break-word;
 }
@@ -777,15 +777,6 @@ h1, h2, h3, h4, p, span, a, li,
   max-width: 620px;
   margin: 0 auto 56px;
   text-align: center;
-}
-.section-tag {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 14px;
 }
 .section-head h2 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); margin-bottom: 14px; }
 .section-head p { color: var(--text-dim); font-size: 1.05rem; }
