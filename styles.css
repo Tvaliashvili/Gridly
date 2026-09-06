@@ -182,8 +182,17 @@ h1, h2, h3, h4, p, span, a, li,
 /* ---- Tilt + glow interactive elements ---- */
 .tilt-glow {
   position: relative;
-  transform-style: preserve-3d;
   overflow: hidden;
+}
+/* transform-style: preserve-3d only matters for the mouse-tilt effect,
+   which script.js only ever wires up on hover-capable/fine-pointer
+   devices (touch gets no rotateX/rotateY). Scoping it the same way
+   here avoids a WebKit bug where an idle 3D rendering context breaks
+   the overflow:hidden + border-radius clip on rounded buttons, showing
+   a thin unclipped sliver of whatever's behind at the left/right edges
+   - exactly what was happening to est-send-btn on phones. */
+@media (hover: hover) and (pointer: fine) {
+  .tilt-glow { transform-style: preserve-3d; }
 }
 .tilt-glow::after {
   content: '';
