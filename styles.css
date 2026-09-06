@@ -1666,6 +1666,8 @@ body {
   color: var(--text);
   font-family: 'Inter', 'Noto Sans Georgian', sans-serif;
 }
+.maintenance-screen .bg-glow-1 { background: radial-gradient(circle, rgba(99, 102, 241, 0.32), transparent 70%); }
+.maintenance-screen .bg-glow-2 { background: radial-gradient(circle, rgba(34, 211, 238, 0.28), transparent 70%); }
 .maintenance-card {
   position: relative;
   max-width: 420px;
