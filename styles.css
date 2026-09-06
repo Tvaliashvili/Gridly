@@ -1155,7 +1155,6 @@ section { padding: 100px 0; }
 .est-receipt .est-receipt-label { color: var(--est-text); }
 .est-receipt .est-receipt-price { flex-shrink: 0; font-weight: 700; color: var(--est-accent-2); white-space: nowrap; }
 
-.est-disclaimer { font-size: 0.76rem; color: var(--est-text-dim); text-align: center; }
 
 /* A single pill-group (the "request type" row) spans both columns instead
    of leaving the second column empty. */
