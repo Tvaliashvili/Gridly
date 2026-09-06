@@ -342,10 +342,6 @@
               <input type="number" min="0" step="1" id="feature_animations" name="feature_animations" required>
             </div>
             <div class="price-field">
-              <label for="feature_calculator">ინტერაქტიული კალკულატორი (+GEL)</label>
-              <input type="number" min="0" step="1" id="feature_calculator" name="feature_calculator" required>
-            </div>
-            <div class="price-field">
               <label for="feature_cms">CMS / ბლოგი (+GEL)</label>
               <input type="number" min="0" step="1" id="feature_cms" name="feature_cms" required>
             </div>
@@ -670,7 +666,7 @@
   const pricingForm = document.getElementById('pricing-form');
   const pricingStatus = document.getElementById('pricing-status');
   const saveBtn = document.getElementById('save-pricing-btn');
-  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations', 'feature_calculator', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
+  const PRICING_FIELDS = ['base_price', 'price_per_page', 'price_per_language', 'feature_animations', 'feature_cms', 'feature_domain', 'feature_email', 'feature_seo', 'express_delivery_landing', 'express_delivery_multi'];
 
   async function loadPricing() {
     try {

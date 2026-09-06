@@ -23,7 +23,6 @@ create table if not exists public.pricing_config (
   id text primary key default 'default',
   base_price integer not null default 350,
   feature_animations integer not null default 150,
-  feature_calculator integer not null default 200,
   feature_cms integer not null default 350,
   feature_domain integer not null default 50,
   feature_email integer not null default 30,
@@ -58,6 +57,8 @@ alter table public.pricing_config drop column if exists multi_page;
 -- one language's worth of fee); replaces the old flat dual_language fee.
 alter table public.pricing_config add column if not exists price_per_language integer not null default 150;
 alter table public.pricing_config drop column if exists dual_language;
+-- Interactive Calculator feature removed; drop its price column.
+alter table public.pricing_config drop column if exists feature_calculator;
 insert into public.pricing_config (id) values ('default') on conflict (id) do nothing;
 alter table public.pricing_config enable row level security;
 

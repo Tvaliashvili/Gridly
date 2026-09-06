@@ -154,7 +154,6 @@
       'estimator.features.contact': 'საკონტაქტო ფორმა',
       'estimator.features.hosting': 'ჰოსტინგი',
       'estimator.features.animations': 'მორგებული ანიმაციები',
-      'estimator.features.calculator': 'ინტერაქტიული კალკულატორი',
       'estimator.features.cms': 'CMS / ბლოგი',
       'estimator.features.domain': 'დომენი',
       'estimator.features.email': 'ელ. ფოსტა',
@@ -271,7 +270,6 @@
       'estimator.features.contact': 'Contact Form',
       'estimator.features.hosting': 'Hosting',
       'estimator.features.animations': 'Custom Animations',
-      'estimator.features.calculator': 'Interactive Calculator',
       'estimator.features.cms': 'CMS / Blog',
       'estimator.features.domain': 'Domain',
       'estimator.features.email': 'Business Email',
@@ -943,7 +941,6 @@
     // pricing_config column, then re-renders with whatever loaded.
     const PRICE_FIELD_SELECTORS = {
       feature_animations: 'input[name="feature"][value="animations"]',
-      feature_calculator: 'input[name="feature"][value="calculator"]',
       feature_cms: 'input[name="feature"][value="cms"]',
       feature_domain: 'input[name="feature"][value="domain"]',
       feature_email: 'input[name="feature"][value="email"]',
@@ -953,7 +950,7 @@
     if (supabase) {
       supabase
         .from('pricing_config')
-        .select('base_price, feature_animations, feature_calculator, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page, price_per_language')
+        .select('base_price, feature_animations, feature_cms, feature_domain, feature_email, feature_seo, express_delivery_landing, express_delivery_multi, price_per_page, price_per_language')
         .eq('id', 'default')
         .single()
         .then(({ data: pricing, error }) => {
