@@ -10,6 +10,12 @@ html {
   width: 100%;
   position: relative;
 }
+/* Hidden until script.js resolves the maintenance-mode check, so a
+   maintenance visitor never sees the landing page flash before the notice
+   replaces it (script.js adds .gridly-ready either way, with a timeout
+   fallback if the check hangs or fails). */
+html:not(.gridly-ready) body { visibility: hidden; }
+
 img, svg { display: block; max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
@@ -1652,6 +1658,7 @@ body {
 .maintenance-screen {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 24px;
@@ -1660,7 +1667,9 @@ body {
   font-family: 'Inter', 'Noto Sans Georgian', sans-serif;
 }
 .maintenance-card {
+  position: relative;
   max-width: 420px;
+  margin-top: 26px;
   text-align: center;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -1668,6 +1677,27 @@ body {
   padding: 44px 36px;
   backdrop-filter: blur(16px);
 }
+.maintenance-construction {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.25));
+}
+.maintenance-construction span:nth-child(3) { font-size: 2.5rem; }
+.maintenance-email {
+  display: inline-block;
+  margin-top: 22px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.maintenance-email:hover { color: var(--accent); }
 .maintenance-icon {
   display: inline-flex;
   align-items: center;

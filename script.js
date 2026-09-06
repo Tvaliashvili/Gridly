@@ -14,21 +14,36 @@
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
-  // Toggled from /admin.html. Checked in the background; if it comes back on,
-  // the whole page is swapped for a maintenance notice (translations/t() are
-  // defined further below but already initialized by the time this resolves,
-  // since it's a network round-trip that finishes after the rest of this
-  // script has run synchronously).
+  // Toggled from /admin.html. The whole document stays hidden (see the
+  // html:not(.gridly-ready) rule in styles.css) until this check resolves,
+  // so a maintenance-mode visitor never sees the landing page flash before
+  // being swapped to the notice. reveal() un-hides it either way; the
+  // timeout is a safety net in case the request hangs or fails.
+  let revealed = false;
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    document.documentElement.classList.add('gridly-ready');
+  }
+
   if (supabase) {
+    const revealTimeout = setTimeout(reveal, 1500);
     supabase
       .from('site_config')
       .select('maintenance_mode')
       .eq('id', 'default')
       .single()
       .then(({ data }) => {
+        clearTimeout(revealTimeout);
         if (data && data.maintenance_mode) showMaintenancePage();
+        reveal();
       })
-      .catch(() => {});
+      .catch(() => {
+        clearTimeout(revealTimeout);
+        reveal();
+      });
+  } else {
+    reveal();
   }
 
   function showMaintenancePage() {
@@ -39,6 +54,9 @@
     document.body.innerHTML = `
       <div class="maintenance-screen">
         <div class="maintenance-card">
+          <div class="maintenance-construction" aria-hidden="true">
+            <span>🚧</span><span>👷</span><span>🚜</span><span>👷‍♀️</span><span>🚧</span>
+          </div>
           <div class="maintenance-icon">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           </div>
@@ -48,6 +66,7 @@
           <h1>${translations.en['maintenance.title']}</h1>
           <p>${translations.en['maintenance.desc']}</p>
         </div>
+        <a class="maintenance-email" href="mailto:info@gridly.ge">info@gridly.ge</a>
       </div>
     `;
   }
