@@ -1575,6 +1575,12 @@ section { padding: 100px 0; }
   .mock-cards { grid-template-columns: 1fr 1fr; }
   .mock-cards .mock-card:last-child { display: none; }
   .lang-btn { padding: 6px 9px; font-size: 0.7rem; }
+
+  /* Even less room at 320-400px - shrink the gap and type further so
+     the two hero stats still share one row instead of wrapping. */
+  .hero-stats { gap: 12px; }
+  .stat strong { font-size: 1.05rem; }
+  .stat span { font-size: 0.66rem; }
 }
 
 /* ==========================================================================
@@ -1649,6 +1655,17 @@ body {
     align-items: center !important;
     gap: 12px !important;
   }
+
+  /* Keep the two stats on one row instead of wrapping onto separate
+     lines - nowrap plus a tighter gap and smaller type is enough for
+     both to fit even at a 320px-wide phone. */
+  .hero-stats {
+    flex-wrap: nowrap !important;
+    justify-content: center;
+    gap: 20px;
+  }
+  .stat strong { font-size: 1.15rem; }
+  .stat span { font-size: 0.72rem; }
 
   /* ---- Hard-scaled mockup: shrinks to fit with breathing room on every
      phone width instead of relying purely on internal clipping. ---- */
